@@ -1,0 +1,6 @@
+( } ( по_какой_сел ( PARAM nil ( int ( Серегыч nil nil ) nil ) ) ( ; ( if ( == ( Серегыч nil nil ) ( 1 nil nil ) ) ( else ( ; ( return ( 1 nil nil ) nil ) nil ) ( ; ( = ( int ( Олегыч nil nil ) nil ) ( по_какой_сел ( PARAM nil ( - ( Серегыч nil nil ) ( 1 nil nil ) ) ) nil ) ) ( ; ( return ( * ( Олегыч nil nil ) ( Серегыч nil nil ) ) nil ) nil ) ) ) ) nil ) ) ( ; ( = ( int ( Ефимыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( in ( Ефимыч nil nil ) nil ) ( ; ( out ( по_какой_сел ( PARAM nil ( Ефимыч nil nil ) ) nil ) nil ) ( end nil nil ) ) ) ) ) 
+FUNC    по_какой_сел
+VAR    Серегыч
+VAR    Олегыч
+FUNC    main
+VAR    Ефимыч

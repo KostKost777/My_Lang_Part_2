@@ -1,0 +1,1623 @@
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6C67AFF66 в функции NameTableCtor() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 9. Попытка записать данные по адресу 0x000000D501A00320 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6C6BBB0B0 (64-bit), Flags: Cmdre0, Thread: 0x5E7C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6C67AFF66 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: NameTableCtor() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:9:
+
+      7:     assert(name_table);
+      8: 
+=>    9:     name_table->size = 0;
+     10:     name_table->now_visible_space = 0;
+     11: }
+
+# 1 0x00007FF6C6891879 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: TreeCtor() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/tree_funcs.cpp:13:
+
+     11:     tree->root = NULL;
+     12: 
+=>   13:     NameTableCtor(&tree->name_table);
+     14: 
+     15:     return success;
+
+# 2 0x00007FF6C68719C2 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:22:
+
+     20:     Tree tree = {};
+     21: 
+=>   22:     TreeCtor(&tree);
+     23: 
+     24:     char* cur_pos = buffer.data;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 03:01:27, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 03:26:42
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6C67AFF66 в функции NameTableCtor() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 9. Попытка записать данные по адресу 0x000000D501A00320 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6C6BBB0B0 (64-bit), Flags: Cmdre0, Thread: 0x5E7C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6C67AFF66 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: NameTableCtor() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:9:
+
+      7:     assert(name_table);
+      8: 
+=>    9:     name_table->size = 0;
+     10:     name_table->now_visible_space = 0;
+     11: }
+
+# 1 0x00007FF6C6891879 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: TreeCtor() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/tree_funcs.cpp:13:
+
+     11:     tree->root = NULL;
+     12: 
+=>   13:     NameTableCtor(&tree->name_table);
+     14: 
+     15:     return success;
+
+# 2 0x00007FF6C68719C2 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:22:
+
+     20:     Tree tree = {};
+     21: 
+=>   22:     TreeCtor(&tree);
+     23: 
+     24:     char* cur_pos = buffer.data;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 03:01:27, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 03:26:42
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF649E601DD в функции FillNameTableFromBuffer() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 45. Попытка записать данные по адресу 0x000057B294B7F058 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF64A26B0B0 (64-bit), Flags: Cmdre0, Thread: 0x1C78 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF649E601DD in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNameTableFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:45:
+
+     43: 
+     44:         name_table->arr[name_table->size].name = strdup(ident);
+=>   45:         name_table->arr[name_table->size].hash = GetHash(ident);
+     46: 
+     47:         name_table->size++;
+
+# 1 0x00007FF649F21B67 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:29:
+
+     27:     printf("BUFFER: %s", cur_pos);
+     28: 
+=>   29:     FillNameTableFromBuffer(&tree.name_table, cur_pos);
+     30:     PrintNameTable(tree.name_table);
+     31: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 03:41:23, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 04:14:52
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF649E601DD в функции FillNameTableFromBuffer() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 45. Попытка записать данные по адресу 0x000057B294B7F058 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF64A26B0B0 (64-bit), Flags: Cmdre0, Thread: 0x1C78 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF649E601DD in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNameTableFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:45:
+
+     43: 
+     44:         name_table->arr[name_table->size].name = strdup(ident);
+=>   45:         name_table->arr[name_table->size].hash = GetHash(ident);
+     46: 
+     47:         name_table->size++;
+
+# 1 0x00007FF649F21B67 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:29:
+
+     27:     printf("BUFFER: %s", cur_pos);
+     28: 
+=>   29:     FillNameTableFromBuffer(&tree.name_table, cur_pos);
+     30:     PrintNameTable(tree.name_table);
+     31: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 03:41:23, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 04:14:52
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6FCE801DD в функции FillNameTableFromBuffer() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 45. Попытка записать данные по адресу 0x0000559B15D84198 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6FD28B0B0 (64-bit), Flags: Cmdre0, Thread: 0x1C9C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6FCE801DD in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNameTableFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:45:
+
+     43: 
+     44:         name_table->arr[name_table->size].name = strdup(ident);
+=>   45:         name_table->arr[name_table->size].hash = GetHash(ident);
+     46: 
+     47:         name_table->size++;
+
+# 1 0x00007FF6FCF41B67 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:29:
+
+     27:     printf("BUFFER: %s", cur_pos);
+     28: 
+=>   29:     FillNameTableFromBuffer(&tree.name_table, cur_pos);
+     30:     PrintNameTable(tree.name_table);
+     31: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 04:22:14, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 04:22:48
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6FCE801DD в функции FillNameTableFromBuffer() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 45. Попытка записать данные по адресу 0x0000559B15D84198 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6FD28B0B0 (64-bit), Flags: Cmdre0, Thread: 0x1C9C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6FCE801DD in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNameTableFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:45:
+
+     43: 
+     44:         name_table->arr[name_table->size].name = strdup(ident);
+=>   45:         name_table->arr[name_table->size].hash = GetHash(ident);
+     46: 
+     47:         name_table->size++;
+
+# 1 0x00007FF6FCF41B67 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:29:
+
+     27:     printf("BUFFER: %s", cur_pos);
+     28: 
+=>   29:     FillNameTableFromBuffer(&tree.name_table, cur_pos);
+     30:     PrintNameTable(tree.name_table);
+     31: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 04:22:14, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 04:22:48
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF665F501DD в функции FillNameTableFromBuffer() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 45. Попытка записать данные по адресу 0x00002BA29897FF58 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF66635B0B0 (64-bit), Flags: Cmdre0, Thread: 0x17D0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF665F501DD in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNameTableFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:45:
+
+     43: 
+     44:         name_table->arr[name_table->size].name = strdup(ident);
+=>   45:         name_table->arr[name_table->size].hash = GetHash(ident);
+     46: 
+     47:         name_table->size++;
+
+# 1 0x00007FF666011B67 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:29:
+
+     27:     printf("BUFFER: %s", cur_pos);
+     28: 
+=>   29:     FillNameTableFromBuffer(&tree.name_table, cur_pos);
+     30:     PrintNameTable(tree.name_table);
+     31: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 04:22:14, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 04:25:28
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF7D89701EC в функции FillNameTableFromBuffer() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 46. Попытка записать данные по адресу 0x00005415B9B80F08 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7D8D7B0B0 (64-bit), Flags: Cmdre0, Thread: 0x1F28 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF7D89701EC in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNameTableFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:46:
+
+     44: 
+     45:         name_table->arr[name_table->size].name = strdup(ident);
+=>   46:         name_table->arr[name_table->size].hash = GetHash(ident);
+     47: 
+     48:         name_table->size++;
+
+# 1 0x00007FF7D8A31B77 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:29:
+
+     27:     printf("BUFFER: %s", cur_pos);
+     28: 
+=>   29:     FillNameTableFromBuffer(&tree.name_table, cur_pos);
+     30:     PrintNameTable(tree.name_table);
+     31: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 04:35:56, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 04:36:29
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF7D89701EC в функции FillNameTableFromBuffer() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp на строке 46. Попытка записать данные по адресу 0x00005415B9B80F08 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7D8D7B0B0 (64-bit), Flags: Cmdre0, Thread: 0x1F28 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF7D89701EC in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNameTableFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/../Frontend/name_table_funcs.cpp:46:
+
+     44: 
+     45:         name_table->arr[name_table->size].name = strdup(ident);
+=>   46:         name_table->arr[name_table->size].hash = GetHash(ident);
+     47: 
+     48:         name_table->size++;
+
+# 1 0x00007FF7D8A31B77 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:29:
+
+     27:     printf("BUFFER: %s", cur_pos);
+     28: 
+=>   29:     FillNameTableFromBuffer(&tree.name_table, cur_pos);
+     30:     PrintNameTable(tree.name_table);
+     31: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 04:35:56, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 04:36:29
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF76E0C02E4 в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 57. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF76E5328F0 (64-bit), Flags: Cmdre0, Thread: 0xC4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF76E0C02E4 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:57:
+
+     55:         fprintf(log_file, "Вызов ParseAsmOperator\n");
+     56: 
+=>   57:         if (node->left->type == OP_ASSIGNED)
+     58:             ParseAsmAssigned(tree, node->left, func_info);
+     59: 
+
+# 1 0x00007FF76E0C01C7 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmFunc() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:45:
+
+     43:     PrintFuncName(tree->name_table,  &func_info);
+     44: 
+=>   45:     ParseAsmOperator(tree, node->left, &func_info);
+     46: }
+     47: 
+
+# 2 0x00007FF76E0C0020 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:23:
+
+     21:     while(node->type == KEY_LBRACE)
+     22:     {
+=>   23:         ParseAsmFunc(tree, node->left);
+     24:         node = node->right;
+     25:     }
+
+# 3 0x00007FF76E1A501D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:35:
+
+     33:     TreeDump(&tree);
+     34: 
+=>   35:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     36: 
+     37:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 17:30:31, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 17:49:24
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF76E0C02E4 в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 57. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF76E5328F0 (64-bit), Flags: Cmdre0, Thread: 0xC4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF76E0C02E4 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:57:
+
+     55:         fprintf(log_file, "Вызов ParseAsmOperator\n");
+     56: 
+=>   57:         if (node->left->type == OP_ASSIGNED)
+     58:             ParseAsmAssigned(tree, node->left, func_info);
+     59: 
+
+# 1 0x00007FF76E0C01C7 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmFunc() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:45:
+
+     43:     PrintFuncName(tree->name_table,  &func_info);
+     44: 
+=>   45:     ParseAsmOperator(tree, node->left, &func_info);
+     46: }
+     47: 
+
+# 2 0x00007FF76E0C0020 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:23:
+
+     21:     while(node->type == KEY_LBRACE)
+     22:     {
+=>   23:         ParseAsmFunc(tree, node->left);
+     24:         node = node->right;
+     25:     }
+
+# 3 0x00007FF76E1A501D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:35:
+
+     33:     TreeDump(&tree);
+     34: 
+=>   35:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     36: 
+     37:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 17:30:31, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 17:49:24
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF7A65F3134 в функции ParseAsmCallFunc() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 573. Попытка прочесть данные по адресу 0x0000000000000028 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7A6A628F0 (64-bit), Flags: Cmdre0, Thread: 0x224C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF7A65F3134 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmCallFunc() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:573:
+
+    571:     //пока для одной переменной
+    572: 
+=>  573:     ParseAsmExpression(tree, node->left->right, func_info);
+    574: 
+    575: 
+
+# 1 0x00007FF7A65F168E in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: PrintNodeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:243:
+
+    241:     if (ParseAsmEqual(tree, node, func_info) == success) return;
+    242:     if (ParseAsmNotEqual(tree, node, func_info) == success) return;
+=>  243:     if (ParseAsmCallFunc(tree, node, func_info) == success) return;
+    244: 
+    245: }
+
+# 2 0x00007FF7A65F1386 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmExpression() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:220:
+
+    218:         ParseAsmExpression(tree, node->right, func_info);
+    219: 
+=>  220:     PrintNodeInAsmFile(tree, node, func_info);
+    221: }
+    222: 
+
+# 3 0x00007FF7A65F1347 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmExpression() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:215:
+
+    213: 
+    214:     if (node->left != NULL)
+=>  215:         ParseAsmExpression(tree, node->left, func_info);
+    216: 
+    217:     if (node->right != NULL)
+
+# 4 0x00007FF7A65F0ECA in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmWhile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:168:
+
+    166:     fprintf(asm_file, ":begin_while_%d\n", counter);
+    167: 
+=>  168:     ParseAsmExpression(tree, node->left, func_info);
+    169: 
+    170:     fprintf(asm_file, "PUSH 0\n");
+
+# 5 0x00007FF7A65F03A8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:67:
+
+     65: 
+     66:         if (node->left->type == KEY_WHILE)
+=>   67:             ParseAsmWhile(tree, node->left, func_info);
+     68: 
+     69:         if (node->left->type == KEY_IN)
+
+# 6 0x00007FF7A65F01C7 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmFunc() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:45:
+
+     43:     PrintFuncName(tree->name_table,  &func_info);
+     44: 
+=>   45:     ParseAsmOperator(tree, node->right, &func_info);
+     46: }
+     47: 
+
+# 7 0x00007FF7A65F0020 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:23:
+
+     21:     while(node->type == KEY_LBRACE)
+     22:     {
+=>   23:         ParseAsmFunc(tree, node->left);
+     24:         node = node->right;
+     25:     }
+
+# 8 0x00007FF7A66D501D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:35:
+
+     33:     TreeDump(&tree);
+     34: 
+=>   35:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     36: 
+     37:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 17:30:31, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 17:54:29
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF7A65F3134 в функции ParseAsmCallFunc() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 573. Попытка прочесть данные по адресу 0x0000000000000028 в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7A6A628F0 (64-bit), Flags: Cmdre0, Thread: 0x224C (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF7A65F3134 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmCallFunc() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:573:
+
+    571:     //пока для одной переменной
+    572: 
+=>  573:     ParseAsmExpression(tree, node->left->right, func_info);
+    574: 
+    575: 
+
+# 1 0x00007FF7A65F168E in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: PrintNodeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:243:
+
+    241:     if (ParseAsmEqual(tree, node, func_info) == success) return;
+    242:     if (ParseAsmNotEqual(tree, node, func_info) == success) return;
+=>  243:     if (ParseAsmCallFunc(tree, node, func_info) == success) return;
+    244: 
+    245: }
+
+# 2 0x00007FF7A65F1386 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmExpression() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:220:
+
+    218:         ParseAsmExpression(tree, node->right, func_info);
+    219: 
+=>  220:     PrintNodeInAsmFile(tree, node, func_info);
+    221: }
+    222: 
+
+# 3 0x00007FF7A65F1347 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmExpression() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:215:
+
+    213: 
+    214:     if (node->left != NULL)
+=>  215:         ParseAsmExpression(tree, node->left, func_info);
+    216: 
+    217:     if (node->right != NULL)
+
+# 4 0x00007FF7A65F0ECA in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmWhile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:168:
+
+    166:     fprintf(asm_file, ":begin_while_%d\n", counter);
+    167: 
+=>  168:     ParseAsmExpression(tree, node->left, func_info);
+    169: 
+    170:     fprintf(asm_file, "PUSH 0\n");
+
+# 5 0x00007FF7A65F03A8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:67:
+
+     65: 
+     66:         if (node->left->type == KEY_WHILE)
+=>   67:             ParseAsmWhile(tree, node->left, func_info);
+     68: 
+     69:         if (node->left->type == KEY_IN)
+
+# 6 0x00007FF7A65F01C7 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmFunc() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:45:
+
+     43:     PrintFuncName(tree->name_table,  &func_info);
+     44: 
+=>   45:     ParseAsmOperator(tree, node->right, &func_info);
+     46: }
+     47: 
+
+# 7 0x00007FF7A65F0020 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:23:
+
+     21:     while(node->type == KEY_LBRACE)
+     22:     {
+=>   23:         ParseAsmFunc(tree, node->left);
+     24:         node = node->right;
+     25:     }
+
+# 8 0x00007FF7A66D501D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:35:
+
+     33:     TreeDump(&tree);
+     34: 
+=>   35:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     36: 
+     37:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 17:30:31, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 19 2025 17:54:29
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF70431048F в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 71. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7047828F0 (64-bit), Flags: Cmdre0, Thread: 0x160 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF70431048F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:71:
+
+     69:         fprintf(log_file, "Вызов ParseAsmOperator\n");
+     70: 
+=>   71:         if (node->left->type == OP_ASSIGNED)
+     72:             ParseAsmAssigned(tree, node->left, func_info);
+     73: 
+
+# 1 0x00007FF7043110C5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmIf() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:184:
+
+    182:     fprintf(asm_file, "JE :endif_%d\n", counter);
+    183: 
+=>  184:     ParseAsmOperator(tree, node->right, func_info);
+    185: 
+    186:     fprintf(asm_file, ":endif_%d\n\n", counter);
+
+# 2 0x00007FF704310553 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:81:
+
+     79: 
+     80:         if (node->left->type == KEY_IF && node->left->right->type != KEY_ELSE)
+=>   81:             ParseAsmIf(tree, node->left, func_info);
+     82: 
+     83:         if (node->left->type == KEY_WHILE)
+
+# 3 0x00007FF70431020D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseMain() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:43:
+
+     41:         node = node->right;
+     42: 
+=>   43:     ParseAsmOperator(tree, node, main);
+     44:     fprintf(asm_file, "HLT\n\n");
+     45: 
+
+# 4 0x00007FF70431002D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:22:
+
+     20: 
+     21:     Lexeme main = GetMainLexeme();
+=>   22:     ParseMain(tree, node, &main);
+     23: 
+     24:     while(node->type == KEY_LBRACE)
+
+# 5 0x00007FF7043F5685 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:36:
+
+     34:     TreeDump(&tree);
+     35: 
+=>   36:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     37: 
+     38:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 19:32:13, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 10:02:03
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF70431048F в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 71. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7047828F0 (64-bit), Flags: Cmdre0, Thread: 0x160 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF70431048F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:71:
+
+     69:         fprintf(log_file, "Вызов ParseAsmOperator\n");
+     70: 
+=>   71:         if (node->left->type == OP_ASSIGNED)
+     72:             ParseAsmAssigned(tree, node->left, func_info);
+     73: 
+
+# 1 0x00007FF7043110C5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmIf() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:184:
+
+    182:     fprintf(asm_file, "JE :endif_%d\n", counter);
+    183: 
+=>  184:     ParseAsmOperator(tree, node->right, func_info);
+    185: 
+    186:     fprintf(asm_file, ":endif_%d\n\n", counter);
+
+# 2 0x00007FF704310553 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:81:
+
+     79: 
+     80:         if (node->left->type == KEY_IF && node->left->right->type != KEY_ELSE)
+=>   81:             ParseAsmIf(tree, node->left, func_info);
+     82: 
+     83:         if (node->left->type == KEY_WHILE)
+
+# 3 0x00007FF70431020D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseMain() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:43:
+
+     41:         node = node->right;
+     42: 
+=>   43:     ParseAsmOperator(tree, node, main);
+     44:     fprintf(asm_file, "HLT\n\n");
+     45: 
+
+# 4 0x00007FF70431002D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:22:
+
+     20: 
+     21:     Lexeme main = GetMainLexeme();
+=>   22:     ParseMain(tree, node, &main);
+     23: 
+     24:     while(node->type == KEY_LBRACE)
+
+# 5 0x00007FF7043F5685 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:36:
+
+     34:     TreeDump(&tree);
+     35: 
+=>   36:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     37: 
+     38:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 19 2025 19:32:13, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 10:02:03
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D2E2048F в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 70. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D32928F0 (64-bit), Flags: Cmdre0, Thread: 0x324C (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D2E2048F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:70:
+
+     68:         fprintf(log_file, "Вызов ParseAsmOperator\n");
+     69: 
+=>   70:         if (node->left->type == OP_ASSIGNED)
+     71:             ParseAsmAssigned(tree, node->left, func_info);
+     72: 
+
+# 1 0x00007FF6D2E210C5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmIf() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:183:
+
+    181:     fprintf(asm_file, "JE :endif_%d\n", counter);
+    182: 
+=>  183:     ParseAsmOperator(tree, node->right, func_info);
+    184: 
+    185:     fprintf(asm_file, ":endif_%d\n\n", counter);
+
+# 2 0x00007FF6D2E20553 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:80:
+
+     78: 
+     79:         if (node->left->type == KEY_IF && node->left->right->type != KEY_ELSE)
+=>   80:             ParseAsmIf(tree, node->left, func_info);
+     81: 
+     82:         if (node->left->type == KEY_WHILE)
+
+# 3 0x00007FF6D2E2020D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseMain() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:43:
+
+     41:         node = node->right;
+     42: 
+=>   43:     ParseAsmOperator(tree, node, main);
+     44:     fprintf(asm_file, "HLT\n\n");
+     45: }
+
+# 4 0x00007FF6D2E2002D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:22:
+
+     20: 
+     21:     Lexeme main = GetMainLexeme();
+=>   22:     ParseMain(tree, node, &main);
+     23: 
+     24:     while(node->type == KEY_LBRACE)
+
+# 5 0x00007FF6D2F056A5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:36:
+
+     34:     TreeDump(&tree);
+     35: 
+=>   36:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     37: 
+     38:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 10:13:43, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 10:15:31
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D2E2048F в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 70. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D32928F0 (64-bit), Flags: Cmdre0, Thread: 0x324C (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D2E2048F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:70:
+
+     68:         fprintf(log_file, "Вызов ParseAsmOperator\n");
+     69: 
+=>   70:         if (node->left->type == OP_ASSIGNED)
+     71:             ParseAsmAssigned(tree, node->left, func_info);
+     72: 
+
+# 1 0x00007FF6D2E210C5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmIf() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:183:
+
+    181:     fprintf(asm_file, "JE :endif_%d\n", counter);
+    182: 
+=>  183:     ParseAsmOperator(tree, node->right, func_info);
+    184: 
+    185:     fprintf(asm_file, ":endif_%d\n\n", counter);
+
+# 2 0x00007FF6D2E20553 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:80:
+
+     78: 
+     79:         if (node->left->type == KEY_IF && node->left->right->type != KEY_ELSE)
+=>   80:             ParseAsmIf(tree, node->left, func_info);
+     81: 
+     82:         if (node->left->type == KEY_WHILE)
+
+# 3 0x00007FF6D2E2020D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseMain() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:43:
+
+     41:         node = node->right;
+     42: 
+=>   43:     ParseAsmOperator(tree, node, main);
+     44:     fprintf(asm_file, "HLT\n\n");
+     45: }
+
+# 4 0x00007FF6D2E2002D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:22:
+
+     20: 
+     21:     Lexeme main = GetMainLexeme();
+=>   22:     ParseMain(tree, node, &main);
+     23: 
+     24:     while(node->type == KEY_LBRACE)
+
+# 5 0x00007FF6D2F056A5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:36:
+
+     34:     TreeDump(&tree);
+     35: 
+=>   36:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     37: 
+     38:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 10:13:43, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 10:15:32
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF7EF4504BA в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 76. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7EF8C28F0 (64-bit), Flags: Cmdre0, Thread: 0x32F4 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF7EF4504BA in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:76:
+
+     74:         }
+     75: 
+=>   76:         if (node->left->type == OP_ASSIGNED)
+     77:             ParseAsmAssigned(tree, node->left, func_info);
+     78: 
+
+# 1 0x00007FF7EF4510C4 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmIf() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:186:
+
+    184:     fprintf(asm_file, "JE :endif_%d\n", counter);
+    185: 
+=>  186:     ParseAsmOperator(tree, node->right, func_info);
+    187: 
+    188:     fprintf(asm_file, ":endif_%d\n\n", counter);
+
+# 2 0x00007FF7EF450554 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:83:
+
+     81: 
+     82:         if (node->left->type == KEY_IF && node->left->right->type != KEY_ELSE)
+=>   83:             ParseAsmIf(tree, node->left, func_info);
+     84: 
+     85:         if (node->left->type == KEY_WHILE)
+
+# 3 0x00007FF7EF45020D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseMain() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:43:
+
+     41:         node = node->right;
+     42: 
+=>   43:     ParseAsmOperator(tree, node, main);
+     44:     fprintf(asm_file, "HLT\n\n");
+     45: }
+
+# 4 0x00007FF7EF45002D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:22:
+
+     20: 
+     21:     Lexeme main = GetMainLexeme();
+=>   22:     ParseMain(tree, node, &main);
+     23: 
+     24:     while(node->type == KEY_LBRACE)
+
+# 5 0x00007FF7EF5356A5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:36:
+
+     34:     TreeDump(&tree);
+     35: 
+=>   36:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     37: 
+     38:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 10:13:43, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 10:23:09
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF7EF4504BA в функции ParseAsmOperator() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp на строке 76. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF7EF8C28F0 (64-bit), Flags: Cmdre0, Thread: 0x32F4 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF7EF4504BA in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:76:
+
+     74:         }
+     75: 
+=>   76:         if (node->left->type == OP_ASSIGNED)
+     77:             ParseAsmAssigned(tree, node->left, func_info);
+     78: 
+
+# 1 0x00007FF7EF4510C4 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmIf() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:186:
+
+    184:     fprintf(asm_file, "JE :endif_%d\n", counter);
+    185: 
+=>  186:     ParseAsmOperator(tree, node->right, func_info);
+    187: 
+    188:     fprintf(asm_file, ":endif_%d\n\n", counter);
+
+# 2 0x00007FF7EF450554 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmOperator() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:83:
+
+     81: 
+     82:         if (node->left->type == KEY_IF && node->left->right->type != KEY_ELSE)
+=>   83:             ParseAsmIf(tree, node->left, func_info);
+     84: 
+     85:         if (node->left->type == KEY_WHILE)
+
+# 3 0x00007FF7EF45020D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseMain() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:43:
+
+     41:         node = node->right;
+     42: 
+=>   43:     ParseAsmOperator(tree, node, main);
+     44:     fprintf(asm_file, "HLT\n\n");
+     45: }
+
+# 4 0x00007FF7EF45002D in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: ParseAsmTreeInAsmFile() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_in_asm_funcs.cpp:22:
+
+     20: 
+     21:     Lexeme main = GetMainLexeme();
+=>   22:     ParseMain(tree, node, &main);
+     23: 
+     24:     while(node->type == KEY_LBRACE)
+
+# 5 0x00007FF7EF5356A5 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:36:
+
+     34:     TreeDump(&tree);
+     35: 
+=>   36:     ParseAsmTreeInAsmFile(&tree, tree.root);
+     37: 
+     38:     NameTableDtor(tree.name_table);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 10:13:43, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 10:23:08
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D1824ADE в функции SkipSpaces() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp на строке 157. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D1C538F0 (64-bit), Flags: Cmdre0, Thread: 0x44C (Main), GetLastError(): 2 (Не удается найти указанный файл). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D1824ADE in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: SkipSpaces() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:157:
+
+    155:     fprintf(log_file, "<strong>До пропуска BUFFER:</strong> \n|%s|\n\n", *cur_pos);
+    156: 
+=>  157:     while (isspace(**cur_pos))
+    158:         *cur_pos += 1;
+    159: 
+
+# 1 0x00007FF6D182433F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNodeDataFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:23:
+
+     21:     fprintf(log_file, "<strong>SIZE:</strong> %llu \n\n", *size);
+     22: 
+=>   23:     SkipSpaces(cur_pos);
+     24: 
+     25:     if (**cur_pos == '(')
+
+# 2 0x00007FF6D18C5EF8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:27:
+
+     25: 
+     26:     char* cur_pos = buffer.data;
+=>   27:     tree.root = FillNodeDataFromBuffer(&cur_pos, &tree.size, tree.root);
+     28: 
+     29:     printf("BUFFER: %s", cur_pos);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 15:49:36, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 17:06:12
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D1824ADE в функции SkipSpaces() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp на строке 157. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D1C538F0 (64-bit), Flags: Cmdre0, Thread: 0x44C (Main), GetLastError(): 2 (Не удается найти указанный файл). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D1824ADE in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: SkipSpaces() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:157:
+
+    155:     fprintf(log_file, "<strong>До пропуска BUFFER:</strong> \n|%s|\n\n", *cur_pos);
+    156: 
+=>  157:     while (isspace(**cur_pos))
+    158:         *cur_pos += 1;
+    159: 
+
+# 1 0x00007FF6D182433F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNodeDataFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:23:
+
+     21:     fprintf(log_file, "<strong>SIZE:</strong> %llu \n\n", *size);
+     22: 
+=>   23:     SkipSpaces(cur_pos);
+     24: 
+     25:     if (**cur_pos == '(')
+
+# 2 0x00007FF6D18C5EF8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:27:
+
+     25: 
+     26:     char* cur_pos = buffer.data;
+=>   27:     tree.root = FillNodeDataFromBuffer(&cur_pos, &tree.size, tree.root);
+     28: 
+     29:     printf("BUFFER: %s", cur_pos);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 15:49:36, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 17:06:13
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D1824ADE в функции SkipSpaces() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp на строке 157. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D1C538F0 (64-bit), Flags: Cmdre0, Thread: 0x12C0 (Main), GetLastError(): 2 (Не удается найти указанный файл). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D1824ADE in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: SkipSpaces() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:157:
+
+    155:     fprintf(log_file, "<strong>До пропуска BUFFER:</strong> \n|%s|\n\n", *cur_pos);
+    156: 
+=>  157:     while (isspace(**cur_pos))
+    158:         *cur_pos += 1;
+    159: 
+
+# 1 0x00007FF6D182433F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNodeDataFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:23:
+
+     21:     fprintf(log_file, "<strong>SIZE:</strong> %llu \n\n", *size);
+     22: 
+=>   23:     SkipSpaces(cur_pos);
+     24: 
+     25:     if (**cur_pos == '(')
+
+# 2 0x00007FF6D18C5EF8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:27:
+
+     25: 
+     26:     char* cur_pos = buffer.data;
+=>   27:     tree.root = FillNodeDataFromBuffer(&cur_pos, &tree.size, tree.root);
+     28: 
+     29:     printf("BUFFER: %s", cur_pos);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 15:49:36, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 17:16:43
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D1824ADE в функции SkipSpaces() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp на строке 157. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D1C538F0 (64-bit), Flags: Cmdre0, Thread: 0x12C0 (Main), GetLastError(): 2 (Не удается найти указанный файл). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D1824ADE in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: SkipSpaces() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:157:
+
+    155:     fprintf(log_file, "<strong>До пропуска BUFFER:</strong> \n|%s|\n\n", *cur_pos);
+    156: 
+=>  157:     while (isspace(**cur_pos))
+    158:         *cur_pos += 1;
+    159: 
+
+# 1 0x00007FF6D182433F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNodeDataFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:23:
+
+     21:     fprintf(log_file, "<strong>SIZE:</strong> %llu \n\n", *size);
+     22: 
+=>   23:     SkipSpaces(cur_pos);
+     24: 
+     25:     if (**cur_pos == '(')
+
+# 2 0x00007FF6D18C5EF8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:27:
+
+     25: 
+     26:     char* cur_pos = buffer.data;
+=>   27:     tree.root = FillNodeDataFromBuffer(&cur_pos, &tree.size, tree.root);
+     28: 
+     29:     printf("BUFFER: %s", cur_pos);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 15:49:36, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 17:16:43
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D1824ADE в функции SkipSpaces() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp на строке 157. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D1C538F0 (64-bit), Flags: Cmdre0, Thread: 0x3ED8 (Main), GetLastError(): 2 (Не удается найти указанный файл). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D1824ADE in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: SkipSpaces() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:157:
+
+    155:     fprintf(log_file, "<strong>До пропуска BUFFER:</strong> \n|%s|\n\n", *cur_pos);
+    156: 
+=>  157:     while (isspace(**cur_pos))
+    158:         *cur_pos += 1;
+    159: 
+
+# 1 0x00007FF6D182433F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNodeDataFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:23:
+
+     21:     fprintf(log_file, "<strong>SIZE:</strong> %llu \n\n", *size);
+     22: 
+=>   23:     SkipSpaces(cur_pos);
+     24: 
+     25:     if (**cur_pos == '(')
+
+# 2 0x00007FF6D18C5EF8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:27:
+
+     25: 
+     26:     char* cur_pos = buffer.data;
+=>   27:     tree.root = FillNodeDataFromBuffer(&cur_pos, &tree.size, tree.root);
+     28: 
+     29:     printf("BUFFER: %s", cur_pos);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 15:49:36, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 19:12:18
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x00007FF6D1824ADE в функции SkipSpaces() в файле C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp на строке 157. Попытка прочесть данные по адресу NULL в модуле C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400], Instance: 0x00007FF6D1C538F0 (64-bit), Flags: Cmdre0, Thread: 0x3ED8 (Main), GetLastError(): 2 (Не удается найти указанный файл). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00007FF6D1824ADE in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: SkipSpaces() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:157:
+
+    155:     fprintf(log_file, "<strong>До пропуска BUFFER:</strong> \n|%s|\n\n", *cur_pos);
+    156: 
+=>  157:     while (isspace(**cur_pos))
+    158:         *cur_pos += 1;
+    159: 
+
+# 1 0x00007FF6D182433F in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: FillNodeDataFromBuffer() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/parse_tree_from_buffer_funcs.cpp:23:
+
+     21:     fprintf(log_file, "<strong>SIZE:</strong> %llu \n\n", *size);
+     22: 
+=>   23:     SkipSpaces(cur_pos);
+     24: 
+     25:     if (**cur_pos == '(')
+
+# 2 0x00007FF6D18C5EF8 in C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe: main() at C:/Users/user/Documents/VS_PROJECTS/Program_language/Backend/backend_main.cpp:27:
+
+     25: 
+     26:     char* cur_pos = buffer.data;
+=>   27:     tree.root = FillNodeDataFromBuffer(&cur_pos, &tree.size, tree.root);
+     28: 
+     29:     printf("BUFFER: %s", cur_pos);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-17 06:00:49 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:/CodeBlocks/MinGW_new/x86_64-w64-mingw32/include/TXLib.h
+Compiled:	Dec 20 2025 15:49:36, GNU g++ 13.2.0, std=201703L, MinGW-W64 Runtime 11.0.1 (alpha - rev. 0) 0000-00-00, 64-bit, Debug
+Started:	Dec 20 2025 19:12:18
+
+Run file:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend\back.exe
+Directory:	C:\Users\user\Documents\VS_PROJECTS\Program_language\Backend
+
+--------------------------------------------------

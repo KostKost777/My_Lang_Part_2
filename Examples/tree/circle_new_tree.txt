@@ -1,0 +1,171 @@
+( ; ( = ( int ( hello nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( aboba nil nil ) nil ) ( 100 nil nil ) ) nil ) ) 
+FUNC    main
+VAR    hello
+VAR    aboba
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) nil ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) nil ) 
+FUNC    main
+VAR    Евген_Шпала
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) nil ) 
+FUNC    main
+VAR    Евген_Шпала
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) nil ) 
+FUNC    main
+VAR    Евген_Шпала
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) nil ) 
+FUNC    main
+VAR    Евген_Шпала
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) nil ) 
+FUNC    main
+VAR    Евген_Шпала
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) nil ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+( ; ( = ( int ( Евген_Шпала nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Ержан_Гном nil nil ) nil ) ( 100 nil nil ) ) ( ; ( = ( int ( Серега_Радиус nil nil ) nil ) ( 20 nil nil ) ) ( ; ( = ( int ( Центр_Аркадич nil nil ) nil ) ( / ( Евген_Шпала nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Центр_Олегыч nil nil ) nil ) ( / ( Ержан_Гном nil nil ) ( 2 nil nil ) ) ) ( ; ( = ( int ( Счетчик_Макарыч nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Евген_Шпала nil nil ) nil ) ( 0 nil nil ) ) ( ; ( = ( int ( Счетчик_Ержан_Гном nil nil ) nil ) ( 0 nil nil ) ) nil ) ) ) ) ) ) ) ) 
+FUNC    main
+VAR    Евген_Шпала
+VAR    Ержан_Гном
+VAR    Серега_Радиус
+VAR    Центр_Аркадич
+VAR    Центр_Олегыч
+VAR    Счетчик_Макарыч
+VAR    Счетчик_Евген_Шпала
+VAR    Счетчик_Ержан_Гном
+VAR    Андрюха_Расстояние
+VAR    Максон_Координаты

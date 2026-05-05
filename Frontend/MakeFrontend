@@ -1,0 +1,104 @@
+TARGET = bin/front
+
+SRC_DIR     = src
+BUILD_DIR   = obj
+INCLUDE_DIR = inc
+
+SOURCES_CXX = $(SRC_DIR)/dump_funcs.cpp 			  \
+              $(SRC_DIR)/frontend_main.cpp            \
+              $(SRC_DIR)/hash_funcs.cpp               \
+              $(SRC_DIR)/lexical_analysis.cpp         \
+              $(SRC_DIR)/name_table_funcs.cpp         \
+              $(SRC_DIR)/orig_lexicon_of_lang.cpp     \
+              $(SRC_DIR)/read_from_file_funcs.cpp     \
+              $(SRC_DIR)/syntactic_analysis.cpp       \
+              $(SRC_DIR)/tree_funcs.cpp               \
+              $(SRC_DIR)/write_tree_in_file_funcs.cpp \
+
+OBJECTS_CXX = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES_CXX))
+
+CXX = g++
+
+OPTIMIZATION = -O3 -march=native
+DEBUG_FLAGS = -g
+
+WARNING_FLAGS = -Wall -Wextra -Weffc++ \
+                -Waggressive-loop-optimizations \
+                -Wc++14-compat \
+                -Wmissing-declarations \
+                -Wcast-align \
+                -Wcast-qual \
+                -Wchar-subscripts \
+                -Wconditionally-supported \
+                -Wconversion \
+                -Wctor-dtor-privacy \
+                -Wempty-body \
+                -Wfloat-equal \
+                -Wformat-nonliteral \
+                -Wformat-security \
+                -Wformat-signedness \
+                -Wformat=2 \
+                -Winline \
+                -Wlogical-op \
+                -Wnon-virtual-dtor \
+                -Wopenmp-simd \
+                -Woverloaded-virtual \
+                -Wpacked \
+                -Wpointer-arith \
+                -Winit-self \
+                -Wredundant-decls \
+                -Wshadow \
+                -Wsign-conversion \
+                -Wsign-promo \
+                -Wstrict-null-sentinel \
+                -Wstrict-overflow=2 \
+                -Wsuggest-attribute=noreturn \
+                -Wsuggest-final-methods \
+                -Wsuggest-final-types \
+                -Wsuggest-override \
+                -Wswitch-default \
+                -Wswitch-enum \
+                -Wsync-nand \
+                -Wundef \
+                -Wunreachable-code \
+                -Wuseless-cast \
+                -Wvariadic-macros \
+                -Wno-literal-suffix \
+                -Wno-missing-field-initializers \
+                -Wno-narrowing \
+                -Wno-old-style-cast \
+                -Wno-varargs \
+                -Wstack-protector \
+                -Wlarger-than=8192 \
+                -Wstack-usage=8192 \
+                -Werror=vla \
+                -fcheck-new \
+                -fsized-deallocation \
+                -fstack-protector \
+                -fstrict-overflow \
+                -flto-odr-type-merging \
+                -pie -fPIE
+
+SANITIZER_FLAGS = -fsanitize=address,undefined -fno-omit-frame-pointer
+
+LDFLAGS = $(SANITIZER_FLAGS)
+
+INCLUDES =  -I $(INCLUDE_DIR)
+
+CXXFLAGS = $(OPTIMIZATION) $(DEBUG_FLAGS) $(WARNING_FLAGS) $(SANITIZER_FLAGS) $(CXX_STANDARD) $(INCLUDES)
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(TARGET): $(BUILD_DIR) $(OBJECTS_CXX)
+	$(CXX) $(OBJECTS_CXX) -o $@ $(LDFLAGS)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+clean:
+	rm -f $(TARGET) $(OBJECTS)
