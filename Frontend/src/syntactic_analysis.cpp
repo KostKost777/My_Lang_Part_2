@@ -50,13 +50,19 @@ Node* GetInitOfFunc(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     fprintf(log_file, "<strong>Enter GetInitOfFunc</strong>\n");
     fflush(log_file);
 
-    if (tokens->arr[*pos].type != KEY_INT)
-        return GetOperator(tokens, pos, tree, node);
-    *pos += 1;
-
     Node* node_left = GetIdentifier(tokens, pos, tree);
 
-    if (node_left == NULL || tokens->arr[*pos + 1].type != KEY_LPAREN)
+    printf("\n\n%zu\n\n", node_left);
+
+    if (node_left == NULL)
+    {
+        return GetOperator(tokens, pos, tree, node);
+    }
+
+    FreeNode(tree, node_left->left);
+    FreeNode(tree, node_left);
+    
+    if (tokens->arr[*pos + 1].type != KEY_LPAREN)
     {
         *pos -= 1;
         return GetOperator(tokens, pos, tree, node);
@@ -64,33 +70,36 @@ Node* GetInitOfFunc(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     Token ident_token = tokens->arr[*pos];
 
-    if (IsIdentExistInNameTable(&ident_token, tree))
+    *pos += 2;
+    
+    Node* node_args = GetArgsOfInitFunc(tokens, pos, tree, node);
+    
+    if (tokens->arr[*pos].type != KEY_RPAREN)
     {
-        printf("ERROR1\n");
-        fflush(log_file);
+        if (node_args) FreeNode(tree, node_args);
         return NULL;
     }
-    else
-        AddInNameTable(FUNC, &ident_token, tree);
-
-    *pos += 2;
-
-    Node* node_args = GetArgsOfInitFunc(tokens, pos, tree, node);
-
-    if (tokens->arr[*pos].type != KEY_RPAREN)
-        return NULL;
+        
     *pos += 1;
 
     if (tokens->arr[*pos].type != KEY_LBRACE)
+    {
+        if (node_args) FreeNode(tree, node_args);
         return NULL;
+    }
+
     *pos += 1;
 
     Node* node_right = GetOperator(tokens, pos, tree, node);
+
     if (node_right == NULL)
         return NULL;
 
     if (tokens->arr[*pos].type != KEY_RBRACE)
+    {
+        FreeNode(tree, node_right);
         return NULL;
+    }
     *pos += 1;
 
     tree->name_table->now_visible_space++;
@@ -123,7 +132,10 @@ Node* GetArgsOfInitFunc(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     if (   tokens->arr[*pos].type != KEY_RPAREN
         && tokens->arr[*pos].type != KEY_COMMA)
-        return NULL;
+        {
+            FreeNode(tree, node_right);
+            return NULL;
+        }
 
     if (tokens->arr[*pos].type == KEY_COMMA)
         *pos += 1;
@@ -193,19 +205,33 @@ Node* GetWhileOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     Node* node_left = GetFirstCompareOp(tokens, pos, tree, node);
     if (node_left == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_RPAREN) return NULL;
+    if (tokens->arr[*pos].type != KEY_RPAREN) 
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
     *pos += 1;
 
-    if (tokens->arr[*pos].type != KEY_LBRACE) return NULL;
+    if (tokens->arr[*pos].type != KEY_LBRACE)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
+
     *pos += 1;
 
     Node* node_right = GetOperator(tokens, pos, tree, node);
     if (node_right == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_RBRACE) return NULL;
+    if (tokens->arr[*pos].type != KEY_RBRACE)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
+
     *pos += 1;
 
-    fprintf(log_file,"Enter��� While\n");
+    fprintf(log_file,"End GetWhileOp\n");
 
     return NewNode(GetSeparateToken(KEY_SEMICOLON),
                    NewNode(while_token,
@@ -235,16 +261,31 @@ Node* GetIfOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     Node* node_condition = GetFirstCompareOp(tokens, pos, tree, node);
     if (node_condition == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_RPAREN) return NULL;
+    if (tokens->arr[*pos].type != KEY_RPAREN)
+    {
+        FreeNode(tree, node_condition);
+        return NULL;
+    }
+
     *pos += 1;
 
-    if (tokens->arr[*pos].type != KEY_LBRACE) return NULL;
+    if (tokens->arr[*pos].type != KEY_LBRACE)
+    {
+        FreeNode(tree, node_condition);
+        return NULL;
+    }
+
     *pos += 1;
 
     Node* node_action = GetOperator(tokens, pos, tree, node);
     if (node_action == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_RBRACE) return NULL;
+    if (tokens->arr[*pos].type != KEY_RBRACE)
+    {
+        FreeNode(tree, node_condition);
+        FreeNode(tree, node_action);
+        return NULL;
+    }
     *pos += 1;
 
     Node* node_else = GetElseOp(tokens, pos, tree, node, node_action);
@@ -282,7 +323,12 @@ Node* GetElseOp(TokenArray* tokens, size_t* pos, Tree* tree,
     Node* node_left = GetOperator(tokens, pos, tree, node);
     if (node_left == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_RBRACE) return NULL;
+    if (tokens->arr[*pos].type != KEY_RBRACE)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
+
     *pos += 1;
 
     return NewNode(else_token,
@@ -305,14 +351,24 @@ Node* GetAssignedOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     Node* node_left = GetWord(tokens, pos, tree, node);
     if (node_left == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != OP_ASSIGNED) return NULL;
+    if (tokens->arr[*pos].type != OP_ASSIGNED)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
+    
     Token assigned_token = tokens->arr[*pos];
     *pos += 1;
 
     Node* node_right = GetFirstCompareOp(tokens, pos, tree, node);
     if (node_right == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_SEMICOLON) return NULL;
+    if (tokens->arr[*pos].type != KEY_SEMICOLON)
+    {
+        FreeNode(tree, node_right);
+        return NULL;
+    }
+
     *pos += 1;
 
     return  NewNode(GetSeparateToken(KEY_SEMICOLON),
@@ -337,7 +393,12 @@ Node* GetReturnOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     Node* node_left = GetFirstCompareOp(tokens, pos, tree, node);
     if (node_left == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_SEMICOLON) return NULL;
+    if (tokens->arr[*pos].type != KEY_SEMICOLON)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
+
     *pos += 1;
 
     fprintf(log_file, "Enter Return\n");
@@ -369,7 +430,12 @@ Node* GetDrawOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     if (node_left == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_SEMICOLON) return NULL;
+    if (tokens->arr[*pos].type != KEY_SEMICOLON)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
+
     *pos += 1;
 
     fprintf(log_file, "Enter Draw\n");
@@ -435,7 +501,12 @@ Node* GetInOutOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     if (node_left == NULL) return NULL;
 
-    if (tokens->arr[*pos].type != KEY_SEMICOLON) return NULL;
+    if (tokens->arr[*pos].type != KEY_SEMICOLON)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
+
     *pos += 1;
 
     return  NewNode(GetSeparateToken(KEY_SEMICOLON),
@@ -450,19 +521,30 @@ Node* GetFunc(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     assert(tokens);
     assert(pos);
 
-    fprintf(log_file, "<strong>Enter GetFuncOp</strong>\n");
+    fprintf(log_file, "<strong>Enter GetFunc</strong>\n");
     fflush(log_file);
 
     Node* node_left = GetIdentifier(tokens, pos, tree);
 
     if (node_left == NULL || tokens->arr[*pos + 1].type != KEY_LPAREN)
+    {
+        if (node_left) FreeNode(tree, node_left);
         return NULL;
+    }
+
+    FreeNode(tree, node_left);
+
     Token ident_token = tokens->arr[*pos];
     *pos += 2;
 
     Node* node_args = GetFuncArgs(tokens, pos, tree, node);
 
-    if (tokens->arr[*pos].type != KEY_RPAREN) return NULL;
+    if (tokens->arr[*pos].type != KEY_RPAREN)
+    {
+        FreeNode(tree, node_args);
+        FreeNode(tree, node_left);
+        return NULL;
+    }
     *pos += 1;
 
     return NewNode(ident_token,
@@ -483,11 +565,11 @@ Node* GetFuncArgs(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     if (node_right == NULL)  return NULL;
 
-
-    if (   tokens->arr[*pos].type != KEY_RPAREN
-        && tokens->arr[*pos].type != KEY_COMMA)
+    if (tokens->arr[*pos].type != KEY_RPAREN && tokens->arr[*pos].type != KEY_COMMA)
+    {
+        FreeNode(tree, node_right);
         return NULL;
-
+    }
 
     if (tokens->arr[*pos].type == KEY_COMMA)
         *pos += 1;
@@ -694,6 +776,9 @@ Node* GetSqrt(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     assert(tokens);
     assert(pos);
 
+    fprintf(log_file, "<strong>Enter GetSqrt</strong>\n");
+    fflush(log_file);
+
     if (tokens->arr[*pos].type != OP_SQRT) return NULL;
     Token sqrt_token = tokens->arr[*pos];
     *pos += 1;
@@ -703,7 +788,11 @@ Node* GetSqrt(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     Node* node_left = GetFirstCompareOp(tokens, pos, tree, node);
 
-    if (tokens->arr[*pos].type != KEY_RPAREN) return NULL;
+    if (tokens->arr[*pos].type != KEY_RPAREN)
+    {
+        FreeNode(tree, node_left);
+        return NULL;
+    }
     *pos += 1;
 
     return NewNode(sqrt_token,
@@ -726,6 +815,7 @@ Node* GetMostPreority(TokenArray* tokens, size_t* pos,
     if (node != NULL)
     {
         fprintf(log_file, "<strong>Find func\n\n");
+        fflush(log_file);
         return node;
     }
 
@@ -733,6 +823,7 @@ Node* GetMostPreority(TokenArray* tokens, size_t* pos,
     if (node != NULL)
     {
         fprintf(log_file, "<strong>Find Sqrt\n\n");
+        fflush(log_file);
         return node;
     }
 
@@ -829,13 +920,17 @@ Node* GetIdentifier(TokenArray* tokens, size_t* pos, Tree* tree)
     if (tokens->arr[*pos].type == KEY_INT && tokens->arr[*pos + 1].type == IDENT)
     {
         fprintf(log_file, "<strong>Find Identifier</strong>\n\n");
+        fflush(log_file);
         *pos += 1;
 
         if (IsIdentExistInNameTable(&tokens->arr[*pos], tree))
         {
-            fprintf(log_file, "<strong>Not find ident so add it</strong>\n");
+            fprintf(log_file, "<strong>ERROR</strong>\n");
+            fflush(log_file);
             return NULL;
         }
+        else if (tokens->arr[*pos + 1].type == KEY_LPAREN)
+            AddInNameTable(FUNC, &tokens->arr[*pos], tree);
         else
             AddInNameTable(VAR, &tokens->arr[*pos], tree);
 
@@ -853,11 +948,13 @@ Node* GetIdentifier(TokenArray* tokens, size_t* pos, Tree* tree)
         if (   !IsIdentExistInNameTable(&tokens->arr[*pos], tree)
             && tokens->arr[*pos - 1].type != KEY_INT)
             {
-            printf("Ident not exist  %s\n", tokens->arr[*pos].lexeme.str.name);
+            fprintf(log_file, "Ident not exist  %s\n", tokens->arr[*pos].lexeme.str.name);
+            fflush(log_file);
             return NULL;
             }
 
         fprintf(log_file, "<strong>Add Ident</strong>\n\n");
+        fflush(log_file);
         return NewNode(tokens->arr[*pos], NULL, NULL, tree);
     }
 
@@ -881,7 +978,7 @@ bool IsIdentExistInNameTable(Token* token, Tree* tree)
     {
         if (IsIdentEqual(tree->name_table->arr[i], token, tree))
         {
-            fprintf(log_file, "Find equal ident: |%s|",
+            fprintf(log_file, "Find equal ident: |%s|\n",
                                             token->lexeme.str.name);
             return true;
         }

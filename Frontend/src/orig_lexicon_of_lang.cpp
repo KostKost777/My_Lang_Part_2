@@ -34,8 +34,8 @@ KEY_DECL_(RPAREN,    "жыы"),        //int
 KEY_DECL_(RPAREN,    "ыыы"),        //int
 KEY_DECL_(SEMICOLON, "нах"),        //int
 KEY_DECL_(LBRACE,    "гоп"),        //int
-KEY_DECL_(RBRACE,    "cтоп"),        //int
-KEY_DECL_(COMMA,     ","),        //int
+KEY_DECL_(RBRACE,    "стоп"),        //int
+KEY_DECL_(COMMA,     ","),           //int
 KEY_DECL_(OUT,       "малевать"),        //int
 KEY_DECL_(IN,        "вечервхату"),        //int
 KEY_DECL_(DRAW,      "рисовать"),        //int

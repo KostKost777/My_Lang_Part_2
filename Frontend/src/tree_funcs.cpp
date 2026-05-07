@@ -63,6 +63,9 @@ void FreeNode(Tree* tree, Node* node)
 {
     assert(node);
 
+    // if (node->type != NUM && node->lexeme.str.name)
+    //     free(node->lexeme.str.name);
+
     tree->size--;
     free(node);
     node = NULL;
