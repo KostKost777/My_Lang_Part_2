@@ -25,7 +25,7 @@ void TokenArrayDtor(TokenArray* tokens)
 
     for (size_t i = 0; i < tokens->size; ++i)
     {
-        if (tokens->arr[i].type != NUM)
+        if (tokens->arr[i].type != NUM && tokens->arr[i].lexeme.str.name)
         {
            free(tokens->arr[i].lexeme.str.name);
            tokens->arr[i].lexeme.str.name = NULL;

@@ -1,5 +1,0 @@
-digraph {
-graph [charset="utf-8"]rankdir = HR;
-splines = true
-node0x7eeecb5000b0 [shape = Mrecord, style = filled, fillcolor = "#DD7538", color = "#00000", label = " {PTR: 0x7eeecb5000b0 | SIZE: 0 | ROOT: (nil)} "]
-}

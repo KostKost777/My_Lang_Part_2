@@ -3,19 +3,24 @@ TARGET = bin/front
 SRC_DIR     = src
 BUILD_DIR   = obj
 INCLUDE_DIR = inc
+COMMON_DIR  = ../Common
+TREE_DIR    = Tree
 
-SOURCES_CXX = $(SRC_DIR)/dump_funcs.cpp 			  \
-              $(SRC_DIR)/frontend_main.cpp            \
-              $(SRC_DIR)/hash_funcs.cpp               \
-              $(SRC_DIR)/lexical_analysis.cpp         \
-              $(SRC_DIR)/name_table_funcs.cpp         \
-              $(SRC_DIR)/orig_lexicon_of_lang.cpp     \
-              $(SRC_DIR)/read_from_file_funcs.cpp     \
-              $(SRC_DIR)/syntactic_analysis.cpp       \
-              $(SRC_DIR)/tree_funcs.cpp               \
-              $(SRC_DIR)/write_tree_in_file_funcs.cpp \
+COMMON_SOURCES = $(COMMON_DIR)/$(TREE_DIR)/src/dump_funcs.cpp \
+                 $(COMMON_DIR)/$(TREE_DIR)/src/tree_funcs.cpp \
+                 $(COMMON_DIR)/hash_funcs.cpp \
+                 $(COMMON_DIR)/write_tree_in_file_funcs.cpp \
+                 $(COMMON_DIR)/read_from_file_funcs.cpp \
+                 $(COMMON_DIR)/name_table_funcs.cpp
 
-OBJECTS_CXX = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES_CXX))
+FRONTEND_SOURCES = $(SRC_DIR)/frontend_main.cpp \
+                   $(SRC_DIR)/lexical_analysis.cpp \
+                   $(SRC_DIR)/orig_lexicon_of_lang.cpp \
+                   $(SRC_DIR)/syntactic_analysis.cpp
+
+SOURCES_CXX = $(COMMON_SOURCES) $(FRONTEND_SOURCES)
+
+OBJECTS_CXX = $(addprefix $(BUILD_DIR)/, $(notdir $(SOURCES_CXX:.cpp=.o)))
 
 CXX = g++
 
@@ -80,10 +85,14 @@ WARNING_FLAGS = -Wall -Wextra -Weffc++ \
                 -pie -fPIE
 
 SANITIZER_FLAGS = -fsanitize=address,undefined -fno-omit-frame-pointer
+CXX_STANDARD = -std=c++17
 
 LDFLAGS = $(SANITIZER_FLAGS)
 
-INCLUDES =  -I $(INCLUDE_DIR)
+INCLUDES = -I$(INCLUDE_DIR) \
+           -I$(COMMON_DIR) \
+           -I$(COMMON_DIR)/$(TREE_DIR)/inc \
+           -I$(COMMON_DIR)/$(TREE_DIR)/src
 
 CXXFLAGS = $(OPTIMIZATION) $(DEBUG_FLAGS) $(WARNING_FLAGS) $(SANITIZER_FLAGS) $(CXX_STANDARD) $(INCLUDES)
 
@@ -91,14 +100,20 @@ CXXFLAGS = $(OPTIMIZATION) $(DEBUG_FLAGS) $(WARNING_FLAGS) $(SANITIZER_FLAGS) $(
 
 all: $(TARGET)
 
+$(BUILD_DIR):
+	mkdir -p $@
+
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(TARGET): $(BUILD_DIR) $(OBJECTS_CXX)
+$(BUILD_DIR)/%.o: $(COMMON_DIR)/$(TREE_DIR)/src/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(COMMON_DIR)/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS_CXX)
 	$(CXX) $(OBJECTS_CXX) -o $@ $(LDFLAGS)
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
-
 clean:
-	rm -f $(TARGET) $(OBJECTS)
+	rm -rf $(TARGET) $(BUILD_DIR)

@@ -1,37 +1,120 @@
-FLAGS = -g -DDEBUG
-BUILD_DIR = builds/
+TARGET = bin/back
 
-all: back
+SRC_DIR     = src
+BUILD_DIR   = obj
+INCLUDE_DIR = inc
+COMMON_DIR  = ../Common
+TREE_DIR    = Tree
+FRONT_DIR   = ../Frontend
 
-back: $(BUILD_DIR)parse_tree_in_asm_funcs.o $(BUILD_DIR)name_table_funcs.o $(BUILD_DIR)parse_tree_from_buffer_funcs.o $(BUILD_DIR)hash_funcs.o $(BUILD_DIR)basewords_backend.o $(BUILD_DIR)read_from_file_funcs.o $(BUILD_DIR)dump_funcs.o $(BUILD_DIR)backend_main.o $(BUILD_DIR)tree_funcs.o
-	g++ $(FLAGS) $^ -o back
+COMMON_SOURCES = $(COMMON_DIR)/$(TREE_DIR)/src/dump_funcs.cpp \
+                 $(COMMON_DIR)/$(TREE_DIR)/src/tree_funcs.cpp \
+                 $(COMMON_DIR)/hash_funcs.cpp \
+                 $(COMMON_DIR)/write_tree_in_file_funcs.cpp \
+                 $(COMMON_DIR)/read_from_file_funcs.cpp \
+                 $(COMMON_DIR)/name_table_funcs.cpp
 
-$(BUILD_DIR)backend_main.o: backend_main.cpp
-	g++ $(FLAGS) -c $< -o $@
+BACKEND_SOURCES = $(SRC_DIR)/backend_main.cpp \
+                   $(SRC_DIR)/basewords_backend.cpp \
+                   $(SRC_DIR)/parse_tree_from_buffer_funcs.cpp \
+                   $(SRC_DIR)/parse_tree_in_asm_funcs.cpp
 
-$(BUILD_DIR)dump_funcs.o: ../Frontend/dump_funcs.cpp
-	g++ $(FLAGS) -c $< -o $@
+SOURCES_CXX = $(COMMON_SOURCES) $(BACKEND_SOURCES)
 
-$(BUILD_DIR)tree_funcs.o: ../Frontend/tree_funcs.cpp
-	g++ $(FLAGS) -c $< -o $@
+OBJECTS_CXX = $(addprefix $(BUILD_DIR)/, $(notdir $(SOURCES_CXX:.cpp=.o)))
 
-$(BUILD_DIR)read_from_file_funcs.o: ../Frontend/read_from_file_funcs.cpp
-	g++ $(FLAGS) -c $< -o $@
+CXX = g++
 
-$(BUILD_DIR)basewords_backend.o: basewords_backend.cpp
-	g++ $(FLAGS) -c $< -o $@
+OPTIMIZATION = -O3 -march=native
+DEBUG_FLAGS = -g
 
-$(BUILD_DIR)hash_funcs.o: ../Frontend/hash_funcs.cpp
-	g++ $(FLAGS) -c $< -o $@
+WARNING_FLAGS = -Wall -Wextra -Weffc++ \
+                -Waggressive-loop-optimizations \
+                -Wc++14-compat \
+                -Wmissing-declarations \
+                -Wcast-align \
+                -Wcast-qual \
+                -Wchar-subscripts \
+                -Wconditionally-supported \
+                -Wconversion \
+                -Wctor-dtor-privacy \
+                -Wempty-body \
+                -Wfloat-equal \
+                -Wformat-nonliteral \
+                -Wformat-security \
+                -Wformat-signedness \
+                -Wformat=2 \
+                -Winline \
+                -Wlogical-op \
+                -Wnon-virtual-dtor \
+                -Wopenmp-simd \
+                -Woverloaded-virtual \
+                -Wpacked \
+                -Wpointer-arith \
+                -Winit-self \
+                -Wredundant-decls \
+                -Wshadow \
+                -Wsign-conversion \
+                -Wsign-promo \
+                -Wstrict-null-sentinel \
+                -Wstrict-overflow=2 \
+                -Wsuggest-attribute=noreturn \
+                -Wsuggest-final-methods \
+                -Wsuggest-final-types \
+                -Wsuggest-override \
+                -Wswitch-default \
+                -Wswitch-enum \
+                -Wsync-nand \
+                -Wundef \
+                -Wunreachable-code \
+                -Wuseless-cast \
+                -Wvariadic-macros \
+                -Wno-literal-suffix \
+                -Wno-missing-field-initializers \
+                -Wno-narrowing \
+                -Wno-old-style-cast \
+                -Wno-varargs \
+                -Wstack-protector \
+                -Wlarger-than=8192 \
+                -Wstack-usage=8192 \
+                -Werror=vla \
+                -fcheck-new \
+                -fsized-deallocation \
+                -fstack-protector \
+                -fstrict-overflow \
+                -flto-odr-type-merging \
+                -pie -fPIE
 
-$(BUILD_DIR)parse_tree_from_buffer_funcs.o: parse_tree_from_buffer_funcs.cpp
-	g++ $(FLAGS) -c $< -o $@
+SANITIZER_FLAGS = -fsanitize=address,undefined -fno-omit-frame-pointer
+CXX_STANDARD = -std=c++17
 
-$(BUILD_DIR)name_table_funcs.o: ../Frontend/name_table_funcs.cpp
-	g++ $(FLAGS) -c $< -o $@
+LDFLAGS = $(SANITIZER_FLAGS)
 
-$(BUILD_DIR)parse_tree_in_asm_funcs.o: parse_tree_in_asm_funcs.cpp
-	g++ $(FLAGS) -c $< -o $@
+INCLUDES = -I$(INCLUDE_DIR) \
+           -I$(COMMON_DIR) \
+           -I$(COMMON_DIR)/$(TREE_DIR)/$(INCLUDE_DIR) \
+           -I$(FRONT_DIR)/$(INCLUDE_DIR) \
+
+CXXFLAGS = $(OPTIMIZATION) $(DEBUG_FLAGS) $(WARNING_FLAGS) $(SANITIZER_FLAGS) $(CXX_STANDARD) $(INCLUDES)
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(BUILD_DIR):
+	mkdir -p $@
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(COMMON_DIR)/$(TREE_DIR)/src/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(COMMON_DIR)/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS_CXX)
+	$(CXX) $(OBJECTS_CXX) -o $@ $(LDFLAGS)
 
 clean:
-	rm -f $(BUILD_DIR)*.o back
+	rm -rf $(TARGET) $(BUILD_DIR)
