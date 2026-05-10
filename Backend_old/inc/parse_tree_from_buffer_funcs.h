@@ -1,8 +1,6 @@
 #ifndef PARSE_TREE_FROM_BUFFER_FUNCS
 #define PARSE_TREE_FROM_BUFFER_FUNCS
 
-#include <stdlib.h>
-
 #include "tree_funcs.h"
 #include "read_from_file_funcs.h"
 

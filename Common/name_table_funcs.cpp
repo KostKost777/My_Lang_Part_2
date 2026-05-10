@@ -75,7 +75,6 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
         len = 0;
         sscanf (cur_pos, "%s%n", ident, &len);
         cur_pos += len;
-        //printf("IDENT: %s   CUR_POS: %d \n", ident, *cur_pos);
 
         name_table->arr[name_table->size].name = strdup(ident);
         name_table->arr[name_table->size].hash = GetHash(ident);
@@ -155,5 +154,43 @@ void PrintNameTableInAsm(NameTable* name_table)
                                     name_table->arr[i].func_ptr);
 
     }
+}
+
+size_t CountVarInFunc(NameTable* name_table, const char* func_name)
+{
+    assert(name_table);
+    assert(func_name);
+
+    size_t index = 0;
+    size_t num_of_vars = 0;
+
+    while(index < name_table->size)
+    {
+        printf("MY_FUNC: |%s|, NOW_FUNC: |%s|\n", func_name, name_table->arr[index].name);
+
+        if (name_table->arr[index].type == FUNC
+            && strcmp(name_table->arr[index].name, func_name) == 0)
+            break;
+        
+        index++;
+    }
+        
+
+    if (index >= name_table->size)
+    {
+        printf("\n\nDo not find func |%s|\n\n", func_name);
+        assert(false);
+    }
+
+    index++;
+
+    while(index < name_table->size && name_table->arr[index].type == VAR)
+    {
+        num_of_vars++;
+        printf("NOW_VAR: |%s|, COUNTER: %d\n", name_table->arr[index].name, num_of_vars);
+        index++;
+    }
+
+    return num_of_vars;
 }
 

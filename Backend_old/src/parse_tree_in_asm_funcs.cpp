@@ -12,7 +12,6 @@
 #include "dump_funcs.h"
 #include "hash_funcs.h"
 
-extern const char* asm_file_name;
 FILE* asm_file = NULL;
 
 void ParseAsmTreeInAsmFile(Tree* tree, Node* node, const char* asm_file_name)
@@ -20,7 +19,7 @@ void ParseAsmTreeInAsmFile(Tree* tree, Node* node, const char* asm_file_name)
     assert(tree);
     assert(node);
 
-    fprintf(log_file, "Enter ParseAsmTreeInAsmFile\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmTreeInAsmFile\n");
 
     asm_file = fopen(asm_file_name, "w");
     assert(asm_file);
@@ -48,16 +47,11 @@ void ParseMain(Tree* tree, Node* node, Lexeme* main)
     while(node->type == KEY_LBRACE)
         node = node->right;
 
-    
-    fprintf(asm_file, ";========MAIN=======\n\n");
-    fprintf(asm_file, "push rbp     \n");
-    fprintf(asm_file, "mov rbp, rsp \n\n");
+    ParseAsmOperator(tree, node, main);
 
-    size_t var_in_main = CountVarInFunc(tree->name_table, "main");
-
-    fprintf(asm_file, "sub rsp, %zu \n\n", var_in_main * 8);
-
-    ParseAsmOperator(tree, node, main);        
+    if (tree->is_draw)
+        fprintf(asm_file, "DRAW\n");
+    fprintf(asm_file, "HLT\n\n");
 }
 
 void ParseAsmFunc(Tree* tree, Node* node)
@@ -65,7 +59,7 @@ void ParseAsmFunc(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    fprintf(log_file, "Enter ParseAsmFunc\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmFunc\n");
 
     Lexeme func_info = node->lexeme;
 
@@ -81,7 +75,7 @@ void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info)
 
     while (node != NULL)
     {
-        fprintf(log_file, "Enter ParseAsmOperator\n");
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmOperator\n");
 
         if (node->type == KEY_END)
         {
@@ -123,20 +117,20 @@ void ParseAsmAssigned(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmAssigned\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmAssigned\n");
 
     ParseAsmExpression(tree, node->right, func_info);
 
     ParseAsmInVar(tree, node->left, func_info);
 }
 
-void ParseAsmDraw(Tree* tree, Node* node, Lexeme* func_info)   //FIX
+void ParseAsmDraw(Tree* tree, Node* node, Lexeme* func_info)
 {
     assert(tree);
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmDraw\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmDraw\n");
 
     ParseAsmOutVar(tree, node->left, func_info);
 
@@ -167,14 +161,12 @@ void ParseAsmEnd(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmEnd\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmEnd\n");
 
     if (tree->is_draw)
-        fprintf(asm_file, "call PrintVRAM\n\n");      //FIX
+        fprintf(asm_file, "DRAW\n");
 
-    fprintf(asm_file, "mov rax, 60 \n");         
-    fprintf(asm_file, "mov rdi, 0  \n");         
-    fprintf(asm_file, "syscall     \n\n"); 
+    fprintf(asm_file, "HLT\n");
 }
 
 void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info)
@@ -183,14 +175,16 @@ void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmReturn\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmReturn\n");
 
     ParseAsmExpression(tree, node->left, func_info);
 
-    fprintf(asm_file, "pop rax      \n");
-    fprintf(asm_file, "mov rsp, rbp \n");
-    fprintf(asm_file, "pop rbp      \n");
-    fprintf(asm_file, "ret          \n\n");
+    fprintf(asm_file, "\n\nPOPREG AX    ;пїЅпїЅпїЅпїЅпїЅ AX пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
+    fprintf(asm_file, "PUSHREG HX\n");
+    fprintf(asm_file, "PUSH %d     ;пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ\n", SIZE_OF_FRAME);
+    fprintf(asm_file, "SUB\n");
+    fprintf(asm_file, "POPREG HX\n");
+    fprintf(asm_file, "RET\n\n");
 }
 
 void ParseAsmIn(Tree* tree, Node* node, Lexeme* func_info)
@@ -199,10 +193,10 @@ void ParseAsmIn(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmIn\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmIn\n");
 
 
-    fprintf(asm_file, "call .my_scanf  \n\n");
+    fprintf(asm_file, "IN\n");
 
     ParseAsmInVar(tree, node->left, func_info);
 }
@@ -213,11 +207,11 @@ void ParseAsmOut(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmOut\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmOut\n");
 
     ParseAsmExpression(tree, node->left, func_info);
 
-    fprintf(asm_file, "call .my_printf  \n\n"); 
+    fprintf(asm_file, "OUT\n");
 }
 
 void ParseAsmIf(Tree* tree, Node* node, Lexeme* func_info)
@@ -226,19 +220,18 @@ void ParseAsmIf(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmIf\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmIf\n");
 
     static int counter = 0;
 
     ParseAsmExpression(tree, node->left, func_info);
 
-    fprintf(asm_file, "pop rax                \n"           );
-    fprintf(asm_file, "cmp rax, 0             \n"           );
-    fprintf(asm_file, "je :end_if_%d          \n", counter  );
+    fprintf(asm_file, "\nPUSH 0\n");
+    fprintf(asm_file, "JE :endif_%d\n", counter);
 
     ParseAsmOperator(tree, node->right, func_info);
 
-    fprintf(asm_file, ":end_if_%d\n\n", counter);
+    fprintf(asm_file, ":endif_%d\n\n", counter);
 
     counter++;
 }
@@ -249,23 +242,22 @@ void ParseAsmWhile(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmWhile\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmWhile\n");
 
     static int counter = 0;
 
-    fprintf(asm_file, ".begin_while_%d       \n",    counter);
+    fprintf(asm_file, "\n:begin_while_%d\n", counter);
 
     ParseAsmExpression(tree, node->left, func_info);
 
-    fprintf(asm_file, "pop rax                \n"           );
-    fprintf(asm_file, "cmp rax, 0             \n"           );
-    fprintf(asm_file, "je .end_while_%d       \n\n", counter);
+    fprintf(asm_file, "\nPUSH 0\n");
+    fprintf(asm_file, "JE :endwhile_%d\n\n", counter);
 
     ParseAsmOperator(tree, node->right, func_info);
 
-    fprintf(asm_file, "jmp .begin_while_%d    \n",   counter);
+    fprintf(asm_file, "\nJMP :begin_while_%d\n", counter);
 
-    fprintf(asm_file, ".end_while_%d          \n\n", counter);
+    fprintf(asm_file, "\n:endwhile_%d\n\n", counter);
 
     counter++;
 }
@@ -276,19 +268,18 @@ void ParseAsmIfElse(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmIfElse\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmIfElse\n");
 
     static int counter = 0;
 
     ParseAsmExpression(tree, node->left, func_info);
 
-    fprintf(asm_file, "pop rax                \n");
-    fprintf(asm_file, "cmp rax, 0             \n");
-    fprintf(asm_file, "je .endif_with_else_%d \n\n", counter);
+    fprintf(asm_file, "\nPUSH 0\n");
+    fprintf(asm_file, "JE :endif_with_else_%d\n\n", counter);
 
     ParseAsmOperator(tree, node->right->left, func_info);
 
-    fprintf(asm_file, ".endif_with_else_%d     \n", counter);
+    fprintf(asm_file, "\n:endif_with_else_%d\n", counter);
 
     ParseAsmOperator(tree, node->right->right, func_info);
 
@@ -303,7 +294,7 @@ void ParseAsmExpression(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmExpression\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmExpression\n");
 
     if (node->left != NULL && node->left->type != PARAM)
         ParseAsmExpression(tree, node->left, func_info);
@@ -320,24 +311,24 @@ void PrintNodeInAsmFile(Tree* tree, Node* node, Lexeme* func_info)
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter PrintNodeInAsmFile\n");
-  
-    if ( ParseAsmPARAM    (tree, node)            == success ) return;
-    if ( ParseAsmNumber   (tree, node)            == success ) return;
-    if ( ParseAsmADD      (tree, node)            == success ) return;
-    if ( ParseAsmSUB      (tree, node)            == success ) return;
-    if ( ParseAsmMUL      (tree, node)            == success ) return;
-    if ( ParseAsmDIV      (tree, node)            == success ) return;
-    if ( ParseAsmPOW      (tree, node)            == success ) return;
-    if ( ParseAsmSQRT     (tree, node)            == success ) return;
-    if ( ParseAsmAnd      (tree, node, func_info) == success ) return;
-    if ( ParseAsmOr       (tree, node, func_info) == success ) return;
-    if ( ParseAsmOutVar   (tree, node, func_info) == success ) return;
-    if ( ParseAsmBigger   (tree, node, func_info) == success ) return;
-    if ( ParseAsmLess     (tree, node, func_info) == success ) return;
-    if ( ParseAsmEqual    (tree, node, func_info) == success ) return;
-    if ( ParseAsmNotEqual (tree, node, func_info) == success ) return;
-    if ( ParseAsmCallFunc (tree, node, func_info) == success ) return;
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ PrintNodeInAsmFile\n");
+
+    if (ParseAsmPARAM(tree, node) == success) return;
+    if (ParseAsmNumber(tree, node) == success) return;
+    if (ParseAsmADD(tree, node) == success) return;
+    if (ParseAsmSUB(tree, node) == success) return;
+    if (ParseAsmMUL(tree, node) == success) return;
+    if (ParseAsmDIV(tree, node) == success) return;
+    if (ParseAsmPOW(tree, node) == success) return;
+    if (ParseAsmSQRT(tree, node) == success) return;
+    if (ParseAsmAnd(tree, node, func_info) == success) return;
+    if (ParseAsmOr(tree, node, func_info) == success) return;
+    if (ParseAsmOutVar(tree, node, func_info) == success) return;
+    if (ParseAsmBigger(tree, node, func_info) == success) return;
+    if (ParseAsmLess(tree, node, func_info) == success) return;
+    if (ParseAsmEqual(tree, node, func_info) == success) return;
+    if (ParseAsmNotEqual(tree, node, func_info) == success) return;
+    if (ParseAsmCallFunc(tree, node, func_info) == success) return;
 }
 
 Status ParseAsmOr(Tree* tree, Node* node, Lexeme* func_info)
@@ -349,20 +340,22 @@ Status ParseAsmOr(Tree* tree, Node* node, Lexeme* func_info)
     if (node->type != OP_OR)
         return error;
 
-    fprintf(log_file, "Enter ParseAsmOr\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmAnd\n");
 
-    fprintf(asm_file, "; ||          \n"          );
-    fprintf(asm_file, "xor rcx, rcx  \n"          ); 
-    fprintf(asm_file, "pop rax       \n"          );     
-    fprintf(asm_file, "pop rbx       \n"          );     
-    fprintf(asm_file, "test rax, rax \n"          );    
-    fprintf(asm_file, "jnz .good_%d  \n", counter );    
-    fprintf(asm_file, "test rbx, rbx \n"          );
-    fprintf(asm_file, "jz .false_%d  \n", counter );   
-    fprintf(asm_file, ".good_%d      \n", counter ); 
-    fprintf(asm_file, "mov rcx, 1    \n"          ); 
-    fprintf(asm_file, ".false_%d     \n", counter ); 
-    fprintf(asm_file, "push rcx    \n\n"          ); 
+    fprintf(asm_file, "\nADD\n");
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, "JE :O_or_%d\n", counter);
+    fprintf(asm_file, "PUSH 1\n");
+    fprintf(asm_file, ":O_or_%d\n\n", counter);
+
+    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->right, func_info);
+
+    fprintf(asm_file, "\nADD\n");
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, "JNE :O_n_or_%d\n", counter);
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, ":O_n_or_%d\n\n", counter);
 
     counter++;
 
@@ -373,25 +366,27 @@ Status ParseAsmAnd(Tree* tree, Node* node, Lexeme* func_info)
 {
     assert(tree);
     assert(node);
-
     static int counter = 0;
 
     if (node->type != OP_AND)
         return error;
 
-    fprintf(log_file, "Enter ParseAsmAnd\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmAnd\n");
 
-    fprintf(asm_file, "; &&          \n"          );
-    fprintf(asm_file, "xor rcx, rcx  \n"          ); 
-    fprintf(asm_file, "pop rax       \n"          );     
-    fprintf(asm_file, "pop rbx       \n"          );     
-    fprintf(asm_file, "test rax, rax \n"          );    
-    fprintf(asm_file, "jz .false_%d  \n", counter );    
-    fprintf(asm_file, "test rbx, rbx \n"          );    
-    fprintf(asm_file, "jz .false_%d  \n", counter );    
-    fprintf(asm_file, "mov rcx, 1    \n"          );    
-    fprintf(asm_file, ".false_%d:    \n", counter );   
-    fprintf(asm_file, "push rcx      \n\n"        );
+    fprintf(asm_file, "\nMUL\n");
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, "JE :A_and_%d\n", counter);
+    fprintf(asm_file, "PUSH 1\n");
+    fprintf(asm_file, ":A_and_%d\n\n", counter);
+
+    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->right, func_info);
+
+    fprintf(asm_file, "\nMUL\n");
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, "\nJNE :A_n_and_%d\n", counter);
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, ":A_n_and_%d\n\n", counter);
 
     counter++;
 
@@ -411,19 +406,25 @@ Status ParseAsmBigger(Tree* tree, Node* node, Lexeme* func_info)
 {
     assert(tree);
     assert(node);
+    static int counter = 0;
 
     if (node->type != OP_BIGGER)
         return error;
 
-    fprintf(log_file, "Enter ParseAsmBigger\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmBigger\n");
 
-    fprintf(asm_file, "; >          \n");
-    fprintf(asm_file, "xor rcx, rcx \n");
-    fprintf(asm_file, "pop rax      \n");
-    fprintf(asm_file, "pop rbx      \n");
-    fprintf(asm_file, "cmp rax, rbx \n");
-    fprintf(asm_file, "setg cl      \n");
-    fprintf(asm_file, "push rcx     \n\n");
+    fprintf(asm_file, "\nJA :B_bigger_%d\n", counter);
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, ":B_bigger_%d\n\n", counter);
+
+    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->right, func_info);
+
+    fprintf(asm_file, "\nJB :B_less_%d\n", counter);
+    fprintf(asm_file, "PUSH 1\n");
+    fprintf(asm_file, ":B_less_%d\n\n", counter);
+
+    counter++;
 
     return success;
 }
@@ -436,15 +437,22 @@ Status ParseAsmEqual(Tree* tree, Node* node, Lexeme* func_info)
     if (node->type != OP_EQUAL)
         return error;
 
-    fprintf(log_file, "Enter ParseAsmEqual\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmEqual\n");
 
-    fprintf(asm_file, "; ==         \n");
-    fprintf(asm_file, "xor rcx, rcx \n");
-    fprintf(asm_file, "pop rax      \n");
-    fprintf(asm_file, "pop rbx      \n");
-    fprintf(asm_file, "cmp rax, rbx \n");
-    fprintf(asm_file, "setz cl      \n");
-    fprintf(asm_file, "push rcx     \n\n");
+    static int counter = 0;
+
+    fprintf(asm_file, "\nJE :E_equal_%d\n", counter);
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, ":E_equal_%d\n\n", counter);
+
+    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->right, func_info);
+
+    fprintf(asm_file, "\nJNE :E_not_equal_%d\n", counter);
+    fprintf(asm_file, "PUSH 1\n");
+    fprintf(asm_file, ":E_not_equal_%d\n\n", counter);
+
+    counter++;
 
     return success;
 }
@@ -457,15 +465,22 @@ Status ParseAsmNotEqual(Tree* tree, Node* node, Lexeme* func_info)
     if (node->type != OP_NOT_EQUAL)
         return error;
 
-    fprintf(log_file, "Enter ParseAsmNotEqual\n");
+    static int counter = 0;
 
-    fprintf(asm_file, "; !=         \n");
-    fprintf(asm_file, "xor rcx      \n");
-    fprintf(asm_file, "pop rax      \n");
-    fprintf(asm_file, "pop rbx      \n");
-    fprintf(asm_file, "cmp rax, rbx \n");
-    fprintf(asm_file, "setnz cl     \n");
-    fprintf(asm_file, "push rcx     \n\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmNotEqual\n");
+
+    fprintf(asm_file, "\nJNE :NE_equal_%d\n", counter);
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, ":NE_equal_%d\n\n", counter);
+
+    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->right, func_info);
+
+    fprintf(asm_file, "\nJE :NE_not_equal_%d\n", counter);
+    fprintf(asm_file, "PUSH 1\n");
+    fprintf(asm_file, ":NE_not_equal_%d\n\n", counter);
+
+    counter++;
 
     return success;
 }
@@ -478,15 +493,22 @@ Status ParseAsmLess(Tree* tree, Node* node, Lexeme* func_info)
     if (node->type != OP_LESS)
         return error;
 
-    fprintf(log_file, "Enter ParseAsmLess\n");
+    static int counter = 0;
 
-    fprintf(asm_file, "; <         \n");
-    fprintf(asm_file, "xor rcx      \n");
-    fprintf(asm_file, "pop rax      \n");
-    fprintf(asm_file, "pop rbx      \n");
-    fprintf(asm_file, "cmp rax, rbx \n");
-    fprintf(asm_file, "setl cl      \n");
-    fprintf(asm_file, "push rcx     \n\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmLess\n");
+
+    fprintf(asm_file, "\nJB :L_less_%d\n", counter);
+    fprintf(asm_file, "PUSH 0\n");
+    fprintf(asm_file, ":L_less_%d\n\n", counter);
+
+    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->right, func_info);
+
+    fprintf(asm_file, "\nJA :L_bigger_%d\n", counter);
+    fprintf(asm_file, "PUSH 1\n");
+    fprintf(asm_file, ":L_bigger_%d\n\n", counter);
+
+    counter++;
 
     return success;
 }
@@ -496,11 +518,15 @@ Status ParseAsmNumber(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    if (node->type != NUM) return error;
+    if (node->type == NUM)
+    {
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmNumber\n");
+        fflush(log_file);
+        fprintf(asm_file, "PUSH %d\n", node->lexeme.num);
+        return success;
+    }
 
-    fprintf(log_file, "Enter ParseAsmNumber\n");
-    fprintf(asm_file, "push %d ;Запушил константу\n\n", node->lexeme.num);
-    return success;
+    return error;
 }
 
 Status ParseAsmADD(Tree* tree, Node* node)
@@ -508,17 +534,14 @@ Status ParseAsmADD(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    if (node->type != OP_ADD) return error;
-    
-    fprintf(log_file, "Enter ParseAsmADD \n");
-    fprintf(asm_file, "; сумма двух чисел\n");
+    if (node->type == OP_ADD)
+    {
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmADD\n");
+        fprintf(asm_file, "ADD\n");
+        return success;
+    }
 
-    fprintf(asm_file, "pop rax      \n");
-    fprintf(asm_file, "pop rbx      \n");
-    fprintf(asm_file, "add rax, rbx \n");
-    fprintf(asm_file, "push rax     \n\n");
-
-    return success;
+    return error;
 }
 
 Status ParseAsmSUB(Tree* tree, Node* node)
@@ -526,17 +549,14 @@ Status ParseAsmSUB(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    if (node->type != OP_SUB) return error;
-    
-    fprintf(log_file, "Enter ParseAsmSUB    \n");
-    fprintf(asm_file, "; разность двух чисел\n");
+    if (node->type == OP_SUB)
+    {
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmSUB\n");
+        fprintf(asm_file, "SUB\n");
+        return success;
+    }
 
-    fprintf(asm_file, "pop rax      \n");
-    fprintf(asm_file, "pop rbx      \n");
-    fprintf(asm_file, "sub rax, rbx \n");
-    fprintf(asm_file, "push rax     \n\n");
-
-    return success;
+    return error;
 }
 
 Status ParseAsmMUL(Tree* tree, Node* node)
@@ -544,17 +564,14 @@ Status ParseAsmMUL(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    if (node->type != OP_MUL) return error;
-    
-    fprintf(log_file, "Enter ParseAsmMUL    \n");
-    fprintf(asm_file, ";умножение двух чисел\n");
+    if (node->type == OP_MUL)
+    {
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmMUL\n");
+        fprintf(asm_file, "MUL\n");
+        return success;
+    }
 
-    fprintf(asm_file, "pop rax   \n");
-    fprintf(asm_file, "pop rbx   \n");
-    fprintf(asm_file, "mul rbx   \n");
-    fprintf(asm_file, "push rax  \n\n");
-
-    return success;
+    return error;
 }
 
 Status ParseAsmDIV(Tree* tree, Node* node)
@@ -562,17 +579,14 @@ Status ParseAsmDIV(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    if (node->type != OP_DIV) return error;
-    
-    fprintf(log_file, "Enter ParseAsmDIV  \n");
-    fprintf(asm_file, ";деление двух чисел\n");
+    if (node->type == OP_DIV)
+    {
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmDIV\n");
+        fprintf(asm_file, "DIV\n");
+        return success;
+    }
 
-    fprintf(asm_file, "pop rax   \n");
-    fprintf(asm_file, "pop rbx   \n");
-    fprintf(asm_file, "div rbx   \n");
-    fprintf(asm_file, "push rax  \n\n");
-
-    return success;
+    return error;
 }
 
 Status ParseAsmPOW(Tree* tree, Node* node)
@@ -580,17 +594,14 @@ Status ParseAsmPOW(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    if (node->type != OP_POW) return error;
-    
-    fprintf(log_file, "Enter ParseAsmPOW\n");
-    fprintf(asm_file, ";возведение в степень двойки\n");
+    if (node->type == OP_POW)
+    {
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmPOW\n");
+        fprintf(asm_file, "POW\n");
+        return success;
+    }
 
-    fprintf(asm_file, "pop rax     \n");
-    fprintf(asm_file, "pop rcx     \n");
-    fprintf(asm_file, "shl rax, cl \n");
-    fprintf(asm_file, "push rax    \n\n");
-
-    return success;
+    return error;
 }
 
 Status ParseAsmSQRT(Tree* tree, Node* node)
@@ -598,16 +609,14 @@ Status ParseAsmSQRT(Tree* tree, Node* node)
     assert(tree);
     assert(node);
 
-    if (node->type != OP_SQRT) return error;
-    
-    fprintf(log_file, "Enter ParseAsmSQRT\n");
-    fprintf(asm_file, ";корень как побитовый сдвиг вправо\n");
+    if (node->type == OP_SQRT)
+    {
+        fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmSQRT\n");
+        fprintf(asm_file, "SQVRT\n");
+        return success;
+    }
 
-    fprintf(asm_file, "pop rax    \n");
-    fprintf(asm_file, "shr rax, 1 \n");
-    fprintf(asm_file, "push rax   \n\n");
-
-    return success;
+    return error;
 }
 
 Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info)
@@ -617,19 +626,21 @@ Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info)
     assert(func_info);
 
     size_t start_index = GetIndexOfFuncInNameTable(tree->name_table,
-                                                   func_info);
+                                                     func_info);
 
     int mem_ptr = GetMemPtrOfVar(node, tree->name_table, start_index);
 
     if (IsInvalidNum(mem_ptr))
         return error;
 
-    fprintf(log_file, "Enter ParseAsmOutVar\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmOutVar\n");
 
-    fprintf(asm_file, "mov rax, [rbp - %d] ;Получили данные из переменной |%s|\n", 
-                      mem_ptr * 8, 
-                      node->lexeme.str.name);
-    fprintf(asm_file, "push rax          \n\n");
+    fprintf(asm_file, "\nPUSH %d  ;пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ |%s|\n",
+            mem_ptr, node->lexeme.str.name);
+    fprintf(asm_file, "PUSHREG HX \n");
+    fprintf(asm_file, "ADD\n");
+    fprintf(asm_file, "POPREG GX\n");
+    fprintf(asm_file, "PUSHM [GX]\n\n");
 
     return success;
 }
@@ -649,15 +660,20 @@ Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info)
 
     if (IsInvalidNum(mem_ptr))
     {
-        fprintf(log_file, "Нет переменной |%s|", node->lexeme.str.name);
+        fprintf(log_file, "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ |%s|", node->lexeme.str.name);
         return error;
     }
 
-    fprintf(log_file, "Enter ParseAsmInVar\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmInVar\n");
 
-    fprintf(asm_file, "pop rax ;Запись в переменную |%s| \n", node->lexeme.str.name);
-    fprintf(asm_file, "mov [rbp - %d], rax \n\n", mem_ptr * 8);
-    
+    fprintf(asm_file, "\nPUSH %d  ;пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ |%s|\n",
+            mem_ptr, node->lexeme.str.name);
+
+    fprintf(asm_file, "PUSHREG HX \n");
+    fprintf(asm_file, "ADD\n");
+    fprintf(asm_file, "POPREG GX\n");
+    fprintf(asm_file, "POPM [GX]\n\n");
+
     return success;
 }
 
@@ -704,7 +720,7 @@ Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info)
 
     if (node->type != IDENT) return error;
 
-    fprintf(log_file, "Enter ParseAsmCallFunc\n");
+    fprintf(log_file, "пїЅпїЅпїЅпїЅпїЅ ParseAsmCallFunc\n");
 
     Lexeme now_func = node->lexeme;
     //printf("LEXEME: %s\n", node->lexeme.str.name);
@@ -712,7 +728,8 @@ Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info)
 
     ParseAsmExpression(tree, node->left->right, func_info);
 
-    fprintf(asm_file, "call .%s     \n\n", tree->name_table->arr[index].func_ptr);
+    fprintf(asm_file, "CALL :%s\n", tree->name_table->arr[index].func_ptr);
+    fprintf(asm_file, "PUSHREG AX\n");
 
     return success;
 }
@@ -724,22 +741,33 @@ void PrintFuncName(NameTable* name_table, Lexeme* func_info)
 
     size_t index = GetIndexOfFuncInNameTable(name_table, func_info);
 
-    fprintf(asm_file, ".%s          \n", name_table->arr[index].func_ptr);
+    fprintf(asm_file, ":%s\n", name_table->arr[index].func_ptr);
 
-    fprintf(asm_file, "push rbp     \n");
-    fprintf(asm_file, "mov rbp, rsp \n");
-
-    //Адрес первой переменной
+    //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     size_t var_addres = name_table->arr[index + 1].address;
 
-    size_t var_in_main = CountVarInFunc(name_table, name_table->arr[index].name);
-    fprintf(asm_file, "sub rsp, %zu \n\n", var_in_main * 8);
+    //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    fprintf(asm_file, "\nPUSH %d     ;пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n", SIZE_OF_FRAME);
+    fprintf(asm_file, "PUSHREG HX\n");
+    fprintf(asm_file, "ADD\n");
+    fprintf(asm_file, "POPREG HX\n");
+
+
+    fprintf(asm_file, "PUSH %llu  ;пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ |%s|\n",
+            var_addres, name_table->arr[index + 1].name);
+
+    fprintf(asm_file, "PUSHREG HX \n");
+    fprintf(asm_file, "ADD\n");
+    fprintf(asm_file, "POPREG GX\n");
+    fprintf(asm_file, "POPM [GX]\n\n");
+
+
 }
 
 Lexeme GetMainLexeme()
 {
     Lexeme main = {};
-    main.str.name = strdup ("main");
+    main.str.name = strdup("main");
     main.str.hash = GetHash("main");
     return main;
 }

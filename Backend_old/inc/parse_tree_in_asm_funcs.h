@@ -1,8 +1,6 @@
 #ifndef PARSE_TREE_IN_ASM_FUNCS
 #define PARSE_TREE_IN_ASM_FUNCS
 
-#include <stdlib.h>
-
 #include "tree_funcs.h"
 #include "dump_funcs.h"
 

@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdarg.h>
 #include <errno.h>
-#include <ctype.h>
 
 #include "dump_funcs.h"
 #include "tree_funcs.h"
@@ -27,13 +26,10 @@ int main (const int argc, const char** argv)
     GetDataFromFile(&buffer, source_file_name);
 
     Tree tree = {};
-
     TreeCtor(&tree);
 
     char* cur_pos = buffer.data;
     tree.root = FillNodeDataFromBuffer(&cur_pos, &tree.size, tree.root);
-
-    printf("BUFFER: %s", cur_pos);
 
     FillNameTableFromBuffer(tree.name_table, cur_pos);
     PrintNameTableInAsm(tree.name_table);

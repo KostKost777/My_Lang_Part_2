@@ -3,7 +3,7 @@
 
 #include "lexical_analysis.h"
 
-const int MAX_NUM_OF_IDENT = 100;
+const int MAX_NUM_OF_IDENT     = 100;
 const int MAX_LEN_OF_TYPE_NAME = 5;
 
 enum IdentType
@@ -22,7 +22,7 @@ struct NameTableEl
     {
         size_t visible_space;
         size_t address;
-        char* func_ptr;
+        char*  func_ptr;
     };
 };
 
@@ -44,6 +44,8 @@ void PrintNameTable(NameTable* name_table);
 void PrintNameTableInAsm(NameTable* name_table);
 
 void PrintTokenArray(TokenArray* tokens, size_t begin_pos);
+
+size_t CountVarInFunc(NameTable* name_table, const char* func_name);
 
 char* GetNewFuncPtr();
 
