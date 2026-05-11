@@ -85,9 +85,9 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
 
 size_t GetVarAddress()
 {
-    static int counter = -1;
+    static size_t counter = 0;
     counter++;
-    return (size_t)counter;
+    return counter;
 }
 
 char* GetNewFuncPtr()
