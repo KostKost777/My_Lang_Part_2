@@ -17,6 +17,8 @@ void ParseAsmFunc(Tree* tree, Node* node);
 
 void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info);
 
+void ParseAsmFuncArgs(Tree* tree, Node* node, Lexeme* func_info);
+
 void ParseAsmAssigned(Tree* tree, Node* node, Lexeme* func_info);
 
 void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info);
@@ -79,7 +81,7 @@ size_t GetIndexOfFuncInNameTable(NameTable* name_table, Lexeme* func_info);
 
 Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info);
 
-void PrintFuncName(NameTable* name_table, Lexeme* func_info);
+void ParseAsmFuncLabel(NameTable* name_table, Lexeme* func_info);
 
 void ParseMain(Tree* tree, Node* node, Lexeme* main);
 

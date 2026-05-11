@@ -1,127 +1,107 @@
-PUSH 0
+;========MAIN=======
 
-PUSH 2  ;Адрес для переменной |Ефимыч|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+push rbp     
+mov rbp, rsp 
 
-IN
+sub rsp, 8 
 
-PUSH 2  ;Адрес для переменной |Ефимыч|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+push 0 ;Запушил константу
 
+;Запись в переменную |Ефимыч| 
+pop rax                   
+mov [rbp - 24], rax       
 
-PUSH 2  ;Получили адрес переменной |Ефимыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+call MyScanf  
+push rax  ; Возвращаемое значение в rax
 
-CALL :func_0
-PUSHREG AX
-OUT
-HLT
-HLT
+;Запись в переменную |Ефимыч| 
+pop rax                   
+mov [rbp - 24], rax       
 
-:func_0
+mov rax, [rbp - 24] ;Получили данные из переменной |Ефимыч|
+push rax          
 
-PUSH 5     ;Создаём кадр функции
-PUSHREG HX
-ADD
-POPREG HX
-PUSH 0  ;Адрес для переменной |Серегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+call .func_0     
+push rax  ; Возвращаемое значение в rax
 
+call MyPrintf  
 
-PUSH 0  ;Получили адрес переменной |Серегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+mov rsp, rbp 
+pop rbp      
 
-PUSH 1
+mov rax, 60 
+mov rdi, 0  
+syscall     
 
-JE :E_equal_0
-PUSH 0
-:E_equal_0
+.func_0:         
 
+push rbp     
+mov rbp, rsp 
+sub rsp, 16 
 
-PUSH 0  ;Получили адрес переменной |Серегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+mov rax, [rbp - 8] ;Получили данные из переменной |Серегыч|
+push rax          
 
-PUSH 1
+push 1 ;Запушил константу
 
-JNE :E_not_equal_0
-PUSH 1
-:E_not_equal_0
+; ==         
+xor rcx, rcx 
+pop rax      
+pop rbx      
+cmp rbx, rax 
+setz cl      
+push rcx     
 
+pop rax                
+cmp rax, 0             
+je .skip_if_0         
 
-PUSH 0
-JE :endif_with_else_0
+push 1 ;Запушил константу
 
-PUSH 1
+pop rax      
+mov rsp, rbp 
+pop rbp      
 
+ret          
 
-POPREG AX    ;Через AX возвращаем значение
-PUSHREG HX
-PUSH 5     ;Возвращаем указатель стека
-SUB
-POPREG HX
-RET
+jmp .skip_else_0      
+.skip_if_0:           
 
+mov rax, [rbp - 8] ;Получили данные из переменной |Серегыч|
+push rax          
 
-:endif_with_else_0
+push 1 ;Запушил константу
 
-PUSH 0  ;Получили адрес переменной |Серегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+; разность двух чисел
+pop rax      
+pop rbx      
+sub rbx, rax 
+push rbx     
 
-PUSH 1
-SUB
-CALL :func_0
-PUSHREG AX
+call .func_0     
+push rax  ; Возвращаемое значение в rax
 
-PUSH 1  ;Адрес для переменной |Олегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+;Запись в переменную |Олегыч| 
+pop rax                   
+mov [rbp - 16], rax       
 
+mov rax, [rbp - 16] ;Получили данные из переменной |Олегыч|
+push rax          
 
-PUSH 1  ;Получили адрес переменной |Олегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+mov rax, [rbp - 8] ;Получили данные из переменной |Серегыч|
+push rax          
 
+;умножение двух чисел
+pop rax   
+pop rbx   
+imul rbx   
+push rax  
 
-PUSH 0  ;Получили адрес переменной |Серегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+pop rax      
+mov rsp, rbp 
+pop rbp      
 
-MUL
+ret          
 
-
-POPREG AX    ;Через AX возвращаем значение
-PUSHREG HX
-PUSH 5     ;Возвращаем указатель стека
-SUB
-POPREG HX
-RET
-
-
+.skip_else_0:         
 

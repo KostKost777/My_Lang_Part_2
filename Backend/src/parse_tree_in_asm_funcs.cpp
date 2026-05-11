@@ -69,9 +69,19 @@ void ParseAsmFunc(Tree* tree, Node* node)
 
     Lexeme func_info = node->lexeme;
 
-    PrintFuncName(tree->name_table,  &func_info);
+    ParseAsmFuncLabel(tree->name_table,  &func_info);
+
+    ParseAsmFuncArgs(tree, node->left, &func_info);
 
     ParseAsmOperator(tree, node->right, &func_info);
+}
+
+void ParseAsmFuncArgs(Tree* tree, Node* node, Lexeme* func_info)
+{
+    assert(tree);
+    assert(func_info);
+    
+    
 }
 
 void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info)
@@ -192,7 +202,8 @@ void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info)
 
     fprintf(asm_file, "pop rax      \n");
     fprintf(asm_file, "mov rsp, rbp \n");
-    fprintf(asm_file, "pop rbp      \n");
+    fprintf(asm_file, "pop rbp      \n\n");
+
     fprintf(asm_file, "ret          \n\n");
 }
 
@@ -205,7 +216,7 @@ void ParseAsmIn(Tree* tree, Node* node, Lexeme* func_info)
     fprintf(log_file, "Enter ParseAsmIn\n");
 
 
-    fprintf(asm_file, "call MyScanf  \n\n");
+    fprintf(asm_file, "call MyScanf  \n");
     fprintf(asm_file, "push rax  ; Возвращаемое значение в rax\n\n"); 
 
     ParseAsmInVar(tree, node->left, func_info);
@@ -730,19 +741,21 @@ Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info)
 
     ParseAsmExpression(tree, node->left->right, func_info);
 
-    fprintf(asm_file, "call .%s     \n\n", tree->name_table->arr[index].func_ptr);
+    fprintf(asm_file, "call .%s     \n", tree->name_table->arr[index].func_ptr);
+    fprintf(asm_file, "push rax  ; Возвращаемое значение в rax\n\n"); 
+    
 
     return success;
 }
 
-void PrintFuncName(NameTable* name_table, Lexeme* func_info)
+void ParseAsmFuncLabel(NameTable* name_table, Lexeme* func_info)
 {
     assert(name_table);
     assert(func_info);
 
     size_t index = GetIndexOfFuncInNameTable(name_table, func_info);
 
-    fprintf(asm_file, ".%s          \n", name_table->arr[index].func_ptr);
+    fprintf(asm_file, ".%s:         \n\n", name_table->arr[index].func_ptr);
 
     fprintf(asm_file, "push rbp     \n");
     fprintf(asm_file, "mov rbp, rsp \n");
