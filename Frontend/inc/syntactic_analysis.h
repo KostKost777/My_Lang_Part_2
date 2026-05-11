@@ -8,7 +8,7 @@ const size_t MAX_SIZE = 10e6;
 
 Status MakeSyntacticAnalysis(Tree* tree, TokenArray* tokens);
 
-Node* GetIdentifier(TokenArray* tokens, size_t* pos, Tree* tree);
+Node* GetIdentifier(TokenArray* tokens, size_t* pos, Tree* tree, IdentType type);
 
 Node* GetWord(TokenArray* tokens, size_t* pos, Tree* tree, Node* node);
 

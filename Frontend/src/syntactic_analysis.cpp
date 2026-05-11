@@ -53,7 +53,7 @@ Node* GetInitOfFunc(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
         return GetOperator(tokens, pos, tree, node);
     *pos += 1;
 
-    Node* node_left = GetIdentifier(tokens, pos, tree);
+    Node* node_left = GetIdentifier(tokens, pos, tree, FUNC);
 
     if (node_left == NULL) return NULL;
 
@@ -129,7 +129,7 @@ Node* GetArgsOfInitFunc(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     if (tokens->arr[*pos].type != KEY_INT) return NULL;
 
-    Node* node_right = GetIdentifier(tokens, pos, tree);
+    Node* node_right = GetIdentifier(tokens, pos, tree, ARG);
 
     if (node_right == NULL)  return NULL;
     *pos += 1;
@@ -423,7 +423,7 @@ Node* GetDrawOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     Token draw_token = tokens->arr[*pos];
     *pos += 1;
 
-    Node* node_left = GetIdentifier(tokens, pos, tree);
+    Node* node_left = GetIdentifier(tokens, pos, tree, VAR);
     *pos += 1;
 
     if (node_left == NULL) return NULL;
@@ -490,7 +490,7 @@ Node* GetInOutOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
     if (token.type == KEY_IN)
     {
-        node_left = GetIdentifier(tokens, pos, tree);
+        node_left = GetIdentifier(tokens, pos, tree, VAR);
         *pos += 1;
     }
     else
@@ -520,7 +520,7 @@ Node* GetFunc(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     fprintf(log_file, "<strong>Enter GetFuncOp</strong>\n");
     fflush(log_file);
 
-    Node* node_left = GetIdentifier(tokens, pos, tree);
+    Node* node_left = GetIdentifier(tokens, pos, tree, VAR);
 
     if (node_left == NULL) return NULL;
 
@@ -882,7 +882,7 @@ Node* GetWord(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 //         return node;
 //     }
 
-    node = GetIdentifier(tokens, pos, tree);
+    node = GetIdentifier(tokens, pos, tree, VAR);
 
     if (node != NULL)
     {
@@ -895,7 +895,7 @@ Node* GetWord(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     return NULL;
 }
 
-Node* GetIdentifier(TokenArray* tokens, size_t* pos, Tree* tree)
+Node* GetIdentifier(TokenArray* tokens, size_t* pos, Tree* tree, IdentType type)
 {
     assert(tree);
     assert(tokens);
@@ -913,7 +913,7 @@ Node* GetIdentifier(TokenArray* tokens, size_t* pos, Tree* tree)
             return NULL;
         }
         else
-            AddInNameTable(VAR, &tokens->arr[*pos], tree);
+            AddInNameTable(type, &tokens->arr[*pos], tree);
 
         return NewNode(tokens->arr[*pos - 1],
                        NewNode(tokens->arr[*pos],
