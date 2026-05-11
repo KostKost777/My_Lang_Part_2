@@ -9,7 +9,8 @@ const int MAX_LEN_OF_TYPE_NAME = 5;
 enum IdentType
 {
     VAR = 0,
-    FUNC = 1
+    FUNC = 1,
+    ARG = 2
 };
 
 struct NameTableEl
@@ -50,5 +51,7 @@ size_t CountVarInFunc(NameTable* name_table, const char* func_name);
 char* GetNewFuncPtr();
 
 size_t GetVarAddress();
+
+size_t GetArgAddress();
 
 #endif

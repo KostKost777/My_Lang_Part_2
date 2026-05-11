@@ -79,12 +79,11 @@ void WriteNameTable(NameTable* name_table, FILE* out_file)
 
     for (size_t i = 0; i < name_table->size; ++i)
     {
-        if (IsPlaceForMain(name_table, i)
-            || (i == 0 && name_table->arr[i].type == VAR))
+        if (IsPlaceForMain(name_table, i) || (i == 0 && name_table->arr[i].type == VAR))
             fprintf(out_file, "FUNC    main\n");
-        fprintf(out_file, "%s    %s\n",
-                GetTypeOfNameTableEl(name_table->arr[i].type),
-                name_table->arr[i].name);
+
+        fprintf(out_file, "%s    %s\n", GetTypeOfNameTableEl(name_table->arr[i].type),
+                                        name_table->arr[i].name);
     }
 }
 
@@ -94,6 +93,7 @@ const char* GetTypeOfNameTableEl(IdentType type)
     {
         case FUNC: return "FUNC";
         case VAR:  return "VAR";
+        case ARG:  return "ARG";
 
         default: return NULL;
     }

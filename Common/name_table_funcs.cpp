@@ -63,6 +63,13 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
             name_table->arr[name_table->size].type = VAR;
             name_table->arr[name_table->size].address = GetVarAddress();
         }
+
+        else if (strcmp(type_name, "ARG") == 0)
+        {
+            name_table->arr[name_table->size].type = ARG;
+            name_table->arr[name_table->size].address = GetArgAddress();
+        }
+
         else
         {
             name_table->arr[name_table->size].type = FUNC;
@@ -84,6 +91,13 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
 }
 
 size_t GetVarAddress()
+{
+    static size_t counter = 0;
+    counter++;
+    return counter;
+}
+
+size_t GetArgAddress()
 {
     static size_t counter = 0;
     counter++;
