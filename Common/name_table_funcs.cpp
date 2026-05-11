@@ -50,6 +50,9 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
     assert(name_table);
     assert(cur_pos);
 
+    int var_addr = 1;
+    int arg_addr = 2;
+
     while (true)
     {
         char type_name[MAX_LEN_OF_TYPE_NAME] = {};
@@ -61,19 +64,23 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
         if (strcmp(type_name, "VAR") == 0)
         {
             name_table->arr[name_table->size].type = VAR;
-            name_table->arr[name_table->size].address = GetVarAddress();
+            name_table->arr[name_table->size].address = var_addr;
+            var_addr++;
         }
 
         else if (strcmp(type_name, "ARG") == 0)
         {
             name_table->arr[name_table->size].type = ARG;
-            name_table->arr[name_table->size].address = GetArgAddress();
+            name_table->arr[name_table->size].address = arg_addr;
+            arg_addr++;
         }
 
         else
         {
             name_table->arr[name_table->size].type = FUNC;
             name_table->arr[name_table->size].func_ptr = GetNewFuncPtr();
+            var_addr = 1;
+            arg_addr = 2;
         }
 
         cur_pos += len;
@@ -88,20 +95,6 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
 
         name_table->size++;
     }
-}
-
-size_t GetVarAddress()
-{
-    static size_t counter = 0;
-    counter++;
-    return counter;
-}
-
-size_t GetArgAddress()
-{
-    static size_t counter = 0;
-    counter++;
-    return counter;
 }
 
 char* GetNewFuncPtr()
@@ -156,7 +149,7 @@ void PrintNameTableInAsm(NameTable* name_table)
 {
     for (size_t i = 0; i < name_table->size; ++i)
     {
-        if (name_table->arr[i].type == VAR)
+        if (name_table->arr[i].type == VAR || name_table->arr[i].type == ARG)
             fprintf(log_file, "TYPE: %d | NAME: |%s| | ADDRESS: %zu\n",
                                     name_table->arr[i].type,
                                     name_table->arr[i].name,
@@ -180,7 +173,7 @@ size_t CountVarInFunc(NameTable* name_table, const char* func_name)
 
     while(index < name_table->size)
     {
-        printf("MY_FUNC: |%s|, NOW_FUNC: |%s|\n", func_name, name_table->arr[index].name);
+        //printf("MY_FUNC: |%s|, NOW_FUNC: |%s|\n", func_name, name_table->arr[index].name);
 
         if (name_table->arr[index].type == FUNC
             && strcmp(name_table->arr[index].name, func_name) == 0)
@@ -198,10 +191,12 @@ size_t CountVarInFunc(NameTable* name_table, const char* func_name)
 
     index++;
 
-    while(index < name_table->size && name_table->arr[index].type == VAR)
+    while(index < name_table->size && name_table->arr[index].type != FUNC )
     {
-        num_of_vars++;
-        printf("NOW_VAR: |%s|, COUNTER: %d\n", name_table->arr[index].name, num_of_vars);
+        if (name_table->arr[index].type == VAR)
+            num_of_vars++;
+
+        //printf("NOW_VAR: |%s|, COUNTER: %d\n", name_table->arr[index].name, num_of_vars);
         index++;
     }
 

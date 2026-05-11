@@ -50,8 +50,4 @@ size_t CountVarInFunc(NameTable* name_table, const char* func_name);
 
 char* GetNewFuncPtr();
 
-size_t GetVarAddress();
-
-size_t GetArgAddress();
-
 #endif

@@ -69,19 +69,9 @@ void ParseAsmFunc(Tree* tree, Node* node)
 
     Lexeme func_info = node->lexeme;
 
-    ParseAsmFuncLabel(tree->name_table,  &func_info);
-
-    ParseAsmFuncArgs(tree, node->left, &func_info);
+    ParseAsmFuncLabel(tree->name_table, &func_info);
 
     ParseAsmOperator(tree, node->right, &func_info);
-}
-
-void ParseAsmFuncArgs(Tree* tree, Node* node, Lexeme* func_info)
-{
-    assert(tree);
-    assert(func_info);
-    
-    
 }
 
 void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info)
@@ -647,16 +637,23 @@ Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info)
     size_t start_index = GetIndexOfFuncInNameTable(tree->name_table,
                                                    func_info);
 
-    int mem_ptr = GetMemPtrOfVar(node, tree->name_table, start_index);
+    int mem_ptr        = GetMemPtrOfVar(node, tree->name_table, start_index);
+    IdentType var_type = GetTypeOfVar  (node, tree->name_table, start_index);
 
-    if (IsInvalidNum(mem_ptr))
+    if (IsInvalidNum(mem_ptr) || var_type == FUNC)
         return error;
 
     fprintf(log_file, "Enter ParseAsmOutVar\n");
 
-    fprintf(asm_file, "mov rax, [rbp - %d] ;Получили данные из переменной |%s|\n", 
-                      mem_ptr * 8, 
-                      node->lexeme.str.name);
+    if (var_type == VAR)
+        fprintf(asm_file, "mov rax, [rbp - %d] ;Получили данные из переменной |%s|\n", 
+                                                                          mem_ptr * 8, 
+                                                                          node->lexeme.str.name);
+    else
+        fprintf(asm_file, "mov rax, [rbp + %d] ;Получили данные из аргумента |%s|\n", 
+                                                                         mem_ptr * 8, 
+                                                                         node->lexeme.str.name);
+            
     fprintf(asm_file, "push rax          \n\n");
 
     return success;
@@ -673,7 +670,7 @@ Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info)
     size_t start_index = GetIndexOfFuncInNameTable(tree->name_table,
                                                      func_info);
 
-    int mem_ptr = GetMemPtrOfVar(node, tree->name_table, start_index);
+    int mem_ptr        = GetMemPtrOfVar(node, tree->name_table, start_index);
 
     if (IsInvalidNum(mem_ptr))
     {
@@ -685,6 +682,7 @@ Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info)
 
     fprintf(asm_file, ";Запись в переменную |%s| \n", node->lexeme.str.name);
     fprintf(asm_file, "pop rax                   \n");
+    
     fprintf(asm_file, "mov [rbp - %d], rax       \n\n", mem_ptr * 8);
     
     return success;
@@ -702,6 +700,21 @@ int GetMemPtrOfVar(Node* node, NameTable* name_table, size_t start_index)
     }
 
     return -1;
+}
+
+IdentType GetTypeOfVar(Node* node, NameTable* name_table, size_t start_index)
+{
+    assert(name_table);
+
+    for (size_t i = start_index; i < name_table->size; ++i)
+    {
+        printf("NODE_NAME: %s      NAME_TBALE_EL: %s\n", node->lexeme.str.name,
+                                                         name_table->arr[i].name);
+        if (strcmp(node->lexeme.str.name, name_table->arr[i].name) == 0)
+            return name_table->arr[i].type;
+    }
+
+    return FUNC;
 }
 
 size_t GetIndexOfFuncInNameTable(NameTable* name_table, Lexeme* func_info)

@@ -108,9 +108,11 @@ MyPrintf:
 
                 mov [rsi], dl
                 inc rcx
-
+                
                 test rax, rax
                 jz .done
+
+                inc rsi
 
                 jmp .parse
 

@@ -17,8 +17,6 @@ void ParseAsmFunc(Tree* tree, Node* node);
 
 void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info);
 
-void ParseAsmFuncArgs(Tree* tree, Node* node, Lexeme* func_info);
-
 void ParseAsmAssigned(Tree* tree, Node* node, Lexeme* func_info);
 
 void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info);
@@ -76,6 +74,8 @@ Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info);
 Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info);
 
 int GetMemPtrOfVar(Node* node, NameTable* name_table, size_t start_index);
+
+IdentType GetTypeOfVar(Node* node, NameTable* name_table, size_t start_index);
 
 size_t GetIndexOfFuncInNameTable(NameTable* name_table, Lexeme* func_info);
 
