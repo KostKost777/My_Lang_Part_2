@@ -76,12 +76,13 @@ void ParseMain(Tree* tree, Node* node, Lexeme* main, ElfBuffer* bin_buf)
     while(node->type == KEY_LBRACE)
         node = node->right;
 
-    _PUSH_REG(rbp);
-    _MOV_REG_REG(rbp, rsp);
+    _PUSH_REG    (rbp);
+    _MOV_REG_REG (rbp, rsp);
 
     size_t var_in_main = CountVarInFunc(tree->name_table, "main");
 
-    _SUB_REG_INT(rsp, var_in_main * 8);
+    _SUB_REG_INT (rsp, var_in_main * 8);
+    
     WRITE_ASM("\n");
     
     ParseAsmOperator(tree, node, main, bin_buf);        
@@ -180,7 +181,7 @@ void ParseAsmPutCharArg(Tree* tree, Node* node, ElfBuffer* bin_buf)
     else 
     {
         char sym = *node->lexeme.str.name;
-        _MOV_REG_INT(rax, sym);
+        _MOV_REG_INT (rax, sym);
     }
 }
 
@@ -192,14 +193,14 @@ void ParseAsmEnd(Tree* tree, Node* node, Lexeme* func_info,  ElfBuffer* bin_buf)
 
     fprintf(log_file, "Enter ParseAsmEnd\n");
 
-    _MOV_REG_REG(rsp, rbp);
-    _POP_REG(rbp);
+    _MOV_REG_REG (rsp, rbp);
+    _POP_REG     (rbp);
 
     WRITE_ASM("\n");
 
-    _MOV_REG_INT(rax, 60);
-    _MOV_REG_INT(rdi, 0);
-    _SYSCALL();
+    _MOV_REG_INT (rax, 60);
+    _MOV_REG_INT (rdi, 0);
+    _SYSCALL     ();
 
     WRITE_ASM("\n");
 }
@@ -214,10 +215,9 @@ void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_bu
 
     ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
-    _POP_REG(rax);
-
-    _MOV_REG_REG(rsp, rbp);
-    _POP_REG(rbp);
+    _POP_REG     (rax);
+    _MOV_REG_REG (rsp, rbp);
+    _POP_REG     (rbp);
 
     _RET();
 
@@ -232,8 +232,8 @@ void ParseAsmIn(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_buf)
 
     fprintf(log_file, "Enter ParseAsmIn\n");
 
-    _CALL_MYSCANF();
-    _PUSH_REG(rax);
+    _CALL_MYSCANF ();
+    _PUSH_REG     (rax);
 
     WRITE_ASM("\n");
 
@@ -269,15 +269,16 @@ void ParseAsmIf(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_buf)
 
     ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
-    _POP_REG(rax);
-    _CMP_REG_INT(rax, 0);
-    _COND_JMP(je, label_name);
+    _POP_REG     (rax);
+    _CMP_REG_INT (rax, 0);
+    _COND_JMP    (je, label_name);
 
     WRITE_ASM("\n");
 
     ParseAsmOperator(tree, node->right, func_info, bin_buf);
 
-    _LABEL(label_name);
+    _LABEL       (label_name);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -299,21 +300,23 @@ void ParseAsmWhile(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_buf
     sprintf(while_begin, ".begin_while_%d", counter);
     sprintf(while_end,   ".end_while_%d", counter);
 
-    _LABEL(while_begin);
+    _LABEL      (while_begin);
+
     WRITE_ASM("\n");
 
     ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
-    _POP_REG(rax);
-    _CMP_REG_INT(rax, 0);
-    _COND_JMP(je, while_end);
+    _POP_REG     (rax);
+    _CMP_REG_INT (rax, 0);
+    _COND_JMP    (je, while_end);
+
     WRITE_ASM("\n");
 
     ParseAsmOperator(tree, node->right, func_info, bin_buf);
 
-    _JMP(while_begin);
+    _JMP   (while_begin);
+    _LABEL (while_end);
 
-    _LABEL(while_end);
     WRITE_ASM("\n");
 
     counter++;
@@ -337,20 +340,23 @@ void ParseAsmIfElse(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_bu
 
     ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
-    _POP_REG(rax);
-    _CMP_REG_INT(rax, 0);
-    _COND_JMP(je, skip_if);
+    _POP_REG     (rax);
+    _CMP_REG_INT (rax, 0);
+    _COND_JMP    (je, skip_if);
+
     WRITE_ASM("\n");
 
     ParseAsmOperator(tree, node->right->left, func_info, bin_buf);
 
-    _JMP(skip_else);
-    _LABEL(skip_if);
+    _JMP   (skip_else);
+    _LABEL (skip_if);
+
     WRITE_ASM("\n");
 
     ParseAsmOperator(tree, node->right->right, func_info, bin_buf);
 
-    _LABEL(skip_else);
+    _LABEL (skip_else);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -426,14 +432,11 @@ Status ParseAsmOr(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_buf)
     _COND_JMP     (jne, good);
     _TEST_REG_REG (rbx, rbx);
     _COND_JMP     (je, bad);
-   
     _LABEL        (good); 
-
     _MOV_REG_INT  (rcx, 1);
-
     _LABEL        (bad); 
-
     _PUSH_REG     (rcx);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -466,10 +469,9 @@ Status ParseAsmAnd(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_buf
     _TEST_REG_REG (rbx, rbx);
     _COND_JMP     (je, bad);
     _MOV_REG_INT  (rcx, 1);
-
     _LABEL        (bad); 
-
     _PUSH_REG     (rcx);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -510,10 +512,9 @@ Status ParseAsmBigger(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_
     _CMP_REG_REG  (rbx, rax);
     _COND_JMP     (jle, skip)
     _MOV_REG_INT  (rcx, 1);
-
     _LABEL        (skip);
-
     _PUSH_REG     (rcx);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -542,13 +543,11 @@ Status ParseAsmEqual(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_b
     _POP_REG      (rax);
     _POP_REG      (rbx);
     _CMP_REG_REG  (rbx, rax);
-
     _COND_JMP     (jne, not_equal)
     _MOV_REG_INT  (rcx, 1);
-
     _LABEL        (not_equal);
-
     _PUSH_REG     (rcx);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -579,10 +578,9 @@ Status ParseAsmNotEqual(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bi
     _CMP_REG_REG  (rbx, rax);
     _COND_JMP     (je, equal)
     _MOV_REG_INT  (rcx, 1);
-
     _LABEL        (equal);
-
     _PUSH_REG     (rcx);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -613,10 +611,9 @@ Status ParseAsmLess(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_bu
     _CMP_REG_REG (rbx, rax);
     _COND_JMP    (jge, skip);    
     _MOV_REG_INT (rcx, 1);
-
     _LABEL       (skip);
-
     _PUSH_REG    (rcx);
+
     WRITE_ASM("\n");
 
     counter++;
@@ -652,7 +649,8 @@ Status ParseAsmADD(Tree* tree, Node* node, ElfBuffer* bin_buf)
     _POP_REG     (rax);
     _POP_REG     (rbx);
     _ADD_REG_REG (rax, rbx);
-    _PUSH_REG    (rax)
+    _PUSH_REG    (rax);
+
     WRITE_ASM("\n");
 
     return success;
@@ -671,7 +669,8 @@ Status ParseAsmSUB(Tree* tree, Node* node, ElfBuffer* bin_buf)
     _POP_REG     (rax);
     _POP_REG     (rbx);
     _SUB_REG_REG (rbx, rax);
-    _PUSH_REG    (rbx)
+    _PUSH_REG    (rbx);
+
     WRITE_ASM("\n");
 
     return success;
@@ -690,7 +689,8 @@ Status ParseAsmMUL(Tree* tree, Node* node, ElfBuffer* bin_buf)
     _POP_REG     (rax);
     _POP_REG     (rbx);
     _IMUL_REG    (rbx);
-    _PUSH_REG    (rax)
+    _PUSH_REG    (rax);
+
     WRITE_ASM("\n");
 
     return success;
@@ -711,6 +711,7 @@ Status ParseAsmDIV(Tree* tree, Node* node, ElfBuffer* bin_buf)
     _CPO         ();
     _IDIV_REG    (rbx);
     _PUSH_REG    (rax);
+
     WRITE_ASM("\n");
 
     return success;
