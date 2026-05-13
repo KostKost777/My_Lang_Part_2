@@ -90,4 +90,19 @@ void Emit_TestRegInt(Buffer* bin_buf, RegName reg, int value);
 
 void Emit_TestRegReg(Buffer* bin_buf, RegName reg_1, RegName reg_2); 
 
+void Emit_ImulReg(Buffer* bin_buf, RegName reg);
+
+void Emit_ImulRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src);
+
+void Emit_Cqo(Buffer* bin_buf);
+
+void Emit_IdivReg(Buffer* bin_buf, RegName reg);
+
+void Emit_IncReg(Buffer* bin_buf, RegName reg);
+
+void Emit_MovRegMem(Buffer* bin_buf, RegName reg, RegName base, int offset);
+
+void Emit_MovMemReg(Buffer* bin_buf, RegName reg_dest, int offset, RegName reg_src);
+
+
 #endif

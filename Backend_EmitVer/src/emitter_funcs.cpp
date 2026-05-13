@@ -342,6 +342,111 @@ void Emit_TestRegReg(Buffer* bin_buf, RegName reg_1, RegName reg_2)
     _EMIT_NOP();
 }
 
+void Emit_ImulReg(Buffer* bin_buf, RegName reg) 
+{
+    assert(bin_buf);
+
+    WRITE_ASM("imul %s\n", GetRegName(reg));
+    
+    BUF[POS++] = 0x48;                
+    BUF[POS++] = 0xF7;                
+    BUF[POS++] = 0xE8 + reg;  
+
+    _EMIT_NOP();
+}
+
+void Emit_ImulRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src) 
+{
+    assert(bin_buf);
+
+    WRITE_ASM("imul %s, %s\n", GetRegName(reg_dest), GetRegName(reg_src));
+    
+    BUF[POS++] = 0x48;     
+    BUF[POS++] = 0x0F;     
+    BUF[POS++] = 0xAF;     
+    BUF[POS++] = 0xC0 | (reg_src << 3) | reg_dest; 
+
+    _EMIT_NOP();
+}
+
+void Emit_Cqo(Buffer* bin_buf) 
+{
+    assert(bin_buf);
+
+    WRITE_ASM("cqo\n");
+    
+    BUF[POS++] = 0x48;
+    BUF[POS++] = 0x99;
+
+    _EMIT_NOP();
+}
+
+void Emit_IdivReg(Buffer* bin_buf, RegName reg) 
+{
+    assert(bin_buf);
+    
+    WRITE_ASM("idiv %s\n", GetRegName(reg));
+    
+    BUF[POS++] = 0x48;                 
+    BUF[POS++] = 0xF7;                 
+    BUF[POS++] = 0xF8 + reg;
+
+    _EMIT_NOP();
+}
+
+void Emit_IncReg(Buffer* bin_buf, RegName reg) 
+{
+    assert(bin_buf);
+    
+    WRITE_ASM("inc %s\n", GetRegName(reg));
+    
+    BUF[POS++] = 0x48;                 
+    BUF[POS++] = 0xFF;                 
+    BUF[POS++] = 0xC0 + reg;
+
+    _EMIT_NOP();
+}
+
+void Emit_MovRegMem(Buffer* bin_buf, RegName reg_dest, RegName reg_src, int offset) 
+{
+    assert(bin_buf);
+
+    if (offset < 0) WRITE_ASM("mov %s, [%s - 0x%x]\n", GetRegName(reg_dest), 
+                                                       GetRegName(reg_src), -offset);
+
+    else            WRITE_ASM("mov %s, [%s + 0x%x]\n", GetRegName(reg_dest), 
+                                                       GetRegName(reg_src), offset);
+    
+    BUF[POS++] = 0x48;
+    BUF[POS++] = 0x8B;
+    BUF[POS++] = 0x80 | reg_src;
+    memcpy(BUF + POS, &offset, 4);
+    POS += 4;
+
+    _EMIT_NOP();
+}
+
+void Emit_MovMemReg(Buffer* bin_buf, RegName reg_dest, int offset, RegName reg_src) 
+{
+    assert(bin_buf);
+    
+    if (offset < 0)
+        WRITE_ASM("mov [%s - %d], %s\n", GetRegName(reg_dest), -offset, 
+                                           GetRegName(reg_src));
+    else
+        WRITE_ASM("mov [%s + %d], %s\n", GetRegName(reg_dest), offset, 
+                                           GetRegName(reg_src));
+    
+    BUF[POS++] = 0x48;
+    BUF[POS++] = 0x89;
+    BUF[POS++] =  0x80 | reg_dest | (reg_src  << 3);
+    
+    memcpy(BUF + POS, &offset, 4);
+    POS += 4;
+
+    _EMIT_NOP();
+}
+
 char* GetRegName(RegName reg)
 {
     for (int i = 0; i < SIZE_OF_REGS_ARR; ++i)

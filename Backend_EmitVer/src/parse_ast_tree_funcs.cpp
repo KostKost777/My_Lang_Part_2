@@ -374,55 +374,72 @@ Status ParseAsmOr(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
-    static int counter = 0;
+
+    static int counter  = 0;
+
+    char bad[64]  = {};
+    char good[64] = {};
+
+    sprintf(good, ".good_%d", counter);
+    sprintf(bad,  ".bad_%d",  counter);
 
     if (node->type != OP_OR)
         return error;
 
     fprintf(log_file, "Enter ParseAsmOr\n");
 
-    WRITE_ASM    ( "; ||          \n"          );
-    _XOR_REG_REG (rcx, rcx);
-    _POP_REG     (rax);
-    _POP_REG     (rbx);
-    
-    WRITE_ASM( "test rax, rax \n"          );    
-    WRITE_ASM( "jnz .good_%d  \n", counter );    
-    WRITE_ASM( "test rbx, rbx \n"          );
-    WRITE_ASM( "jz .false_%d  \n", counter );   
-    WRITE_ASM( ".good_%d:     \n", counter ); 
-    WRITE_ASM( "mov rcx, 1    \n"          ); 
-    WRITE_ASM( ".false_%d:    \n", counter ); 
-    WRITE_ASM( "push rcx    \n\n"          ); 
+    WRITE_ASM     ( "; ||\n");
+
+    _XOR_REG_REG  (rcx, rcx);
+    _POP_REG      (rax);
+    _POP_REG      (rbx);
+    _TEST_REG_REG (rax, rax);
+    _COND_JMP     (jne, good);
+    _TEST_REG_REG (rbx, rbx);
+    _COND_JMP     (je, bad);
+   
+    WRITE_ASM     ("%s:\n", good); 
+
+    _MOV_REG_INT  (rcx, 1);
+
+    WRITE_ASM     ("%s:\n", bad); 
+
+    _PUSH_REG     (rcx);
 
     counter++;
 
     return success;
 }
 
-Status ParseAsmAnd(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmAnd(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
 
     static int counter = 0;
 
+    char bad[64]  = {};
+    sprintf(bad,  ".bad_%d",  counter);
+
     if (node->type != OP_AND)
         return error;
 
     fprintf(log_file, "Enter ParseAsmAnd\n");
 
-    WRITE_ASM( "; &&          \n"          );
-    WRITE_ASM( "xor rcx, rcx  \n"          ); 
-    WRITE_ASM( "pop rax       \n"          );     
-    WRITE_ASM( "pop rbx       \n"          );     
-    WRITE_ASM( "test rax, rax \n"          );    
-    WRITE_ASM( "jz .false_%d  \n", counter );    
-    WRITE_ASM( "test rbx, rbx \n"          );    
-    WRITE_ASM( "jz .false_%d  \n", counter );    
-    WRITE_ASM( "mov rcx, 1    \n"          );    
-    WRITE_ASM( ".false_%d:    \n", counter );   
-    WRITE_ASM( "push rcx      \n\n"        );
+    WRITE_ASM     ("; &&\n");
+
+    _XOR_REG_REG  (rcx, rcx);
+    _POP_REG      (rax);
+    _POP_REG      (rbx);
+    _TEST_REG_REG (rax, rax);
+    _COND_JMP     (je, bad);
+    _TEST_REG_REG (rbx, rbx);
+    _COND_JMP     (je, bad);
+    _MOV_REG_INT  (rcx, 1);
+
+    WRITE_ASM     ("%s:\n", bad); 
+
+    _PUSH_REG     (rcx);
 
     counter++;
 
@@ -438,91 +455,141 @@ Status ParseAsmPARAM(Tree* tree, Node* node)
     return error;
 }
 
-Status ParseAsmBigger(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmBigger(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
+
+    static int counter  = 0;
+
+    char skip[64]  = {};
+    sprintf(skip,  ".skip_>_%d",  counter);
 
     if (node->type != OP_BIGGER)
         return error;
 
     fprintf(log_file, "Enter ParseAsmBigger\n");
 
-    WRITE_ASM( "; >          \n");
-    WRITE_ASM( "xor rcx, rcx \n");
-    WRITE_ASM( "pop rax      \n");
-    WRITE_ASM( "pop rbx      \n");
-    WRITE_ASM( "cmp rbx, rax \n");
-    WRITE_ASM( "setg cl      \n");
-    WRITE_ASM( "push rcx     \n\n");
+    
+    WRITE_ASM     ("; > \n");
+
+    _XOR_REG_REG  (rcx, rcx);
+    _POP_REG      (rax);
+    _POP_REG      (rbx);
+    _CMP_REG_REG  (rbx, rax);
+    _COND_JMP     (jle, skip)
+    _MOV_REG_INT  (rcx, 1);
+
+    WRITE_ASM     ("%s:\n", skip);
+
+    _PUSH_REG     (rcx);
+
+    counter++;
 
     return success;
 }
 
-Status ParseAsmEqual(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmEqual(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
+
+    static int counter  = 0;
+
+    char not_equal[64]  = {};
+    sprintf(not_equal,  ".not_equal_%d",  counter);
 
     if (node->type != OP_EQUAL)
         return error;
 
     fprintf(log_file, "Enter ParseAsmEqual\n");
 
-    WRITE_ASM( "; ==         \n");
-    WRITE_ASM( "xor rcx, rcx \n");
-    WRITE_ASM( "pop rax      \n");
-    WRITE_ASM( "pop rbx      \n");
-    WRITE_ASM( "cmp rbx, rax \n");
-    WRITE_ASM( "setz cl      \n");
-    WRITE_ASM( "push rcx     \n\n");
+    WRITE_ASM     ("; == \n");
+
+    _XOR_REG_REG  (rcx, rcx);
+    _POP_REG      (rax);
+    _POP_REG      (rbx);
+    _CMP_REG_REG  (rbx, rax);
+
+    _COND_JMP     (jne, not_equal)
+    _MOV_REG_INT  (rcx, 1);
+
+    WRITE_ASM     ("%s:\n", not_equal);
+
+    _PUSH_REG     (rcx);
+
+    counter++;
 
     return success;
 }
 
-Status ParseAsmNotEqual(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmNotEqual(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
+
+    static int counter  = 0;
+
+    char equal[64]  = {};
+    sprintf(equal,  ".equal_%d",  counter);
 
     if (node->type != OP_NOT_EQUAL)
         return error;
 
     fprintf(log_file, "Enter ParseAsmNotEqual\n");
 
-    WRITE_ASM( "; !=         \n");
-    WRITE_ASM( "xor rcx, rcx \n");
-    WRITE_ASM( "pop rax      \n");
-    WRITE_ASM( "pop rbx      \n");
-    WRITE_ASM( "cmp rbx, rax \n");
-    WRITE_ASM( "setnz cl     \n");
-    WRITE_ASM( "push rcx     \n\n");
+    WRITE_ASM     ("; == \n");
+
+    _MOV_REG_INT  (rcx, 1);
+    _POP_REG      (rax);
+    _POP_REG      (rbx);
+    _CMP_REG_REG  (rbx, rax);
+    _COND_JMP     (je, equal)
+    _XOR_REG_REG  (rcx, rcx);
+
+    WRITE_ASM     ("%s:\n", equal);
+
+    _PUSH_REG     (rcx);
+
+    counter++;
 
     return success;
 }
 
-Status ParseAsmLess(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmLess(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
+
+    static int counter  = 0;
+
+    char skip[64]  = {};
+    sprintf(skip,  ".skip_<_%d",  counter);
 
     if (node->type != OP_LESS)
         return error;
 
     fprintf(log_file, "Enter ParseAsmLess\n");
 
-    WRITE_ASM( "; <          \n");
-    WRITE_ASM( "xor rcx, rcx \n");
-    WRITE_ASM( "pop rax      \n");
-    WRITE_ASM( "pop rbx      \n");
-    WRITE_ASM( "cmp rbx, rax \n");
-    WRITE_ASM( "setl cl      \n");
-    WRITE_ASM( "push rcx     \n\n");
+    WRITE_ASM("; < \n");
+
+    _XOR_REG_REG (rcx, rcx);
+    _POP_REG     (rax);
+    _POP_REG     (rbx);
+    _CMP_REG_REG (rbx, rax);
+    _COND_JMP    (jge, skip);    
+    _MOV_REG_INT (rcx, 1);
+
+    WRITE_ASM    ("%s:\n", skip);
+
+    _PUSH_REG    (rcx);
+
+    counter++;
 
     return success;
 }
 
-Status ParseAsmNumber(Tree* tree, Node* node)
+Status ParseAsmNumber(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -530,11 +597,13 @@ Status ParseAsmNumber(Tree* tree, Node* node)
     if (node->type != NUM) return error;
 
     fprintf(log_file, "Enter ParseAsmNumber\n");
-    WRITE_ASM( "push %d ;������� ���������\n\n", node->lexeme.num);
+
+    _PUSH_INT(node->lexeme.num);
+
     return success;
 }
 
-Status ParseAsmADD(Tree* tree, Node* node)
+Status ParseAsmADD(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -544,15 +613,15 @@ Status ParseAsmADD(Tree* tree, Node* node)
     fprintf(log_file, "Enter ParseAsmADD \n");
     WRITE_ASM( "; ����� ���� �����\n");
 
-    WRITE_ASM( "pop rax      \n");
-    WRITE_ASM( "pop rbx      \n");
-    WRITE_ASM( "add rax, rbx \n");
-    WRITE_ASM( "push rax     \n\n");
+    _POP_REG     (rax);
+    _POP_REG     (rbx);
+    _ADD_REG_REG (rax, rbx);
+    _PUSH_REG    (rax)
 
     return success;
 }
 
-Status ParseAsmSUB(Tree* tree, Node* node)
+Status ParseAsmSUB(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -562,15 +631,15 @@ Status ParseAsmSUB(Tree* tree, Node* node)
     fprintf(log_file, "Enter ParseAsmSUB    \n");
     WRITE_ASM( "; �������� ���� �����\n");
 
-    WRITE_ASM( "pop rax      \n");
-    WRITE_ASM( "pop rbx      \n");
-    WRITE_ASM( "sub rbx, rax \n");
-    WRITE_ASM( "push rbx     \n\n");
+    _POP_REG     (rax);
+    _POP_REG     (rbx);
+    _ADD_REG_REG (rbx, rax);
+    _PUSH_REG    (rbx)
 
     return success;
 }
 
-Status ParseAsmMUL(Tree* tree, Node* node)
+Status ParseAsmMUL(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -580,15 +649,15 @@ Status ParseAsmMUL(Tree* tree, Node* node)
     fprintf(log_file, "Enter ParseAsmMUL    \n");
     WRITE_ASM( ";��������� ���� �����\n");
 
-    WRITE_ASM( "pop rax   \n");
-    WRITE_ASM( "pop rbx   \n");
-    WRITE_ASM( "imul rbx   \n");
-    WRITE_ASM( "push rax  \n\n");
+    _POP_REG     (rax);
+    _POP_REG     (rbx);
+    _IMUL_REG    (rbx);
+    _PUSH_REG    (rax)
 
     return success;
 }
 
-Status ParseAsmDIV(Tree* tree, Node* node)
+Status ParseAsmDIV(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -598,11 +667,11 @@ Status ParseAsmDIV(Tree* tree, Node* node)
     fprintf(log_file, "Enter ParseAsmDIV  \n");
     WRITE_ASM( ";������� ���� �����\n");
 
-    WRITE_ASM( "pop rbx   \n");
-    WRITE_ASM( "pop rax   \n");
-    WRITE_ASM( "cqo   \n");
-    WRITE_ASM( "idiv rbx   \n");
-    WRITE_ASM( "push rax  \n\n");
+    _POP_REG     (rax);
+    _POP_REG     (rbx);
+    _CPO         ();
+    _IDIV_REG    (rbx);
+    _PUSH_REG    (rax);
 
     return success;
 }
@@ -622,10 +691,12 @@ Status ParseAsmPOW(Tree* tree, Node* node)
     WRITE_ASM( "shl rax, cl \n");
     WRITE_ASM( "push rax    \n\n");
 
+    //remake
+
     return success;
 }
 
-Status ParseAsmSQRT(Tree* tree, Node* node)
+Status ParseAsmSQRT(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -633,28 +704,37 @@ Status ParseAsmSQRT(Tree* tree, Node* node)
     if (node->type != OP_SQRT) return error;
 
     static int counter = 0;
+
+    char sqvrt[64]     = {};
+    char end_sqvrt[64] = {};
+
+    sprintf(sqvrt,     ".sqvrt_%d",      counter);
+    sprintf(end_sqvrt, ".end_sqvrt_%d",  counter);
     
     fprintf(log_file, "Enter ParseAsmSQRT\n");
     WRITE_ASM( ";������ ������� � �����\n");
 
-    WRITE_ASM( "pop rax               \n");
-    WRITE_ASM( "xor rcx, rcx          \n");
-    WRITE_ASM( ".sqvrt_%d:            \n",   counter);
-    WRITE_ASM( "push rcx              \n");
-    WRITE_ASM( "imul rcx, rcx         \n");
-    WRITE_ASM( "cmp  rcx, rax         \n");
-    WRITE_ASM( "jge  .end_sqvrt_%d    \n",   counter);
-    WRITE_ASM( "pop rcx               \n");
-    WRITE_ASM( "inc rcx               \n");
-    WRITE_ASM( "jmp .sqvrt_%d         \n",   counter);
-    WRITE_ASM( ".end_sqvrt_%d:        \n\n", counter);
+    _POP_REG      (rax);
+    _XOR_REG_REG  (rcx, rcx);
+ 
+    WRITE_ASM     (".%s: \n", sqvrt);
+ 
+    _PUSH_REG     (rcx);
+    _IMUL_REG_REG (rcx, rcx);
+    _CMP_REG_REG  (rcx, rax);
+    _COND_JMP     (jge, end_sqvrt);
+    _POP_REG      (rcx);
+    _INC_REG      (rcx);
+    _JMP          (sqvrt)
+    
+    WRITE_ASM     (".%s: \n", end_sqvrt);
 
     counter++;
 
     return success;
 }
 
-Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -671,21 +751,17 @@ Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info)
 
     fprintf(log_file, "Enter ParseAsmOutVar\n");
 
-    if (var_type == VAR)
-        WRITE_ASM( "mov rax, [rbp - %d] ;�������� ������ �� ���������� |%s|\n", 
-                                                                          mem_ptr * 8, 
-                                                                          node->lexeme.str.name);
-    else
-        WRITE_ASM( "mov rax, [rbp + %d] ;�������� ������ �� ��������� |%s|\n", 
-                                                                         mem_ptr * 8, 
-                                                                         node->lexeme.str.name);
+    WRITE_ASM( ";�������� ������ �� ���������� |%s|\n",  node->lexeme.str.name);
+
+    if (var_type == VAR) _MOV_REG_MEM (rax, rbp, -mem_ptr * 8);   
+    else                 _MOV_REG_MEM (rax, rbp, mem_ptr * 8);
             
-    WRITE_ASM( "push rax          \n\n");
+    _PUSH_REG (rax);
 
     return success;
 }
 
-Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -707,9 +783,9 @@ Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info)
     fprintf(log_file, "Enter ParseAsmInVar\n");
 
     WRITE_ASM( ";������ � ���������� |%s| \n", node->lexeme.str.name);
-    WRITE_ASM( "pop rax                   \n");
-    
-    WRITE_ASM( "mov [rbp - %d], rax       \n\n", mem_ptr * 8);
+
+    _POP_REG     (rax);
+    _MOV_MEM_REG (rbp, -mem_ptr * 8, rax);
     
     return success;
 }
@@ -764,7 +840,7 @@ size_t GetIndexOfFuncInNameTable(NameTable* name_table, Lexeme* func_info)
     return 0;
 }
 
-Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info)
+Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(node);
     assert(tree);
@@ -780,30 +856,29 @@ Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info)
 
     ParseAsmExpression(tree, node->left->right, func_info);
 
-    WRITE_ASM( "call .%s     \n", tree->name_table->arr[index].func_ptr);
-    WRITE_ASM( "push rax  ; ������������ �������� � rax\n\n"); 
-    
-
+    _CALL     (tree->name_table->arr[index].func_ptr);
+    _PUSH_REG (rax);
+ 
     return success;
 }
 
-void ParseAsmFuncLabel(NameTable* name_table, Lexeme* func_info)
+void ParseAsmFuncLabel(NameTable* name_table, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(name_table);
     assert(func_info);
 
     size_t index = GetIndexOfFuncInNameTable(name_table, func_info);
 
-    WRITE_ASM( ".%s:         \n\n", name_table->arr[index].func_ptr);
+    WRITE_ASM( ".%s: \n\n", name_table->arr[index].func_ptr);
 
-    WRITE_ASM( "push rbp     \n");
-    WRITE_ASM( "mov rbp, rsp \n");
+    _PUSH_REG    (rbp);
+    _MOV_REG_REG (rbp, rsp);
 
-    //����� ������ ����������
     size_t var_addres = name_table->arr[index + 1].address;
 
     size_t var_in_main = CountVarInFunc(name_table, name_table->arr[index].name);
-    WRITE_ASM( "sub rsp, %zu \n\n", var_in_main * 8);
+
+    _SUB_REG_INT (rsp, (int)var_in_main * 8);
 }
 
 Lexeme GetMainLexeme()

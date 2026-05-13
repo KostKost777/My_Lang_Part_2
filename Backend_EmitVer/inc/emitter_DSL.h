@@ -71,4 +71,25 @@
 #define _TEST_REG_INT(reg, value)             \
         Emit_TestRegInt(bin_buf, reg, value); \
 
+#define _IMUL_REG(reg)                \
+        Emit_ImulReg(bin_buf, reg);   \
+
+#define _CPO()            \
+        Emit_Cqo(bin_buf); \
+
+#define _IDIV_REG(reg)             \
+        Emit_IdivReg(bin_buf, reg); \
+    
+#define _IMUL_REG_REG(reg_dest, reg_src)           \
+        Emit_ImulRegReg(bin_buf, reg_dest, reg_src); \
+
+#define _INC_REG(reg)              \
+        Emit_IncReg(bin_buf, reg); \
+
+#define _MOV_REG_MEM(reg_dest, reg_src, offset)            \
+        Emit_MovRegMem(bin_buf, reg_dest, reg_src, offset) \
+
+#define _MOV_MEM_REG(reg_dest, offset, reg_src)            \
+        Emit_MovMemReg(bin_buf, reg_dest, offset, reg_src) \
+
 #endif
