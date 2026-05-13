@@ -4,6 +4,7 @@
 struct Buffer
 {
     char* data;
+    size_t pos;
     size_t size;
     size_t line;
     size_t column;
