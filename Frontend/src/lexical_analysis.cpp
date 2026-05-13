@@ -65,6 +65,9 @@ Status MakeLexicalAnalysis(Buffer* buffer, size_t* pos, TokenArray* tokens)
         if (ParseOperator(buffer, pos, tokens)== success)
             continue;
 
+        if (ParseSpecSym(buffer, pos, tokens) == success)
+            continue;
+
         if(ParseIdentifier(buffer, pos, tokens) == success)
             continue;
 
@@ -142,9 +145,14 @@ Status ParseKeyWord(Buffer* buffer, size_t* pos, TokenArray* tokens)
 
     if (len < 0) assert(false);
 
+    printf("KEY_WORD_NAME: %s\n", keyword_name);
+    printf("POS: %zu\n\n", *pos);
+
     BaseLexeme* key_word_ptr = FindInKeyWordArr(keyword_name);
 
     if (key_word_ptr == NULL) return error;
+
+    printf("KEY_WORD_FIND\n");
 
     AddStringToken(tokens, buffer, key_word_ptr->type, keyword_name);
     MoveBufferPointer(buffer, pos, (size_t)len);
@@ -224,6 +232,35 @@ Status ParseIdentifier(Buffer* buffer, size_t* pos, TokenArray* tokens)
     return success;
 }
 
+Status ParseSpecSym(Buffer* buffer, size_t* pos, TokenArray* tokens)
+{
+    assert(buffer);
+    assert(buffer->data);
+    assert(pos);
+    assert(tokens);
+
+    size_t len = 0;
+    char spec_sym_name[MAX_LEN_OF_WORD] = {};
+
+    sscanf(buffer->data + *pos, "%s%n", spec_sym_name, &len);
+
+    if (len < 0) assert(false);
+
+    printf("SPEC_SYM: %s\n", spec_sym_name);
+
+    BaseLexeme* spec_sym_word_ptr = FindInSpecSymArr(spec_sym_name);
+
+    if (spec_sym_word_ptr == NULL) return error;
+
+    printf("FIND_SPEC_SYM: %s\n", spec_sym_name);
+
+    AddStringToken(tokens, buffer, spec_sym_word_ptr->type, spec_sym_name);
+    MoveBufferPointer(buffer, pos, (size_t)len);
+    SkipSpaces(buffer, pos);
+
+    return success;
+}
+
 int GetSignOfNumber(Buffer* buffer, size_t* pos)
 {
     assert(buffer);
@@ -261,6 +298,8 @@ void AddStringToken(TokenArray* tokens, Buffer* buffer,
     assert(tokens);
     assert(buffer);
     assert(name);
+
+    printf("ADD: %s\n", name);
 
     tokens->arr[tokens->size].type = type;
     tokens->arr[tokens->size].lexeme.str.name = strdup(name);
@@ -333,6 +372,24 @@ BaseLexeme* FindInKeyWordArr(char* name)
             strcmp(keywords_arr[i].name, name) == 0)
         {
             return &keywords_arr[i];
+        }
+    }
+
+    return NULL;
+}
+
+BaseLexeme* FindInSpecSymArr(char* name)
+{
+    assert(name);
+
+    size_t hash = GetHash(name);
+
+    for (int i = 0; i < NUM_OF_SPEC_SYM; ++i)
+    {
+        if (spec_sym_arr[i].hash == hash &&
+            strcmp(spec_sym_arr[i].name, name) == 0)
+        {
+            return &spec_sym_arr[i];
         }
     }
 

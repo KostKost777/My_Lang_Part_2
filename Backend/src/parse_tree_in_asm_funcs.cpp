@@ -25,6 +25,8 @@ void ParseAsmTreeInAsmFile(Tree* tree, Node* node, const char* asm_file_name)
     asm_file = fopen(asm_file_name, "w");
     assert(asm_file);
 
+    InputHeadInAsmFile();
+
     Lexeme main = GetMainLexeme();
     ParseMain(tree, node, &main);
 
@@ -37,6 +39,14 @@ void ParseAsmTreeInAsmFile(Tree* tree, Node* node, const char* asm_file_name)
     free(main.str.name);
     fclose(asm_file);
     printf("\nEND");
+}
+
+void InputHeadInAsmFile()
+{
+    fprintf(asm_file, "global _start  \n\n"
+                      "buf_size equ 6 \n\n"
+                      "section .text  \n\n"
+                      "_start:        \n\n");
 }
 
 void ParseMain(Tree* tree, Node* node, Lexeme* main)
@@ -89,8 +99,8 @@ void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info)
             return;
         }
 
-        if (node->left->type == KEY_DRAW)
-            ParseAsmDraw(tree, node->left, func_info);
+        if (node->left->type == KEY_PUTCHAR)
+            ParseAsmPutChar(tree, node->left, func_info);
 
         if (node->left->type == OP_ASSIGNED)
             ParseAsmAssigned(tree, node->left, func_info);
@@ -130,35 +140,30 @@ void ParseAsmAssigned(Tree* tree, Node* node, Lexeme* func_info)
     ParseAsmInVar(tree, node->left, func_info);
 }
 
-void ParseAsmDraw(Tree* tree, Node* node, Lexeme* func_info)   //FIX
+void ParseAsmPutChar(Tree* tree, Node* node, Lexeme* func_info)   //FIX
 {
     assert(tree);
     assert(node);
     assert(func_info);
 
-    fprintf(log_file, "Enter ParseAsmDraw\n");
+    fprintf(log_file, "Enter ParseAsmPutChar\n");
 
-    ParseAsmOutVar(tree, node->left, func_info);
+    ParseAsmPutCharArg(tree, node->left);
 
-    fprintf(asm_file, "\nPOPREG BX\n");
-    fprintf(asm_file, "PUSH 255\n");
-    fprintf(asm_file, "POPM [BX]\n");
-
-    fprintf(asm_file, "PUSH 1\n");
-    fprintf(asm_file, "PUSHREG BX\n");
-    fprintf(asm_file, "ADD\n");
-    fprintf(asm_file, "POPREG BX\n");
-    fprintf(asm_file, "PUSH 128\n");
-    fprintf(asm_file, "POPM [BX]\n");
-
-    fprintf(asm_file, "PUSH 1\n");
-    fprintf(asm_file, "PUSHREG BX\n");
-    fprintf(asm_file, "ADD\n");
-    fprintf(asm_file, "POPREG BX\n");
-    fprintf(asm_file, "PUSH 255\n");
-    fprintf(asm_file, "POPM [BX]\n");
+    fprintf(asm_file, "call PutChar\n\n");
 
     tree->is_draw = true;
+}
+
+void ParseAsmPutCharArg(Tree* tree, Node* node)
+{
+    assert(tree);
+    assert(node);
+
+    if (node->type      == SPEC_SYM_SPACE) fprintf(asm_file, "mov rax, \' \'\n");
+    else if (node->type == SPEC_SYM_ENTER) fprintf(asm_file, "mov rax, \'\\n\'\n");
+    else                                   fprintf(asm_file, "mov rax, \'%c\'\n", 
+                                                   node->lexeme.str.name);
 }
 
 void ParseAsmEnd(Tree* tree, Node* node, Lexeme* func_info)
@@ -168,9 +173,6 @@ void ParseAsmEnd(Tree* tree, Node* node, Lexeme* func_info)
     assert(func_info);
 
     fprintf(log_file, "Enter ParseAsmEnd\n");
-
-    if (tree->is_draw)
-        fprintf(asm_file, "call PrintVRAM\n\n");      //FIX
 
     fprintf(asm_file, "mov rsp, rbp \n");
     fprintf(asm_file, "pop rbp      \n\n");

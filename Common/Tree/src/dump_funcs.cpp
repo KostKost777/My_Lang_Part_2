@@ -230,7 +230,9 @@ const char* GetNodeTypeName(Node* node)
         case KEY_OUT:               return "out";
         case OP_SQRT:               return "sqrt";
         case KEY_END:               return "end";
-        case KEY_DRAW:              return "draw";
+        case KEY_PUTCHAR:           return "draw";
+        case SPEC_SYM_SPACE:        return "space";
+        case SPEC_SYM_ENTER:        return "enter";
 
         default:                    return NULL;
     }
@@ -277,7 +279,9 @@ const char* GetNodeColor(Node* node)
         case KEY_IN:                return "#ec4343ff";
         case KEY_OUT:               return "#ec4343ff";
         case KEY_END:               return "#ff0000ff";
-        case KEY_DRAW:              return "#a7f020ff";
+        case KEY_PUTCHAR:           return "#a7f020ff";
+        case SPEC_SYM_SPACE:        return "#a7f020f1";
+        case SPEC_SYM_ENTER:        return "#a7f020f1";
 
         default:                    return NULL;
     }

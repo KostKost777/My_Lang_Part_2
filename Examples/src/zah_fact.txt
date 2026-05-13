@@ -18,13 +18,22 @@
 
 ===========================================================================
 
-global _start
+PutChar:
+                push rbp
+                mov rbp, rsp
 
-buf_size equ 6
+                mov [char_buffer], al 
+    
+                mov rsi, char_buffer  
+                mov rdx, 1
+                mov rdi, 1
+                mov rax, 1
+                syscall
 
-section .text
+                mov rsp, rbp
+                pop rbp
 
-_start:
+                ret
 
 MyScanf:
                 push rbp
@@ -62,13 +71,13 @@ StrToInt:
 
 .parse:
                 xor rcx, rcx
-                mov cl, [rsi]         ; читаем байт
-                cmp cl, 10     ; конец строки?
+                mov cl, [rsi]         
+                cmp cl, 10     
                 je .done
                 
-                sub cl, '0'           ; ASCII -> число
-                mul rbx               ; rax = rax * 10
-                add rax, rcx          ; rax = rax + digit
+                sub cl, '0'           
+                mul rbx               
+                add rax, rcx          
                 
                 inc rsi
                 jmp .parse
@@ -82,8 +91,6 @@ StrToInt:
                 mov rsp, rbp
                 pop rbp
                 ret
-
-;=========== ФУНКЦИЯ ВЫВОДА ЧИСЛА ===========
 
 MyPrintf:
                 push rbp
@@ -150,4 +157,5 @@ MyPrintf:
 section .data
     scanf_buffer    db buf_size dup(0)
     printf_buffer   db buf_size dup(0)
+    char_buffer     db 1
     newline         db 10

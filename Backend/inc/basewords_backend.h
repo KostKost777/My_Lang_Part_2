@@ -2,8 +2,9 @@
 #define KEY_WORDS_BACKEND
 
 #include "lexical_analysis.h"
+#include "stdlib.h"
 
-const int NUM_OF_BASEWORDS = 29;
+const int NUM_OF_BASEWORDS = 31;
 
 struct BaseWord
 {

@@ -15,7 +15,7 @@ enum Status
 enum Type
 {
     //Kewords
-    KEY_DRAW = -9,
+    KEY_PUTCHAR = -9,
     KEY_END = -8,
     KEY_IN = -4,
     KEY_OUT = -3,
@@ -49,6 +49,11 @@ enum Type
     OP_AND = -5,
     OP_OR = -6,
     OP_SQRT = -7,
+
+    //Special Symbols
+
+    SPEC_SYM_SPACE = 26,
+    SPEC_SYM_ENTER = 27,
 
     //Identifier
     IDENT = 22,
@@ -104,6 +109,8 @@ Status ParseNumber(Buffer* buffer, size_t* pos, TokenArray* tokens);
 Status ParseIdentifier(Buffer* buffer, size_t* pos, TokenArray* tokens);
 
 Status ParseOperator(Buffer* buffer, size_t* pos, TokenArray* tokens);
+
+Status ParseSpecSym(Buffer* buffer, size_t* pos, TokenArray* tokens);
 
 int GetSignOfNumber(Buffer* buffer, size_t* pos);
 

@@ -17,6 +17,10 @@
 { OP_##op, name, GetHash (name) },    \
 { OP_##op, #op, GetHash (#op) }       \
 
+#define SPEC_SYM_DECL_(spec_sym, name)                    \
+{ SPEC_SYM_##spec_sym, name,       GetHash (name)      }, \
+{ SPEC_SYM_##spec_sym, #spec_sym,  GetHash (#spec_sym) }  \
+
 
 BaseLexeme keywords_arr[] =
 {
@@ -38,8 +42,14 @@ KEY_DECL_(RBRACE,    "стоп"),        //int
 KEY_DECL_(COMMA,     ","),           //int
 KEY_DECL_(OUT,       "малевать"),        //int
 KEY_DECL_(IN,        "вечервхату"),        //int
-KEY_DECL_(DRAW,      "рисовать"),        //int
+KEY_DECL_(PUTCHAR,   "наколоть"),        //int
 KEY_DECL_(END,       "откинуться")        //int
+};
+
+BaseLexeme spec_sym_arr[] =
+{
+SPEC_SYM_DECL_(SPACE,      "провафлить"),   
+SPEC_SYM_DECL_(ENTER,      "соскочить"),   
 };
 
 BaseLexeme operator_arr[] =

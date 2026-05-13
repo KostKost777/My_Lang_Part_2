@@ -162,7 +162,7 @@ Node* GetOperator(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
     if (node != NULL)
         return node;
 
-    node = GetDrawOp(tokens, pos, tree, node);
+    node = GetPutChar(tokens, pos, tree, node);
     if (node != NULL)
         return node;
 
@@ -410,20 +410,20 @@ Node* GetReturnOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
                     tree);
 }
 
-Node* GetDrawOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
+Node* GetPutChar(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 {
     assert(tree);
     assert(tokens);
     assert(pos);
 
-    fprintf(log_file, "<strong>Enter GetDrawOp</strong>\n");
+    fprintf(log_file, "<strong>Enter GetPutChar</strong>\n");
     fflush(log_file);
 
-    if (tokens->arr[*pos].type != KEY_DRAW) return NULL;
+    if (tokens->arr[*pos].type != KEY_PUTCHAR) return NULL;
     Token draw_token = tokens->arr[*pos];
     *pos += 1;
 
-    Node* node_left = GetIdentifier(tokens, pos, tree, VAR);
+    Node* node_left = GetPutCharArg(tokens, pos, tree, VAR);
     *pos += 1;
 
     if (node_left == NULL) return NULL;
@@ -434,20 +434,36 @@ Node* GetDrawOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
         return NULL;
     }
     *pos += 1;
-
-    fprintf(log_file, "End Draw\n");
+    fprintf(log_file, "End GetPutChar\n");
 
     return  NewNode(GetSeparateToken(KEY_SEMICOLON),
-                    NewNode(draw_token,
-                            node_left,
-                            NULL,
-                            tree),
+                    node_left,
                     NULL,
                     tree);
 }
 
+Node* GetPutCharArg(TokenArray* tokens, size_t* pos, Tree* tree, IdentType type)
+{
+    assert(tree);
+    assert(tokens);
+    assert(pos);
 
+    fprintf(log_file, "<strong>Enter GetPutCharArg</strong>\n");
 
+    if (tokens->arr[*pos].type == IDENT          ||
+        tokens->arr[*pos].type == SPEC_SYM_SPACE ||
+        tokens->arr[*pos].type == SPEC_SYM_ENTER)
+    {       
+        return NewNode(tokens->arr[*pos - 1],
+                       NewNode(tokens->arr[*pos],
+                               NULL,
+                               NULL,
+                               tree),
+                       NULL,
+                       tree);
+    }
+    return NULL;
+}
 
 Node* GetEndOp(TokenArray* tokens, size_t* pos, Tree* tree)
 {

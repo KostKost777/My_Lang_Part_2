@@ -23,7 +23,7 @@ BaseWord basewords_arr[NUM_OF_BASEWORDS] =
 {KEY_OUT,            "out",        GetHash("out")},    // out
 {KEY_IN,             "in",         GetHash("in")},  // in
 {KEY_END,            "end",        GetHash("end")},  // end
-{KEY_DRAW,           "draw",       GetHash("draw")},  // draw
+{KEY_PUTCHAR,        "draw",       GetHash("draw")},  // draw
 {OP_ASSIGNED,        "=",          GetHash("=")},
 {OP_EQUAL,           "==",         GetHash("==")},
 {OP_NOT_EQUAL,       "!=",         GetHash("!=")},
@@ -39,5 +39,7 @@ BaseWord basewords_arr[NUM_OF_BASEWORDS] =
 {OP_DIV,             "/",          GetHash("/")},
 {OP_POW,             "^",          GetHash("^")},
 {OP_MOD,             "%",          GetHash("%")},
-{OP_SQRT,            "sqrt",       GetHash("sqrt")}
+{OP_SQRT,            "sqrt",       GetHash("sqrt")},
+{SPEC_SYM_SPACE,     "space",      GetHash("space")},
+{SPEC_SYM_ENTER,     "enter",      GetHash("enter")}
 };

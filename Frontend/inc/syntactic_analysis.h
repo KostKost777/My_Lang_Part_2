@@ -56,9 +56,11 @@ Node* GetThirdCompareOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node)
 
 Node* GetFourthCompareOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node);
 
+Node* GetPutCharArg(TokenArray* tokens, size_t* pos, Tree* tree, IdentType type);
+
 Node* GetEndOp(TokenArray* tokens, size_t* pos, Tree* tree);
 
-Node* GetDrawOp(TokenArray* tokens, size_t* pos, Tree* tree, Node* node);
+Node* GetPutChar(TokenArray* tokens, size_t* pos, Tree* tree, Node* node);
 
 Node* GetSqrt(TokenArray* tokens, size_t* pos, Tree* tree, Node* node);
 

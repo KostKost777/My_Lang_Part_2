@@ -1,434 +1,447 @@
-PUSH 100
+global _start  
 
-PUSH 0  ;Адрес для переменной |Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+buf_size equ 6 
 
-PUSH 100
+section .text  
 
-PUSH 1  ;Адрес для переменной |Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+_start:        
 
-PUSH 20
+;========MAIN=======
 
-PUSH 2  ;Адрес для переменной |Серега_Радиус|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+push rbp     
+mov rbp, rsp 
 
+sub rsp, 72 
 
-PUSH 0  ;Получили адрес переменной |Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+push 20 ;Запушил константу
 
-PUSH 2
-DIV
+;Запись в переменную |Евген_Шпала| 
+pop rax                   
+mov [rbp - 8], rax       
 
-PUSH 3  ;Адрес для переменной |Центр_Аркадич|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+push 20 ;Запушил константу
 
+;Запись в переменную |Ержан_Гном| 
+pop rax                   
+mov [rbp - 16], rax       
 
-PUSH 1  ;Получили адрес переменной |Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+push 5 ;Запушил константу
 
-PUSH 2
-DIV
+;Запись в переменную |Серега_Радиус| 
+pop rax                   
+mov [rbp - 24], rax       
 
-PUSH 4  ;Адрес для переменной |Центр_Олегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+mov rax, [rbp - 8] ;Получили данные из переменной |Евген_Шпала|
+push rax          
 
-PUSH 0
+push 2 ;Запушил константу
 
-PUSH 5  ;Адрес для переменной |Счетчик_Макарыч|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+;деление двух чисел
+pop rbx   
+pop rax   
+cqo   
+idiv rbx   
+push rax  
 
-PUSH 0
+;Запись в переменную |Центр_Аркадич| 
+pop rax                   
+mov [rbp - 32], rax       
 
-PUSH 6  ;Адрес для переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+mov rax, [rbp - 16] ;Получили данные из переменной |Ержан_Гном|
+push rax          
 
-PUSH 0
+push 2 ;Запушил константу
 
-PUSH 7  ;Адрес для переменной |Счетчик_Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
+;деление двух чисел
+pop rbx   
+pop rax   
+cqo   
+idiv rbx   
+push rax  
 
+;Запись в переменную |Центр_Олегыч| 
+pop rax                   
+mov [rbp - 40], rax       
 
-:begin_while_0
+push 0 ;Запушил константу
 
-PUSH 5  ;Получили адрес переменной |Счетчик_Макарыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+;Запись в переменную |Счетчик_Макарыч| 
+pop rax                   
+mov [rbp - 48], rax       
 
+push 0 ;Запушил константу
 
-PUSH 0  ;Получили адрес переменной |Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+;Запись в переменную |Счетчик_Евген_Шпала| 
+pop rax                   
+mov [rbp - 56], rax       
 
+push 0 ;Запушил константу
 
-PUSH 1  ;Получили адрес переменной |Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+;Запись в переменную |Счетчик_Ержан_Гном| 
+pop rax                   
+mov [rbp - 64], rax       
 
-MUL
+.begin_while_0:       
+mov rax, [rbp - 48] ;Получили данные из переменной |Счетчик_Макарыч|
+push rax          
 
-JB :L_less_0
-PUSH 0
-:L_less_0
+mov rax, [rbp - 8] ;Получили данные из переменной |Евген_Шпала|
+push rax          
 
+mov rax, [rbp - 16] ;Получили данные из переменной |Ержан_Гном|
+push rax          
 
-PUSH 5  ;Получили адрес переменной |Счетчик_Макарыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+;умножение двух чисел
+pop rax   
+pop rbx   
+imul rbx   
+push rax  
 
+; <          
+xor rcx, rcx 
+pop rax      
+pop rbx      
+cmp rbx, rax 
+setl cl      
+push rcx     
+
+pop rax                
+cmp rax, 0             
+je .end_while_0       
+
+mov rax, [rbp - 32] ;Получили данные из переменной |Центр_Аркадич|
+push rax          
+
+mov rax, [rbp - 56] ;Получили данные из переменной |Счетчик_Евген_Шпала|
+push rax          
+
+; разность двух чисел
+pop rax      
+pop rbx      
+sub rbx, rax 
+push rbx     
+
+mov rax, [rbp - 32] ;Получили данные из переменной |Центр_Аркадич|
+push rax          
+
+mov rax, [rbp - 56] ;Получили данные из переменной |Счетчик_Евген_Шпала|
+push rax          
+
+; разность двух чисел
+pop rax      
+pop rbx      
+sub rbx, rax 
+push rbx     
+
+;умножение двух чисел
+pop rax   
+pop rbx   
+imul rbx   
+push rax  
+
+mov rax, [rbp - 40] ;Получили данные из переменной |Центр_Олегыч|
+push rax          
+
+mov rax, [rbp - 64] ;Получили данные из переменной |Счетчик_Ержан_Гном|
+push rax          
+
+; разность двух чисел
+pop rax      
+pop rbx      
+sub rbx, rax 
+push rbx     
+
+mov rax, [rbp - 40] ;Получили данные из переменной |Центр_Олегыч|
+push rax          
+
+mov rax, [rbp - 64] ;Получили данные из переменной |Счетчик_Ержан_Гном|
+push rax          
+
+; разность двух чисел
+pop rax      
+pop rbx      
+sub rbx, rax 
+push rbx     
+
+;умножение двух чисел
+pop rax   
+pop rbx   
+imul rbx   
+push rax  
+
+; сумма двух чисел
+pop rax      
+pop rbx      
+add rax, rbx 
+push rax     
+
+;Запись в переменную |Андрюха_Расстояние| 
+pop rax                   
+mov [rbp - 72], rax       
+
+mov rax, [rbp - 72] ;Получили данные из переменной |Андрюха_Расстояние|
+push rax          
+
+mov rax, [rbp - 24] ;Получили данные из переменной |Серега_Радиус|
+push rax          
+
+mov rax, [rbp - 24] ;Получили данные из переменной |Серега_Радиус|
+push rax          
+
+;умножение двух чисел
+pop rax   
+pop rbx   
+imul rbx   
+push rax  
+
+; <          
+xor rcx, rcx 
+pop rax      
+pop rbx      
+cmp rbx, rax 
+setl cl      
+push rcx     
 
-PUSH 0  ;Получили адрес переменной |Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+pop rax                
+cmp rax, 0             
+je .skip_if_0         
 
+mov rax, 'a'
+call PutChar
 
-PUSH 1  ;Получили адрес переменной |Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+jmp .skip_else_0      
+.skip_if_0:           
+
+mov rax, ' '
+call PutChar
+
+.skip_else_0:         
+
+mov rax, [rbp - 48] ;Получили данные из переменной |Счетчик_Макарыч|
+push rax          
+
+push 1 ;Запушил константу
 
-MUL
+; сумма двух чисел
+pop rax      
+pop rbx      
+add rax, rbx 
+push rax     
 
-JA :L_bigger_0
-PUSH 1
-:L_bigger_0
+;Запись в переменную |Счетчик_Макарыч| 
+pop rax                   
+mov [rbp - 48], rax       
+
+mov rax, [rbp - 56] ;Получили данные из переменной |Счетчик_Евген_Шпала|
+push rax          
 
+mov rax, [rbp - 8] ;Получили данные из переменной |Евген_Шпала|
+push rax          
 
-PUSH 0
-JE :endwhile_0
+; ==         
+xor rcx, rcx 
+pop rax      
+pop rbx      
+cmp rbx, rax 
+setz cl      
+push rcx     
 
+pop rax                
+cmp rax, 0             
+je .skip_if_1         
 
-PUSH 3  ;Получили адрес переменной |Центр_Аркадич|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+push 0 ;Запушил константу
 
+;Запись в переменную |Счетчик_Евген_Шпала| 
+pop rax                   
+mov [rbp - 56], rax       
 
-PUSH 6  ;Получили адрес переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
+mov rax, [rbp - 64] ;Получили данные из переменной |Счетчик_Ержан_Гном|
+push rax          
 
-SUB
-
-PUSH 3  ;Получили адрес переменной |Центр_Аркадич|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 6  ;Получили адрес переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-SUB
-MUL
-
-PUSH 4  ;Получили адрес переменной |Центр_Олегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 7  ;Получили адрес переменной |Счетчик_Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-SUB
-
-PUSH 4  ;Получили адрес переменной |Центр_Олегыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 7  ;Получили адрес переменной |Счетчик_Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-SUB
-MUL
-ADD
-
-PUSH 8  ;Адрес для переменной |Андрюха_Расстояние|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
-
-
-PUSH 8  ;Получили адрес переменной |Андрюха_Расстояние|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 2  ;Получили адрес переменной |Серега_Радиус|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 2  ;Получили адрес переменной |Серега_Радиус|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-MUL
-
-JB :L_less_1
-PUSH 0
-:L_less_1
-
-
-PUSH 8  ;Получили адрес переменной |Андрюха_Расстояние|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 2  ;Получили адрес переменной |Серега_Радиус|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 2  ;Получили адрес переменной |Серега_Радиус|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-MUL
-
-JA :L_bigger_1
-PUSH 1
-:L_bigger_1
-
-
-PUSH 0
-JE :endif_0
-
-PUSH 7  ;Получили адрес переменной |Счетчик_Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 1  ;Получили адрес переменной |Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-MUL
-
-PUSH 6  ;Получили адрес переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-ADD
-PUSH 3
-MUL
-
-PUSH 9  ;Адрес для переменной |Максон_Координаты|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
-
-
-PUSH 9  ;Получили адрес переменной |Максон_Координаты|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-POPREG BX
-PUSH 255
-POPM [BX]
-PUSH 1
-PUSHREG BX
-ADD
-POPREG BX
-PUSH 128
-POPM [BX]
-PUSH 1
-PUSHREG BX
-ADD
-POPREG BX
-PUSH 255
-POPM [BX]
-:endif_0
-
-
-PUSH 5  ;Получили адрес переменной |Счетчик_Макарыч|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-PUSH 1
-ADD
-
-PUSH 5  ;Адрес для переменной |Счетчик_Макарыч|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
-
-
-PUSH 6  ;Получили адрес переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 0  ;Получили адрес переменной |Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-JE :E_equal_0
-PUSH 0
-:E_equal_0
-
-
-PUSH 6  ;Получили адрес переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-PUSH 0  ;Получили адрес переменной |Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-
-JNE :E_not_equal_0
-PUSH 1
-:E_not_equal_0
-
-
-PUSH 0
-JE :endif_with_else_0
-
-PUSH 0
-
-PUSH 6  ;Адрес для переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
-
-
-PUSH 7  ;Получили адрес переменной |Счетчик_Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-PUSH 1
-ADD
-
-PUSH 7  ;Адрес для переменной |Счетчик_Ержан_Гном|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
-
-
-:endif_with_else_0
-
-PUSH 6  ;Получили адрес переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-PUSHM [GX]
-
-PUSH 1
-ADD
-
-PUSH 6  ;Адрес для переменной |Счетчик_Евген_Шпала|
-PUSHREG HX 
-ADD
-POPREG GX
-POPM [GX]
-
-
-
-
-JMP :begin_while_0
-
-:endwhile_0
-
-DRAW
-HLT
-
+push 1 ;Запушил константу
+
+; сумма двух чисел
+pop rax      
+pop rbx      
+add rax, rbx 
+push rax     
+
+;Запись в переменную |Счетчик_Ержан_Гном| 
+pop rax                   
+mov [rbp - 64], rax       
+
+mov rax, 10
+call PutChar
+
+jmp .skip_else_1      
+.skip_if_1:           
+
+mov rax, [rbp - 56] ;Получили данные из переменной |Счетчик_Евген_Шпала|
+push rax          
+
+push 1 ;Запушил константу
+
+; сумма двух чисел
+pop rax      
+pop rbx      
+add rax, rbx 
+push rax     
+
+;Запись в переменную |Счетчик_Евген_Шпала| 
+pop rax                   
+mov [rbp - 56], rax       
+
+.skip_else_1:         
+
+jmp .begin_while_0    
+.end_while_0:          
+
+mov rsp, rbp 
+pop rbp      
+
+mov rax, 60 
+mov rdi, 0  
+syscall    
+
+PutChar:
+                push rbp
+                mov rbp, rsp
+
+                mov [char_buffer], al 
+    
+                mov rsi, char_buffer  
+                mov rdx, 1
+                mov rdi, 1
+                mov rax, 1
+                syscall
+
+                mov rsp, rbp
+                pop rbp
+
+                ret
+
+MyScanf:
+                push rbp
+                mov rbp, rsp
+
+                push rsi
+
+                mov rax, 0            
+                mov rdi, 0            
+                mov rsi, scanf_buffer       
+                mov rdx, buf_size
+                syscall
+
+                mov rsi, scanf_buffer
+                call StrToInt
+
+                pop rsi
+
+                mov rsp, rbp
+                pop rbp
+                ret
+
+StrToInt:
+                push rbp
+                mov rbp, rsp
+
+                xor rax, rax
+                xor r8, r8
+                mov rbx, 10
+
+                cmp byte [rsi], '-'
+                jne .parse
+                mov r8, 1
+                inc rsi 
+
+.parse:
+                xor rcx, rcx
+                mov cl, [rsi]         
+                cmp cl, 10     
+                je .done
+                
+                sub cl, '0'           
+                mul rbx               
+                add rax, rcx          
+                
+                inc rsi
+                jmp .parse
+
+.done:
+                cmp r8, 1
+                jne .positive
+                neg rax
+
+.positive:
+                mov rsp, rbp
+                pop rbp
+                ret
+
+MyPrintf:
+                push rbp
+                mov rbp, rsp
+
+                xor r8, r8
+                xor rcx, rcx
+                mov rbx, 10
+                mov rax, [rbp + 16]
+                mov rsi, printf_buffer
+
+                test rax, rax
+                jns .parse
+                mov r8, 1
+                neg rax
+
+.parse:
+                xor rdx, rdx
+                idiv rbx
+
+                add rdx, '0'
+
+                mov [rsi], dl
+                inc rcx
+                
+                test rax, rax
+                jz .done
+
+                inc rsi
+
+                jmp .parse
+
+.done:
+                cmp r8, 1
+                jne .print
+                inc rsi
+                inc rcx
+                mov byte [rsi], '-'
+
+.print:
+                push rcx
+
+                mov rax, 1       
+                mov rdi, 1        
+                mov rdx, 1 
+                syscall
+
+                pop rcx
+
+                dec rsi
+                loop .print
+
+                mov rax, 1       
+                mov rdi, 1  
+                mov rsi, newline     
+                mov rdx, 1 
+                syscall
+
+                mov rsp, rbp
+                pop rbp
+
+                ret 8
+
+section .data
+    scanf_buffer    db buf_size dup(0)
+    printf_buffer   db buf_size dup(0)
+    char_buffer     db 1
+    newline         db 10

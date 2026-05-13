@@ -35,6 +35,8 @@ void ParseAsmExpression(Tree* tree, Node* node, Lexeme* func_info);
 
 void PrintNodeInAsmFile(Tree* tree, Node* node, Lexeme* func_info);
 
+void InputHeadInAsmFile();
+
 Status ParseAsmBigger(Tree* tree, Node* node, Lexeme* func_info);
 
 Status ParseAsmEqual(Tree* tree, Node* node, Lexeme* func_info);
@@ -67,7 +69,9 @@ Status ParseAsmSQRT(Tree* tree, Node* node);
 
 Status ParseAsmPARAM(Tree* tree, Node* node);
 
-void ParseAsmDraw(Tree* tree, Node* node, Lexeme* func_info);
+void ParseAsmPutCharArg(Tree* tree, Node* node);
+
+void ParseAsmPutChar(Tree* tree, Node* node, Lexeme* func_info);
 
 Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info);
 
