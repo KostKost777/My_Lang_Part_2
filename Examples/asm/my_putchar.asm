@@ -19,4 +19,5 @@ PutChar:
 
                 ret
 
+section .data
 char_buffer     db 1

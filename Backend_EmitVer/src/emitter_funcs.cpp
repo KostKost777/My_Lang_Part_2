@@ -36,7 +36,10 @@ struct Jmp jmp_arr[] =
     JMP(jl), JMP(jge), JMP(jle), JMP(jg)
 };
 
-void Emit_MovRegInt(Buffer* bin_buf, RegName reg, int value)
+const int SIZE_OF_REGS_ARR = sizeof(regs_arr) / sizeof(Reg);
+const int SIZE_OF_JMP_ARR  = sizeof(jmp_arr)  / sizeof(Jmp);
+
+void Emit_MovRegInt(Buffer* bin_buf, RegName reg, int64_t value)
 {
     assert(bin_buf);
 
@@ -67,7 +70,7 @@ void Emit_PushInt(Buffer* bin_buf, int value)
 {
     assert(bin_buf);
 
-    WRITE_ASM("push %d", value);
+    WRITE_ASM("push %d\n", value);
 
     BUF[POS++] = 0x68;              
     memcpy(BUF + POS, &value, 4);   
@@ -80,7 +83,7 @@ void Emit_PushReg(Buffer* bin_buf, RegName reg)
 {
     assert(bin_buf);
 
-    WRITE_ASM("push %s", GetRegName(reg));
+    WRITE_ASM("push %s\n", GetRegName(reg));
     
     BUF[POS++] = 0x50 + reg;
 
@@ -254,38 +257,6 @@ void Emit_Jmp(Buffer* bin_buf, char* label_name)
     _EMIT_NOP();
 }
 
-void Emit_Jmp(Buffer* bin_buf, char* label_name) 
-{
-    assert(bin_buf);
-
-    WRITE_ASM("jmp %s\n", label_name);
-    
-    BUF[POS++] = 0xE9;  
-
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-
-    _EMIT_NOP();
-}
-
-void Emit_Jmp(Buffer* bin_buf, char* label_name) 
-{
-    assert(bin_buf);
-
-    WRITE_ASM("jmp %s\n", label_name);
-    
-    BUF[POS++] = 0xE9;  
-
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-
-    _EMIT_NOP();
-}
-
 void Emit_XorRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src) 
 {
     assert(bin_buf);
@@ -411,10 +382,10 @@ void Emit_MovRegMem(Buffer* bin_buf, RegName reg_dest, RegName reg_src, int offs
 {
     assert(bin_buf);
 
-    if (offset < 0) WRITE_ASM("mov %s, [%s - 0x%x]\n", GetRegName(reg_dest), 
+    if (offset < 0) WRITE_ASM("mov %s, [%s - %d]\n", GetRegName(reg_dest), 
                                                        GetRegName(reg_src), -offset);
 
-    else            WRITE_ASM("mov %s, [%s + 0x%x]\n", GetRegName(reg_dest), 
+    else            WRITE_ASM("mov %s, [%s + %d]\n", GetRegName(reg_dest), 
                                                        GetRegName(reg_src), offset);
     
     BUF[POS++] = 0x48;

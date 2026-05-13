@@ -1,1144 +1,1129 @@
-;========MAIN=======
-global _start
+extern MyPrintf 
 
-buf_size equ 6
+extern MyScanf 
 
-section .text
+extern PutChar 
 
-_start:
+global _start  
 
-push rbp     
-mov rbp, rsp 
+section .text  
 
-sub rsp, 32 
+_start:        
 
-push 0 ;Запушил константу
+push rbp
+mov rbp, rsp
+sub rsp, 32
 
-;Запись в переменную |Антоныч| 
-pop rax                   
-mov [rbp - 8], rax       
+push 0
 
-push 0 ;Запушил константу
+;   |Антоныч| 
+pop rax
+mov [rbp - 8], rax
 
-;Запись в переменную |Богданыч| 
-pop rax                   
-mov [rbp - 16], rax       
+push 0
 
-push 0 ;Запушил константу
+;   |Богданыч| 
+pop rax
+mov [rbp - 16], rax
 
-;Запись в переменную |Серегыч| 
-pop rax                   
-mov [rbp - 24], rax       
+push 0
 
-call MyScanf  
-
-push rax  ; Возвращаемое значение в rax
-
-;Запись в переменную |Антоныч| 
-pop rax                   
-mov [rbp - 8], rax       
+;   |Серегыч| 
+pop rax
+mov [rbp - 24], rax
 
 call MyScanf  
+push rax
 
-push rax  ; Возвращаемое значение в rax
-
-;Запись в переменную |Богданыч| 
-pop rax                   
-mov [rbp - 16], rax       
+;   |Антоныч| 
+pop rax
+mov [rbp - 8], rax
 
 call MyScanf  
+push rax
 
-push rax  ; Возвращаемое значение в rax
+;   |Богданыч| 
+pop rax
+mov [rbp - 16], rax
 
-;Запись в переменную |Серегыч| 
-pop rax                   
-mov [rbp - 24], rax       
+call MyScanf  
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+;   |Серегыч| 
+pop rax
+mov [rbp - 24], rax
 
-push 0 ;Запушил константу
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+push 0
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_0
+mov rcx, 1
+.not_equal_0:
+push rcx
 
-push 0 ;Запушил константу
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+push 0
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_0  
-test rbx, rbx 
-jz .false_0  
-mov rcx, 1    
-.false_0:    
-push rcx      
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_1
+mov rcx, 1
+.not_equal_1:
+push rcx
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_0
+test rbx, rbx
+je .bad_0
+mov rcx, 1
+.bad_0:
+push rcx
 
-push 0 ;Запушил константу
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+push 0
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_1  
-test rbx, rbx 
-jz .false_1  
-mov rcx, 1    
-.false_1:    
-push rcx      
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_2
+mov rcx, 1
+.not_equal_2:
+push rcx
 
-pop rax                
-cmp rax, 0             
-je .end_if_0          
-push -1 ;Запушил константу
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_1
+test rbx, rbx
+je .bad_1
+mov rcx, 1
+.bad_1:
+push rcx
+
+pop rax
+cmp rax, 0
+je .end_if_0
+
+push -1
 
 call MyPrintf  
 
-mov rsp, rbp 
-pop rbp      
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_0:
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_3
+mov rcx, 1
+.not_equal_3:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_4
+mov rcx, 1
+.not_equal_4:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_2
+test rbx, rbx
+je .bad_2
+mov rcx, 1
+.bad_2:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_2  
-test rbx, rbx 
-jz .false_2  
-mov rcx, 1    
-.false_2:    
-push rcx      
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_0
+mov rcx, 1
+.equal_0:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_3
+test rbx, rbx
+je .bad_3
+mov rcx, 1
+.bad_3:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_3  
-test rbx, rbx 
-jz .false_3  
-mov rcx, 1    
-.false_3:    
-push rcx      
+pop rax
+cmp rax, 0
+je .end_if_1
 
-pop rax                
-cmp rax, 0             
-je .end_if_1          
-push 0 ;Запушил константу
+push 0
 
 call MyPrintf  
 
-mov rsp, rbp 
-pop rbp      
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_1:
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_5
+mov rcx, 1
+.not_equal_5:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_1
+mov rcx, 1
+.equal_1:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_4
+test rbx, rbx
+je .bad_4
+mov rcx, 1
+.bad_4:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_4  
-test rbx, rbx 
-jz .false_4  
-mov rcx, 1    
-.false_4:    
-push rcx      
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_6
+mov rcx, 1
+.not_equal_6:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_5
+test rbx, rbx
+je .bad_5
+mov rcx, 1
+.bad_5:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_5  
-test rbx, rbx 
-jz .false_5  
-mov rcx, 1    
-.false_5:    
-push rcx      
+pop rax
+cmp rax, 0
+je .end_if_2
 
-pop rax                
-cmp rax, 0             
-je .end_if_2          
-push 1 ;Запушил константу
+push 1
 
 call MyPrintf  
 
-push 0 ;Запушил константу
+
+push 0
 
 call MyPrintf  
 
-mov rsp, rbp 
-pop rbp      
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_2:
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_2
+mov rcx, 1
+.equal_2:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_7
+mov rcx, 1
+.not_equal_7:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_6
+test rbx, rbx
+je .bad_6
+mov rcx, 1
+.bad_6:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_6  
-test rbx, rbx 
-jz .false_6  
-mov rcx, 1    
-.false_6:    
-push rcx      
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_8
+mov rcx, 1
+.not_equal_8:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_7
+test rbx, rbx
+je .bad_7
+mov rcx, 1
+.bad_7:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_7  
-test rbx, rbx 
-jz .false_7  
-mov rcx, 1    
-.false_7:    
-push rcx      
+pop rax
+cmp rax, 0
+je .end_if_3
 
-pop rax                
-cmp rax, 0             
-je .end_if_3          
-push 1 ;Запушил константу
+push 1
 
 call MyPrintf  
 
-push 0 ;Запушил константу
+
+push 0
 
 call MyPrintf  
 
-mov rsp, rbp 
-pop rbp      
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_3:
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_3
+mov rcx, 1
+.equal_3:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_4
+mov rcx, 1
+.equal_4:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_8
+test rbx, rbx
+je .bad_8
+mov rcx, 1
+.bad_8:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_8  
-test rbx, rbx 
-jz .false_8  
-mov rcx, 1    
-.false_8:    
-push rcx      
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_9
+mov rcx, 1
+.not_equal_9:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_9
+test rbx, rbx
+je .bad_9
+mov rcx, 1
+.bad_9:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_9  
-test rbx, rbx 
-jz .false_9  
-mov rcx, 1    
-.false_9:    
-push rcx      
+pop rax
+cmp rax, 0
+je .end_if_4
 
-pop rax                
-cmp rax, 0             
-je .end_if_4          
-push 2 ;Запушил константу
-
-call MyPrintf  
-
-push 0 ;Запушил константу
-
-call MyPrintf  
-
-push -1 ;Запушил константу
-
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
-
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
-
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
+push 2
 
 call MyPrintf  
 
-mov rsp, rbp 
-pop rbp      
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+push 0
+
+call MyPrintf  
+
+
+push -1
+
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
+
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
+
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
+
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
+
+call MyPrintf  
+
+
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_4:
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_5
+mov rcx, 1
+.equal_5:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_10
+mov rcx, 1
+.not_equal_10:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_10
+test rbx, rbx
+je .bad_10
+mov rcx, 1
+.bad_10:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_10  
-test rbx, rbx 
-jz .false_10  
-mov rcx, 1    
-.false_10:    
-push rcx      
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_6
+mov rcx, 1
+.equal_6:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_11
+test rbx, rbx
+je .bad_11
+mov rcx, 1
+.bad_11:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_11  
-test rbx, rbx 
-jz .false_11  
-mov rcx, 1    
-.false_11:    
-push rcx      
+pop rax
+cmp rax, 0
+je .end_if_5
 
-pop rax                
-cmp rax, 0             
-je .end_if_5          
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-push 0 ;Запушил константу
+push 0
 
-; >          
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setg cl      
-push rcx     
+; > 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jle .skip_big_0
+mov rcx, 1
+.skip_big_0:
+push rcx
 
-pop rax                
-cmp rax, 0             
-je .skip_if_0         
+pop rax
+cmp rax, 0
+je .skip_if_0
 
-push 0 ;Запушил константу
-
-call MyPrintf  
-
-jmp .skip_else_0      
-.skip_if_0:           
-
-push 2 ;Запушил константу
-
-call MyPrintf  
-
-push -1 ;Запушил константу
-
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
-
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
-
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
-
-;корень перебор в цикле
-pop rax               
-xor rcx, rcx          
-.sqvrt_0:            
-push rcx              
-imul rcx, rcx         
-cmp  rcx, rax         
-jge  .end_sqvrt_0    
-pop rcx               
-inc rcx               
-jmp .sqvrt_0         
-.end_sqvrt_0:        
+push 0
 
 call MyPrintf  
 
-push -1 ;Запушил константу
 
-push -1 ;Запушил константу
-
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
-
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
-
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
-
-;корень перебор в цикле
-pop rax               
-xor rcx, rcx          
-.sqvrt_1:            
-push rcx              
-imul rcx, rcx         
-cmp  rcx, rax         
-jge  .end_sqvrt_1    
-pop rcx               
-inc rcx               
-jmp .sqvrt_1         
-.end_sqvrt_1:        
-
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
+jmp .skip_else_0
+.skip_if_0:
+push 2
 
 call MyPrintf  
 
-.skip_else_0:         
 
-mov rsp, rbp 
-pop rbp      
+push -1
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
+
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
+
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
+
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
+
+;   
+pop rax
+xor rcx, rcx
+.sqvrt_0: 
+push rcx
+imul rcx, rcx
+cmp rcx, rax
+jge .end_sqvrt_0
+pop rcx
+inc rcx
+jmp .sqvrt_0
+.end_sqvrt_0: 
+
+call MyPrintf  
+
+
+push -1
+
+push -1
+
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
+
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
+
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
+
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
+
+;   
+pop rax
+xor rcx, rcx
+.sqvrt_1: 
+push rcx
+imul rcx, rcx
+cmp rcx, rax
+jge .end_sqvrt_1
+pop rcx
+inc rcx
+jmp .sqvrt_1
+.end_sqvrt_1: 
+
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
+
+call MyPrintf  
+
+
+.skip_else_0:
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_5:
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_11
+mov rcx, 1
+.not_equal_11:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_7
+mov rcx, 1
+.equal_7:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_12
+test rbx, rbx
+je .bad_12
+mov rcx, 1
+.bad_12:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_12  
-test rbx, rbx 
-jz .false_12  
-mov rcx, 1    
-.false_12:    
-push rcx      
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; != 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+je .equal_8
+mov rcx, 1
+.equal_8:
+push rcx
 
-; !=         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setnz cl     
-push rcx     
+; &&
+xor rcx, rcx
+pop rax
+pop rbx
+test rax, rax
+je .bad_13
+test rbx, rbx
+je .bad_13
+mov rcx, 1
+.bad_13:
+push rcx
 
-; &&          
-xor rcx, rcx  
-pop rax       
-pop rbx       
-test rax, rax 
-jz .false_13  
-test rbx, rbx 
-jz .false_13  
-mov rcx, 1    
-.false_13:    
-push rcx      
+pop rax
+cmp rax, 0
+je .end_if_6
 
-pop rax                
-cmp rax, 0             
-je .end_if_6          
-push 1 ;Запушил константу
-
-call MyPrintf  
-
-push -1 ;Запушил константу
-
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
-
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
-
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
+push 1
 
 call MyPrintf  
 
-mov rsp, rbp 
-pop rbp      
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+push -1
+
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
+
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
+
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
+
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
+
+call MyPrintf  
+
+
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_6:
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
 
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
+push 4
 
-push 4 ;Запушил константу
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
 
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
+;    |Серегыч|
+mov rax, [rbp - 24]
+push rax
 
-mov rax, [rbp - 24] ;Получили данные из переменной |Серегыч|
-push rax          
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
 
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
+;   
+pop rax
+pop rbx
+sub rbx, rax
+push rbx
 
-; разность двух чисел
-pop rax      
-pop rbx      
-sub rbx, rax 
-push rbx     
+;   |Дискриминантыч| 
+pop rax
+mov [rbp - 32], rax
 
-;Запись в переменную |Дискриминантыч| 
-pop rax                   
-mov [rbp - 32], rax       
+;    |Дискриминантыч|
+mov rax, [rbp - 32]
+push rax
 
-mov rax, [rbp - 32] ;Получили данные из переменной |Дискриминантыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; == 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jne .not_equal_12
+mov rcx, 1
+.not_equal_12:
+push rcx
 
-; ==         
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setz cl      
-push rcx     
+pop rax
+cmp rax, 0
+je .end_if_7
 
-pop rax                
-cmp rax, 0             
-je .end_if_7          
-push 1 ;Запушил константу
-
-call MyPrintf  
-
-push -1 ;Запушил константу
-
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
-
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
-
-push 2 ;Запушил константу
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
-
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
+push 1
 
 call MyPrintf  
 
-mov rsp, rbp 
-pop rbp      
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+push -1
+
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
+
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
+
+push 2
+
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
+
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
+
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
+
+call MyPrintf  
+
+
+mov rsp, rbp
+pop rbp
+
+mov rax, 60
+mov rdi, 0
+syscall
 
 .end_if_7:
+;    |Дискриминантыч|
+mov rax, [rbp - 32]
+push rax
 
-mov rax, [rbp - 32] ;Получили данные из переменной |Дискриминантыч|
-push rax          
+push 0
 
-push 0 ;Запушил константу
+; < 
+xor rcx, rcx
+pop rax
+pop rbx
+cmp rbx, rax
+jge .skip_less_0
+mov rcx, 1
+.skip_less_0:
+push rcx
 
-; <          
-xor rcx, rcx 
-pop rax      
-pop rbx      
-cmp rbx, rax 
-setl cl      
-push rcx     
+pop rax
+cmp rax, 0
+je .skip_if_1
 
-pop rax                
-cmp rax, 0             
-je .skip_if_1         
-
-push 0 ;Запушил константу
-
-call MyPrintf  
-
-jmp .skip_else_1      
-.skip_if_1:           
-
-push 2 ;Запушил константу
+push 0
 
 call MyPrintf  
 
-push -1 ;Запушил константу
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
-
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
-
-mov rax, [rbp - 32] ;Получили данные из переменной |Дискриминантыч|
-push rax          
-
-;корень перебор в цикле
-pop rax               
-xor rcx, rcx          
-.sqvrt_2:            
-push rcx              
-imul rcx, rcx         
-cmp  rcx, rax         
-jge  .end_sqvrt_2    
-pop rcx               
-inc rcx               
-jmp .sqvrt_2         
-.end_sqvrt_2:        
-
-; разность двух чисел
-pop rax      
-pop rbx      
-sub rbx, rax 
-push rbx     
-
-push 2 ;Запушил константу
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
-
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
-
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
+jmp .skip_else_1
+.skip_if_1:
+push 2
 
 call MyPrintf  
 
-push -1 ;Запушил константу
 
-mov rax, [rbp - 16] ;Получили данные из переменной |Богданыч|
-push rax          
+push -1
 
-;умножение двух чисел
-pop rax   
-pop rbx   
-imul rbx   
-push rax  
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-mov rax, [rbp - 32] ;Получили данные из переменной |Дискриминантыч|
-push rax          
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
 
-;корень перебор в цикле
-pop rax               
-xor rcx, rcx          
-.sqvrt_3:            
-push rcx              
-imul rcx, rcx         
-cmp  rcx, rax         
-jge  .end_sqvrt_3    
-pop rcx               
-inc rcx               
-jmp .sqvrt_3         
-.end_sqvrt_3:        
+;    |Дискриминантыч|
+mov rax, [rbp - 32]
+push rax
 
-; сумма двух чисел
-pop rax      
-pop rbx      
-add rax, rbx 
-push rax     
+;   
+pop rax
+xor rcx, rcx
+.sqvrt_2: 
+push rcx
+imul rcx, rcx
+cmp rcx, rax
+jge .end_sqvrt_2
+pop rcx
+inc rcx
+jmp .sqvrt_2
+.end_sqvrt_2: 
 
-push 2 ;Запушил константу
+;   
+pop rax
+pop rbx
+sub rbx, rax
+push rbx
 
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
+push 2
 
-mov rax, [rbp - 8] ;Получили данные из переменной |Антоныч|
-push rax          
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
 
-;деление двух чисел
-pop rbx   
-pop rax   
-cqo   
-idiv rbx   
-push rax  
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
+
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
 
 call MyPrintf  
 
-.skip_else_1:         
 
-mov rsp, rbp 
-pop rbp      
+push -1
 
-mov rax, 60 
-mov rdi, 0  
-syscall     
+;    |Богданыч|
+mov rax, [rbp - 16]
+push rax
 
-MyScanf:
-                push rbp
-                mov rbp, rsp
+;  
+pop rax
+pop rbx
+imul rbx
+push rax
 
-                push rsi
+;    |Дискриминантыч|
+mov rax, [rbp - 32]
+push rax
 
-                mov rax, 0            
-                mov rdi, 0            
-                mov rsi, scanf_buffer       
-                mov rdx, buf_size
-                syscall
+;   
+pop rax
+xor rcx, rcx
+.sqvrt_3: 
+push rcx
+imul rcx, rcx
+cmp rcx, rax
+jge .end_sqvrt_3
+pop rcx
+inc rcx
+jmp .sqvrt_3
+.end_sqvrt_3: 
 
-                mov rsi, scanf_buffer
-                call StrToInt
+;   
+pop rax
+pop rbx
+add rax, rbx
+push rax
 
-                pop rsi
+push 2
 
-                mov rsp, rbp
-                pop rbp
-                ret
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
 
-StrToInt:
-                push rbp
-                mov rbp, rsp
+;    |Антоныч|
+mov rax, [rbp - 8]
+push rax
 
-                xor rax, rax
-                xor r8, r8
-                mov rbx, 10
+;  
+pop rbx
+pop rax
+cqo
+idiv rbx
+push rax
 
-                cmp byte [rsi], '-'
-                jne .parse
-                mov r8, 1
-                inc rsi 
+call MyPrintf  
 
-.parse:
-                xor rcx, rcx
-                mov cl, [rsi]         ; читаем байт
-                cmp cl, 10     ; конец строки?
-                je .done
-                
-                sub cl, '0'           ; ASCII -> число
-                mul rbx               ; rax = rax * 10
-                add rax, rcx          ; rax = rax + digit
-                
-                inc rsi
-                jmp .parse
 
-.done:
-                cmp r8, 1
-                jne .positive
-                neg rax
+.skip_else_1:
+mov rsp, rbp
+pop rbp
 
-.positive:
-                mov rsp, rbp
-                pop rbp
-                ret
+mov rax, 60
+mov rdi, 0
+syscall
 
-;=========== ФУНКЦИЯ ВЫВОДА ЧИСЛА ===========
-
-MyPrintf:
-                push rbp
-                mov rbp, rsp
-
-                xor r8, r8
-                xor rcx, rcx
-                mov rbx, 10
-                mov rax, [rbp + 16]
-                mov rsi, printf_buffer
-
-                test rax, rax
-                jns .parse
-                mov r8, 1
-                neg rax
-
-.parse:
-                xor rdx, rdx
-                idiv rbx
-
-                add rdx, '0'
-
-                mov [rsi], dl
-                inc rcx
-
-                test rax, rax
-                jz .done
-
-                jmp .parse
-
-.done:
-                cmp r8, 1
-                jne .print
-                inc rsi
-                inc rcx
-                mov byte [rsi], '-'
-
-.print:
-                push rcx
-
-                mov rax, 1       
-                mov rdi, 1        
-                mov rdx, 1 
-                syscall
-
-                pop rcx
-
-                dec rsi
-                loop .print
-
-                mov rax, 1       
-                mov rdi, 1  
-                mov rsi, newline     
-                mov rdx, 1 
-                syscall
-
-                mov rsp, rbp
-                pop rbp
-
-                ret 8
-
-section .data
-    scanf_buffer    db buf_size dup(0)
-    printf_buffer   db buf_size dup(0)
-    newline         db 10

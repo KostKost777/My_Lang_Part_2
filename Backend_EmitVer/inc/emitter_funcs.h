@@ -1,9 +1,6 @@
 #ifndef EMITTER_FUNCS
 #define EMITTER_FUNCS
 
-const int SIZE_OF_REGS_ARR = sizeof(regs_arr) / sizeof(Reg);
-const int SIZE_OF_JMP_ARR  = sizeof(jmp_arr)  / sizeof(Jmp);
-
 const int MOV_BYTE_CODE_LEN = 10;
 
 enum RegName
@@ -50,7 +47,7 @@ struct Jmp
     char*   name;
 }; 
 
-void Emit_MovRegInt(Buffer* bin_buf, RegName reg, int value);
+void Emit_MovRegInt(Buffer* bin_buf, RegName reg, int64_t value);
 
 void Emit_MovRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src);
 
@@ -104,5 +101,8 @@ void Emit_MovRegMem(Buffer* bin_buf, RegName reg, RegName base, int offset);
 
 void Emit_MovMemReg(Buffer* bin_buf, RegName reg_dest, int offset, RegName reg_src);
 
+char* GetRegName(RegName reg);
+
+char* GetJmpName(JmpName jmp);
 
 #endif

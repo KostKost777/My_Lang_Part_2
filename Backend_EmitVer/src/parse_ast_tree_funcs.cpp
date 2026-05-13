@@ -15,7 +15,8 @@
 #include "emitter_DSL.h"
 
 extern const char* asm_file_name;
-extern struct Reg regs_arr;
+extern struct Reg  regs_arr;
+
 FILE* asm_file = NULL;
 
 void Parse_AST_Tree(Tree* tree, Node* node, const char* asm_file_name,
@@ -41,18 +42,23 @@ void Parse_AST_Tree(Tree* tree, Node* node, const char* asm_file_name,
 
     while(node->type == KEY_LBRACE)
     {
-        ParseAsmFunc(tree, node->left);
+        ParseAsmFunc(tree, node->left, &bin_buf);
         node = node->right;
     }
 
     free(main.str.name);
     fclose(asm_file);
+    BufferDtor(&bin_buf);
+
     printf("\nEND");
 }
 
 void InputHeadOfAsmFile()
 {
-    WRITE_ASM("global _start  \n\n"
+    WRITE_ASM("extern MyPrintf \n\n"
+              "extern MyScanf \n\n"
+              "extern PutChar \n\n"
+              "global _start  \n\n"
               "section .text  \n\n"
               "_start:        \n\n");
 }
@@ -72,11 +78,12 @@ void ParseMain(Tree* tree, Node* node, Lexeme* main, Buffer* bin_buf)
     size_t var_in_main = CountVarInFunc(tree->name_table, "main");
 
     _SUB_REG_INT(rsp, var_in_main * 8);
+    WRITE_ASM("\n");
     
-    ParseAsmOperator(tree, node, main);        
+    ParseAsmOperator(tree, node, main, bin_buf);        
 }
 
-void ParseAsmFunc(Tree* tree, Node* node)
+void ParseAsmFunc(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -85,12 +92,12 @@ void ParseAsmFunc(Tree* tree, Node* node)
 
     Lexeme func_info = node->lexeme;
 
-    ParseAsmFuncLabel(tree->name_table, &func_info);
+    ParseAsmFuncLabel(tree->name_table, &func_info, bin_buf);
 
-    ParseAsmOperator(tree, node->right, &func_info);
+    ParseAsmOperator(tree, node->right, &func_info, bin_buf);
 }
 
-void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info)
+void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(func_info);
@@ -101,39 +108,39 @@ void ParseAsmOperator(Tree* tree, Node* node, Lexeme* func_info)
 
         if (node->type == KEY_END)
         {
-            ParseAsmEnd(tree, node, func_info);
+            ParseAsmEnd(tree, node, func_info, bin_buf);
             return;
         }
 
         if (node->left->type == KEY_PUTCHAR)
-            ParseAsmPutChar(tree, node->left, func_info);
+            ParseAsmPutChar(tree, node->left, func_info, bin_buf);
 
         if (node->left->type == OP_ASSIGNED)
-            ParseAsmAssigned(tree, node->left, func_info);
+            ParseAsmAssigned(tree, node->left, func_info, bin_buf);
 
         if (node->left->type == KEY_IF && node->left->right->type == KEY_ELSE)
-            ParseAsmIfElse(tree, node->left, func_info);
+            ParseAsmIfElse(tree, node->left, func_info, bin_buf);
 
         if (node->left->type == KEY_IF && node->left->right->type != KEY_ELSE)
-            ParseAsmIf(tree, node->left, func_info);
+            ParseAsmIf(tree, node->left, func_info, bin_buf);
 
         if (node->left->type == KEY_WHILE)
-            ParseAsmWhile(tree, node->left, func_info);
+            ParseAsmWhile(tree, node->left, func_info, bin_buf);
 
         if (node->left->type == KEY_IN)
-            ParseAsmIn(tree, node->left, func_info);
+            ParseAsmIn(tree, node->left, func_info, bin_buf);
 
         if (node->left->type == KEY_OUT)
-            ParseAsmOut(tree, node->left, func_info);
+            ParseAsmOut(tree, node->left, func_info, bin_buf);
 
         if (node->left->type == KEY_RETURN)
-            ParseAsmReturn(tree, node->left, func_info);
+            ParseAsmReturn(tree, node->left, func_info, bin_buf);
 
         node = node->right;
     }
 }
 
-void ParseAsmAssigned(Tree* tree, Node* node, Lexeme* func_info)
+void ParseAsmAssigned(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -141,12 +148,12 @@ void ParseAsmAssigned(Tree* tree, Node* node, Lexeme* func_info)
 
     fprintf(log_file, "Enter ParseAsmAssigned\n");
 
-    ParseAsmExpression(tree, node->right, func_info);
+    ParseAsmExpression(tree, node->right, func_info, bin_buf);
 
-    ParseAsmInVar(tree, node->left, func_info);
+    ParseAsmInVar(tree, node->left, func_info, bin_buf);
 }
 
-void ParseAsmPutChar(Tree* tree, Node* node, Lexeme* func_info)   //FIX
+void ParseAsmPutChar(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf) 
 {
     assert(tree);
     assert(node);
@@ -154,7 +161,7 @@ void ParseAsmPutChar(Tree* tree, Node* node, Lexeme* func_info)   //FIX
 
     fprintf(log_file, "Enter ParseAsmPutChar\n");
 
-    ParseAsmPutCharArg(tree, node->left);
+    ParseAsmPutCharArg(tree, node->left, bin_buf);
 
     WRITE_ASM( "call PutChar\n\n");
 }
@@ -184,9 +191,13 @@ void ParseAsmEnd(Tree* tree, Node* node, Lexeme* func_info,  Buffer* bin_buf)
     _MOV_REG_REG(rsp, rbp);
     _POP_REG(rbp);
 
+    WRITE_ASM("\n");
+
     _MOV_REG_INT(rax, 60);
     _MOV_REG_INT(rdi, 0);
     _SYSCALL();
+
+    WRITE_ASM("\n");
 }
 
 void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
@@ -197,7 +208,7 @@ void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 
     fprintf(log_file, "Enter ParseAsmReturn\n");
 
-    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
     _POP_REG(rax);
 
@@ -205,6 +216,8 @@ void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     _POP_REG(rbp);
 
     _RET();
+
+    WRITE_ASM("\n");
 }
 
 void ParseAsmIn(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
@@ -219,10 +232,12 @@ void ParseAsmIn(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 
     _PUSH_REG(rax);
 
-    ParseAsmInVar(tree, node->left, func_info);
+    WRITE_ASM("\n");
+
+    ParseAsmInVar(tree, node->left, func_info, bin_buf);
 }
 
-void ParseAsmOut(Tree* tree, Node* node, Lexeme* func_info)
+void ParseAsmOut(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -230,9 +245,11 @@ void ParseAsmOut(Tree* tree, Node* node, Lexeme* func_info)
 
     fprintf(log_file, "Enter ParseAsmOut\n");
 
-    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
     WRITE_ASM( "call MyPrintf  \n\n"); 
+
+    WRITE_ASM("\n");
 }
 
 void ParseAsmIf(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
@@ -247,15 +264,18 @@ void ParseAsmIf(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     char label_name[64] = {};
     sprintf(label_name, ".end_if_%d", counter);
 
-    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
     _POP_REG(rax);
     _CMP_REG_INT(rax, 0);
     _COND_JMP(je, label_name);
 
-    ParseAsmOperator(tree, node->right, func_info);
+    WRITE_ASM("\n");
+
+    ParseAsmOperator(tree, node->right, func_info, bin_buf);
 
     WRITE_ASM("%s:", label_name);
+    WRITE_ASM("\n");
 
     counter++;
 }
@@ -277,18 +297,21 @@ void ParseAsmWhile(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     sprintf(while_end,   ".end_while_%d", counter);
 
     WRITE_ASM("%s:", while_begin);
+    WRITE_ASM("\n");
 
-    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
     _POP_REG(rax);
     _CMP_REG_INT(rax, 0);
     _COND_JMP(je, while_end);
+    WRITE_ASM("\n");
 
-    ParseAsmOperator(tree, node->right, func_info);
+    ParseAsmOperator(tree, node->right, func_info, bin_buf);
 
     _JMP(while_begin);
 
     WRITE_ASM("%s:", while_end);
+    WRITE_ASM("\n");
 
     counter++;
 }
@@ -309,25 +332,28 @@ void ParseAsmIfElse(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     sprintf(skip_if,   ".skip_if_%d", counter);
     sprintf(skip_else, ".skip_else_%d", counter);
 
-    ParseAsmExpression(tree, node->left, func_info);
+    ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
     _POP_REG(rax);
     _CMP_REG_INT(rax, 0);
     _COND_JMP(je, skip_if);
+    WRITE_ASM("\n");
 
-    ParseAsmOperator(tree, node->right->left, func_info);
+    ParseAsmOperator(tree, node->right->left, func_info, bin_buf);
 
     _JMP(skip_else);
     WRITE_ASM("%s:", skip_if);
+    WRITE_ASM("\n");
 
-    ParseAsmOperator(tree, node->right->right, func_info);
+    ParseAsmOperator(tree, node->right->right, func_info, bin_buf);
 
     WRITE_ASM("%s:", skip_else);
+    WRITE_ASM("\n");
 
     counter++;
 }
 
-void ParseAsmExpression(Tree* tree, Node* node, Lexeme* func_info)
+void ParseAsmExpression(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -336,15 +362,15 @@ void ParseAsmExpression(Tree* tree, Node* node, Lexeme* func_info)
     fprintf(log_file, "Enter ParseAsmExpression\n");
 
     if (node->left != NULL && node->left->type != PARAM)
-        ParseAsmExpression(tree, node->left, func_info);
+        ParseAsmExpression(tree, node->left, func_info, bin_buf);
 
     if (node->right != NULL)
-        ParseAsmExpression(tree, node->right, func_info);
+        ParseAsmExpression(tree, node->right, func_info, bin_buf);
 
-    PrintNodeInAsmFile(tree, node, func_info);
+    PrintNodeInAsmFile(tree, node, func_info, bin_buf);
 }
 
-void PrintNodeInAsmFile(Tree* tree, Node* node, Lexeme* func_info)
+void PrintNodeInAsmFile(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -352,22 +378,22 @@ void PrintNodeInAsmFile(Tree* tree, Node* node, Lexeme* func_info)
 
     fprintf(log_file, "Enter PrintNodeInAsmFile\n");
   
-    if ( ParseAsmPARAM    (tree, node)            == success ) return;
-    if ( ParseAsmNumber   (tree, node)            == success ) return;
-    if ( ParseAsmADD      (tree, node)            == success ) return;
-    if ( ParseAsmSUB      (tree, node)            == success ) return;
-    if ( ParseAsmMUL      (tree, node)            == success ) return;
-    if ( ParseAsmDIV      (tree, node)            == success ) return;
-    if ( ParseAsmPOW      (tree, node)            == success ) return;
-    if ( ParseAsmSQRT     (tree, node)            == success ) return;
-    if ( ParseAsmAnd      (tree, node, func_info) == success ) return;
-    if ( ParseAsmOr       (tree, node, func_info) == success ) return;
-    if ( ParseAsmOutVar   (tree, node, func_info) == success ) return;
-    if ( ParseAsmBigger   (tree, node, func_info) == success ) return;
-    if ( ParseAsmLess     (tree, node, func_info) == success ) return;
-    if ( ParseAsmEqual    (tree, node, func_info) == success ) return;
-    if ( ParseAsmNotEqual (tree, node, func_info) == success ) return;
-    if ( ParseAsmCallFunc (tree, node, func_info) == success ) return;
+    if ( ParseAsmPARAM    (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmNumber   (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmADD      (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmSUB      (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmMUL      (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmDIV      (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmPOW      (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmSQRT     (tree, node, bin_buf)            == success ) return;
+    if ( ParseAsmAnd      (tree, node, func_info, bin_buf) == success ) return;
+    if ( ParseAsmOr       (tree, node, func_info, bin_buf) == success ) return;
+    if ( ParseAsmOutVar   (tree, node, func_info, bin_buf) == success ) return;
+    if ( ParseAsmBigger   (tree, node, func_info, bin_buf) == success ) return;
+    if ( ParseAsmLess     (tree, node, func_info, bin_buf) == success ) return;
+    if ( ParseAsmEqual    (tree, node, func_info, bin_buf) == success ) return;
+    if ( ParseAsmNotEqual (tree, node, func_info, bin_buf) == success ) return;
+    if ( ParseAsmCallFunc (tree, node, func_info, bin_buf) == success ) return;
 }
 
 Status ParseAsmOr(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
@@ -405,6 +431,7 @@ Status ParseAsmOr(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     WRITE_ASM     ("%s:\n", bad); 
 
     _PUSH_REG     (rcx);
+    WRITE_ASM("\n");
 
     counter++;
 
@@ -440,13 +467,14 @@ Status ParseAsmAnd(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     WRITE_ASM     ("%s:\n", bad); 
 
     _PUSH_REG     (rcx);
+    WRITE_ASM("\n");
 
     counter++;
 
     return success;
 }
 
-Status ParseAsmPARAM(Tree* tree, Node* node)
+Status ParseAsmPARAM(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -463,7 +491,7 @@ Status ParseAsmBigger(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf
     static int counter  = 0;
 
     char skip[64]  = {};
-    sprintf(skip,  ".skip_>_%d",  counter);
+    sprintf(skip,  ".skip_big_%d",  counter);
 
     if (node->type != OP_BIGGER)
         return error;
@@ -483,6 +511,7 @@ Status ParseAsmBigger(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf
     WRITE_ASM     ("%s:\n", skip);
 
     _PUSH_REG     (rcx);
+    WRITE_ASM("\n");
 
     counter++;
 
@@ -517,6 +546,7 @@ Status ParseAsmEqual(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     WRITE_ASM     ("%s:\n", not_equal);
 
     _PUSH_REG     (rcx);
+    WRITE_ASM("\n");
 
     counter++;
 
@@ -538,18 +568,19 @@ Status ParseAsmNotEqual(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_b
 
     fprintf(log_file, "Enter ParseAsmNotEqual\n");
 
-    WRITE_ASM     ("; == \n");
+    WRITE_ASM     ("; != \n");
 
-    _MOV_REG_INT  (rcx, 1);
+    _XOR_REG_REG  (rcx, rcx);
     _POP_REG      (rax);
     _POP_REG      (rbx);
     _CMP_REG_REG  (rbx, rax);
     _COND_JMP     (je, equal)
-    _XOR_REG_REG  (rcx, rcx);
+    _MOV_REG_INT  (rcx, 1);
 
     WRITE_ASM     ("%s:\n", equal);
 
     _PUSH_REG     (rcx);
+    WRITE_ASM("\n");
 
     counter++;
 
@@ -564,7 +595,7 @@ Status ParseAsmLess(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     static int counter  = 0;
 
     char skip[64]  = {};
-    sprintf(skip,  ".skip_<_%d",  counter);
+    sprintf(skip,  ".skip_less_%d",  counter);
 
     if (node->type != OP_LESS)
         return error;
@@ -583,6 +614,7 @@ Status ParseAsmLess(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
     WRITE_ASM    ("%s:\n", skip);
 
     _PUSH_REG    (rcx);
+    WRITE_ASM("\n");
 
     counter++;
 
@@ -599,6 +631,7 @@ Status ParseAsmNumber(Tree* tree, Node* node, Buffer* bin_buf)
     fprintf(log_file, "Enter ParseAsmNumber\n");
 
     _PUSH_INT(node->lexeme.num);
+    WRITE_ASM("\n");
 
     return success;
 }
@@ -611,12 +644,13 @@ Status ParseAsmADD(Tree* tree, Node* node, Buffer* bin_buf)
     if (node->type != OP_ADD) return error;
     
     fprintf(log_file, "Enter ParseAsmADD \n");
-    WRITE_ASM( "; ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+    WRITE_ASM( "; ˜˜˜˜˜ ˜˜˜˜ ˜˜˜˜˜\n");
 
     _POP_REG     (rax);
     _POP_REG     (rbx);
     _ADD_REG_REG (rax, rbx);
     _PUSH_REG    (rax)
+    WRITE_ASM("\n");
 
     return success;
 }
@@ -629,12 +663,13 @@ Status ParseAsmSUB(Tree* tree, Node* node, Buffer* bin_buf)
     if (node->type != OP_SUB) return error;
     
     fprintf(log_file, "Enter ParseAsmSUB    \n");
-    WRITE_ASM( "; ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+    WRITE_ASM( "; ˜˜˜˜˜˜˜˜ ˜˜˜˜ ˜˜˜˜˜\n");
 
     _POP_REG     (rax);
     _POP_REG     (rbx);
-    _ADD_REG_REG (rbx, rax);
+    _SUB_REG_REG (rbx, rax);
     _PUSH_REG    (rbx)
+    WRITE_ASM("\n");
 
     return success;
 }
@@ -647,12 +682,13 @@ Status ParseAsmMUL(Tree* tree, Node* node, Buffer* bin_buf)
     if (node->type != OP_MUL) return error;
     
     fprintf(log_file, "Enter ParseAsmMUL    \n");
-    WRITE_ASM( ";ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+    WRITE_ASM( ";˜˜˜˜˜˜˜˜˜ ˜˜˜˜ ˜˜˜˜˜\n");
 
     _POP_REG     (rax);
     _POP_REG     (rbx);
     _IMUL_REG    (rbx);
     _PUSH_REG    (rax)
+    WRITE_ASM("\n");
 
     return success;
 }
@@ -665,18 +701,19 @@ Status ParseAsmDIV(Tree* tree, Node* node, Buffer* bin_buf)
     if (node->type != OP_DIV) return error;
     
     fprintf(log_file, "Enter ParseAsmDIV  \n");
-    WRITE_ASM( ";ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+    WRITE_ASM( ";˜˜˜˜˜˜˜ ˜˜˜˜ ˜˜˜˜˜\n");
 
-    _POP_REG     (rax);
     _POP_REG     (rbx);
+    _POP_REG     (rax);
     _CPO         ();
     _IDIV_REG    (rbx);
     _PUSH_REG    (rax);
+    WRITE_ASM("\n");
 
     return success;
 }
 
-Status ParseAsmPOW(Tree* tree, Node* node)
+Status ParseAsmPOW(Tree* tree, Node* node, Buffer* bin_buf)
 {
     assert(tree);
     assert(node);
@@ -684,12 +721,13 @@ Status ParseAsmPOW(Tree* tree, Node* node)
     if (node->type != OP_POW) return error;
     
     fprintf(log_file, "Enter ParseAsmPOW\n");
-    WRITE_ASM( ";ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+    WRITE_ASM( ";˜˜˜˜˜˜˜˜˜˜ ˜ ˜˜˜˜˜˜˜ ˜˜˜˜˜˜\n");
 
     WRITE_ASM( "pop rax     \n");
     WRITE_ASM( "pop rcx     \n");
     WRITE_ASM( "shl rax, cl \n");
     WRITE_ASM( "push rax    \n\n");
+    WRITE_ASM("\n");
 
     //remake
 
@@ -712,12 +750,12 @@ Status ParseAsmSQRT(Tree* tree, Node* node, Buffer* bin_buf)
     sprintf(end_sqvrt, ".end_sqvrt_%d",  counter);
     
     fprintf(log_file, "Enter ParseAsmSQRT\n");
-    WRITE_ASM( ";ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+    WRITE_ASM( ";˜˜˜˜˜˜ ˜˜˜˜˜˜˜ ˜ ˜˜˜˜˜\n");
 
     _POP_REG      (rax);
     _XOR_REG_REG  (rcx, rcx);
  
-    WRITE_ASM     (".%s: \n", sqvrt);
+    WRITE_ASM     ("%s: \n", sqvrt);
  
     _PUSH_REG     (rcx);
     _IMUL_REG_REG (rcx, rcx);
@@ -727,7 +765,8 @@ Status ParseAsmSQRT(Tree* tree, Node* node, Buffer* bin_buf)
     _INC_REG      (rcx);
     _JMP          (sqvrt)
     
-    WRITE_ASM     (".%s: \n", end_sqvrt);
+    WRITE_ASM     ("%s: \n", end_sqvrt);
+    WRITE_ASM("\n");
 
     counter++;
 
@@ -751,12 +790,13 @@ Status ParseAsmOutVar(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf
 
     fprintf(log_file, "Enter ParseAsmOutVar\n");
 
-    WRITE_ASM( ";ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ |%s|\n",  node->lexeme.str.name);
+    WRITE_ASM( ";˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜ ˜˜ ˜˜˜˜˜˜˜˜˜˜ |%s|\n",  node->lexeme.str.name);
 
     if (var_type == VAR) _MOV_REG_MEM (rax, rbp, -mem_ptr * 8);   
     else                 _MOV_REG_MEM (rax, rbp, mem_ptr * 8);
             
     _PUSH_REG (rax);
+    WRITE_ASM("\n");
 
     return success;
 }
@@ -776,16 +816,18 @@ Status ParseAsmInVar(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_buf)
 
     if (IsInvalidNum(mem_ptr))
     {
-        fprintf(log_file, "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ |%s|", node->lexeme.str.name);
+        fprintf(log_file, "˜˜˜ ˜˜˜˜˜˜˜˜˜˜ |%s|", node->lexeme.str.name);
         return error;
     }
 
     fprintf(log_file, "Enter ParseAsmInVar\n");
 
-    WRITE_ASM( ";ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ |%s| \n", node->lexeme.str.name);
+    WRITE_ASM( ";˜˜˜˜˜˜ ˜ ˜˜˜˜˜˜˜˜˜˜ |%s| \n", node->lexeme.str.name);
 
     _POP_REG     (rax);
     _MOV_MEM_REG (rbp, -mem_ptr * 8, rax);
+
+    WRITE_ASM("\n");
     
     return success;
 }
@@ -854,10 +896,11 @@ Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info, Buffer* bin_b
     //printf("LEXEME: %s\n", node->lexeme.str.name);
     size_t index = GetIndexOfFuncInNameTable(tree->name_table, &now_func);
 
-    ParseAsmExpression(tree, node->left->right, func_info);
+    ParseAsmExpression(tree, node->left->right, func_info, bin_buf);
 
     _CALL     (tree->name_table->arr[index].func_ptr);
     _PUSH_REG (rax);
+    WRITE_ASM("\n");
  
     return success;
 }
@@ -879,6 +922,7 @@ void ParseAsmFuncLabel(NameTable* name_table, Lexeme* func_info, Buffer* bin_buf
     size_t var_in_main = CountVarInFunc(name_table, name_table->arr[index].name);
 
     _SUB_REG_INT (rsp, (int)var_in_main * 8);
+    WRITE_ASM("\n");
 }
 
 Lexeme GetMainLexeme()
