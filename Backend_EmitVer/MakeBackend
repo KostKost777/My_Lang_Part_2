@@ -19,6 +19,7 @@ BACKEND_SOURCES = $(SRC_DIR)/backend_main.cpp \
                    $(SRC_DIR)/parse_tree_from_buffer_funcs.cpp \
                    $(SRC_DIR)/parse_ast_tree_funcs.cpp \
                    $(SRC_DIR)/emitter_funcs.cpp \
+                   $(SRC_DIR)/create_elf_file_funcs.cpp \
 
 SOURCES_CXX = $(COMMON_SOURCES) $(BACKEND_SOURCES)
 

@@ -92,4 +92,16 @@
 #define _MOV_MEM_REG(reg_dest, offset, reg_src)            \
         Emit_MovMemReg(bin_buf, reg_dest, offset, reg_src) \
 
+#define _LABEL(label_name)               \
+        Emit_Label(bin_buf, label_name); \
+
+#define _CALL_MYPRINTF()            \
+        Emit_CallMyPrintf(bin_buf); \
+
+#define _CALL_MYSCANF()             \
+        Emit_CallMyScanf(bin_buf); \
+
+#define _CALL_PUTCHAR()             \
+        Emit_CallPutChar(bin_buf); \
+
 #endif

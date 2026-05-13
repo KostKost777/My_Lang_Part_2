@@ -39,7 +39,7 @@ struct Jmp jmp_arr[] =
 const int SIZE_OF_REGS_ARR = sizeof(regs_arr) / sizeof(Reg);
 const int SIZE_OF_JMP_ARR  = sizeof(jmp_arr)  / sizeof(Jmp);
 
-void Emit_MovRegInt(Buffer* bin_buf, RegName reg, int64_t value)
+void Emit_MovRegInt(ElfBuffer* bin_buf, RegName reg, int64_t value)
 {
     assert(bin_buf);
 
@@ -53,7 +53,7 @@ void Emit_MovRegInt(Buffer* bin_buf, RegName reg, int64_t value)
     _EMIT_NOP();
 }
 
-void Emit_MovRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
+void Emit_MovRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
 {
     assert(bin_buf);
 
@@ -66,7 +66,7 @@ void Emit_MovRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
     _EMIT_NOP();
 }
 
-void Emit_PushInt(Buffer* bin_buf, int value)
+void Emit_PushInt(ElfBuffer* bin_buf, int value)
 {
     assert(bin_buf);
 
@@ -79,7 +79,7 @@ void Emit_PushInt(Buffer* bin_buf, int value)
     _EMIT_NOP();
 }
 
-void Emit_PushReg(Buffer* bin_buf, RegName reg)
+void Emit_PushReg(ElfBuffer* bin_buf, RegName reg)
 {
     assert(bin_buf);
 
@@ -90,7 +90,7 @@ void Emit_PushReg(Buffer* bin_buf, RegName reg)
     _EMIT_NOP();
 }
 
-void Emit_SubRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
+void Emit_SubRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
 {
     assert(bin_buf);
 
@@ -103,7 +103,7 @@ void Emit_SubRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
     _EMIT_NOP();
 }
 
-void Emit_SubRegInt(Buffer* bin_buf, RegName reg, int value)
+void Emit_SubRegInt(ElfBuffer* bin_buf, RegName reg, int value)
 {
     assert(bin_buf);
 
@@ -118,7 +118,7 @@ void Emit_SubRegInt(Buffer* bin_buf, RegName reg, int value)
     _EMIT_NOP();
 }
 
-void Emit_AddRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
+void Emit_AddRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
 {
     assert(bin_buf);
 
@@ -131,7 +131,7 @@ void Emit_AddRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
     _EMIT_NOP();
 }
 
-void Emit_AddRegInt(Buffer* bin_buf, RegName reg, int value)
+void Emit_AddRegInt(ElfBuffer* bin_buf, RegName reg, int value)
 {
     assert(bin_buf);
 
@@ -146,7 +146,7 @@ void Emit_AddRegInt(Buffer* bin_buf, RegName reg, int value)
     _EMIT_NOP();
 }
 
-void Emit_PopReg(Buffer* bin_buf, RegName reg)
+void Emit_PopReg(ElfBuffer* bin_buf, RegName reg)
 {
     assert(bin_buf);
 
@@ -157,7 +157,7 @@ void Emit_PopReg(Buffer* bin_buf, RegName reg)
     _EMIT_NOP();
 }
 
-void Emit_Syscall(Buffer* bin_buf) 
+void Emit_Syscall(ElfBuffer* bin_buf) 
 {
     assert(bin_buf);
 
@@ -169,13 +169,16 @@ void Emit_Syscall(Buffer* bin_buf)
     _EMIT_NOP();
 }
 
-void Emit_Call(Buffer* bin_buf, char* func_name) 
+void Emit_Call(ElfBuffer* bin_buf, char* func_name) 
 {
     assert(bin_buf);
 
     WRITE_ASM("call .%s\n", func_name);
     
     BUF[POS++] = 0xE8;
+
+    AddLableInArr(bin_buf->call_label_arr, &bin_buf->call_label_size,
+                  POS, func_name);
 
     BUF[POS++] = 0x00;
     BUF[POS++] = 0x00;
@@ -185,7 +188,7 @@ void Emit_Call(Buffer* bin_buf, char* func_name)
     _EMIT_NOP();
 }
 
-void Emit_Ret(Buffer* bin_buf)
+void Emit_Ret(ElfBuffer* bin_buf)
 {
     assert(bin_buf);
 
@@ -196,7 +199,7 @@ void Emit_Ret(Buffer* bin_buf)
     _EMIT_NOP();
 }
 
-void Emit_CmpRegReg(Buffer* bin_buf, RegName reg_1, RegName reg_2) 
+void Emit_CmpRegReg(ElfBuffer* bin_buf, RegName reg_1, RegName reg_2) 
 {
     assert(bin_buf);
 
@@ -209,7 +212,7 @@ void Emit_CmpRegReg(Buffer* bin_buf, RegName reg_1, RegName reg_2)
     _EMIT_NOP();
 }
 
-void Emit_CmpRegInt(Buffer* bin_buf, RegName reg, int value) 
+void Emit_CmpRegInt(ElfBuffer* bin_buf, RegName reg, int value) 
 {
     assert(bin_buf);
 
@@ -224,14 +227,15 @@ void Emit_CmpRegInt(Buffer* bin_buf, RegName reg, int value)
     _EMIT_NOP();
 }
 
-void Emit_CondJmp(Buffer* bin_buf, JmpName jmp, char* label_name) 
+void Emit_CondJmp(ElfBuffer* bin_buf, JmpName jmp, char* label_name) 
 {
     assert(bin_buf);
-
-    WRITE_ASM("%s %s\n", GetJmpName(jmp), label_name);
     
     BUF[POS++] = 0x0F;  
     BUF[POS++] = 0x80 + jmp;
+
+    AddLableInArr(bin_buf->call_label_arr, &bin_buf->call_label_size,
+                  POS, label_name);
 
     BUF[POS++] = 0x00;
     BUF[POS++] = 0x00;
@@ -241,7 +245,7 @@ void Emit_CondJmp(Buffer* bin_buf, JmpName jmp, char* label_name)
     _EMIT_NOP();
 }
 
-void Emit_Jmp(Buffer* bin_buf, char* label_name) 
+void Emit_Jmp(ElfBuffer* bin_buf, char* label_name) 
 {
     assert(bin_buf);
 
@@ -249,6 +253,9 @@ void Emit_Jmp(Buffer* bin_buf, char* label_name)
     
     BUF[POS++] = 0xE9;  
 
+    AddLableInArr(bin_buf->call_label_arr, &bin_buf->call_label_size,
+                  POS, label_name);
+
     BUF[POS++] = 0x00;
     BUF[POS++] = 0x00;
     BUF[POS++] = 0x00;
@@ -257,7 +264,7 @@ void Emit_Jmp(Buffer* bin_buf, char* label_name)
     _EMIT_NOP();
 }
 
-void Emit_XorRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src) 
+void Emit_XorRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src) 
 {
     assert(bin_buf);
 
@@ -270,7 +277,7 @@ void Emit_XorRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
     _EMIT_NOP();
 }
 
-void Emit_XorRegInt(Buffer* bin_buf, RegName reg, int value) 
+void Emit_XorRegInt(ElfBuffer* bin_buf, RegName reg, int value) 
 {
     assert(bin_buf);
 
@@ -285,7 +292,7 @@ void Emit_XorRegInt(Buffer* bin_buf, RegName reg, int value)
     _EMIT_NOP();
 }
 
-void Emit_TestRegInt(Buffer* bin_buf, RegName reg, int value) 
+void Emit_TestRegInt(ElfBuffer* bin_buf, RegName reg, int value) 
 {
     assert(bin_buf);
 
@@ -300,7 +307,7 @@ void Emit_TestRegInt(Buffer* bin_buf, RegName reg, int value)
     _EMIT_NOP();
 }
 
-void Emit_TestRegReg(Buffer* bin_buf, RegName reg_1, RegName reg_2) 
+void Emit_TestRegReg(ElfBuffer* bin_buf, RegName reg_1, RegName reg_2) 
 {
     assert(bin_buf);
 
@@ -313,7 +320,7 @@ void Emit_TestRegReg(Buffer* bin_buf, RegName reg_1, RegName reg_2)
     _EMIT_NOP();
 }
 
-void Emit_ImulReg(Buffer* bin_buf, RegName reg) 
+void Emit_ImulReg(ElfBuffer* bin_buf, RegName reg) 
 {
     assert(bin_buf);
 
@@ -326,7 +333,7 @@ void Emit_ImulReg(Buffer* bin_buf, RegName reg)
     _EMIT_NOP();
 }
 
-void Emit_ImulRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src) 
+void Emit_ImulRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src) 
 {
     assert(bin_buf);
 
@@ -340,7 +347,7 @@ void Emit_ImulRegReg(Buffer* bin_buf, RegName reg_dest, RegName reg_src)
     _EMIT_NOP();
 }
 
-void Emit_Cqo(Buffer* bin_buf) 
+void Emit_Cqo(ElfBuffer* bin_buf) 
 {
     assert(bin_buf);
 
@@ -352,7 +359,7 @@ void Emit_Cqo(Buffer* bin_buf)
     _EMIT_NOP();
 }
 
-void Emit_IdivReg(Buffer* bin_buf, RegName reg) 
+void Emit_IdivReg(ElfBuffer* bin_buf, RegName reg) 
 {
     assert(bin_buf);
     
@@ -365,7 +372,7 @@ void Emit_IdivReg(Buffer* bin_buf, RegName reg)
     _EMIT_NOP();
 }
 
-void Emit_IncReg(Buffer* bin_buf, RegName reg) 
+void Emit_IncReg(ElfBuffer* bin_buf, RegName reg) 
 {
     assert(bin_buf);
     
@@ -378,7 +385,7 @@ void Emit_IncReg(Buffer* bin_buf, RegName reg)
     _EMIT_NOP();
 }
 
-void Emit_MovRegMem(Buffer* bin_buf, RegName reg_dest, RegName reg_src, int offset) 
+void Emit_MovRegMem(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src, int offset) 
 {
     assert(bin_buf);
 
@@ -397,7 +404,7 @@ void Emit_MovRegMem(Buffer* bin_buf, RegName reg_dest, RegName reg_src, int offs
     _EMIT_NOP();
 }
 
-void Emit_MovMemReg(Buffer* bin_buf, RegName reg_dest, int offset, RegName reg_src) 
+void Emit_MovMemReg(ElfBuffer* bin_buf, RegName reg_dest, int offset, RegName reg_src) 
 {
     assert(bin_buf);
     
@@ -410,12 +417,147 @@ void Emit_MovMemReg(Buffer* bin_buf, RegName reg_dest, int offset, RegName reg_s
     
     BUF[POS++] = 0x48;
     BUF[POS++] = 0x89;
-    BUF[POS++] =  0x80 | reg_dest | (reg_src  << 3);
+    BUF[POS++] = 0x80 | reg_dest | (reg_src  << 3);
     
     memcpy(BUF + POS, &offset, 4);
     POS += 4;
 
     _EMIT_NOP();
+}
+
+void Emit_Label(ElfBuffer* bin_buf, char* label_name)
+{
+    assert(bin_buf);
+    assert(label_name);
+
+    WRITE_ASM("%s:\n", label_name);
+
+    AddLableInArr(bin_buf->init_label_arr, &bin_buf->init_label_size,
+                  POS, label_name);
+}
+
+void Emit_CallMyPrintf(ElfBuffer* bin_buf)
+{
+    assert(bin_buf);
+
+    WRITE_ASM("call MyPrintf\n\n");
+
+    BUF[POS++] = 0xE8;
+
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+}
+
+void Emit_CallMyScanf(ElfBuffer* bin_buf)
+{
+    assert(bin_buf);
+
+    WRITE_ASM("call MyScanf\n\n");
+
+    BUF[POS++] = 0xE8;
+
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+}
+
+void Emit_CallPutChar(ElfBuffer* bin_buf)
+{
+    assert(bin_buf);
+
+    WRITE_ASM("call PutChar\n\n");
+
+    BUF[POS++] = 0xE8;
+
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+    BUF[POS++] = 0x00;
+}
+
+void Emit_LabelsAddr(ElfBuffer* bin_buf)
+{
+    assert(bin_buf);
+
+    for (int i = 0; i < bin_buf->call_label_size; ++i)
+    {
+        size_t call_pos = bin_buf->call_label_arr[i].pos;
+        size_t init_pos = FindLabelInitPos(bin_buf, bin_buf->call_label_arr[i]);
+
+        size_t dest_pos = init_pos - (call_pos + 4);
+
+        memcpy(BUF + call_pos, &dest_pos, 4); 
+    }
+}
+
+void AddLableInArr(Label* label_arr, size_t* size, size_t pos, char* label_name)
+{
+    assert(label_arr);
+    assert(label_name);
+
+    label_arr[*size].hash = GetHash(label_name);
+    label_arr[*size].name = strdup (label_name);
+    label_arr[*size].pos  = pos;
+
+    *size += 1;
+}
+
+size_t FindLabelInitPos(ElfBuffer* bin_buf, Label call_label)
+{
+    assert(bin_buf);
+
+    for (int i = 0; i < bin_buf->init_label_size; ++i)
+    {
+        Label init_label = bin_buf->init_label_arr[i];
+
+        if (IsEqualLabel(call_label, init_label))
+            return init_label.pos;
+    }
+
+    assert(false);
+}
+
+bool IsEqualLabel(Label label_1, Label label_2)
+{
+    if (label_1.hash == label_2.hash  && !strncmp(label_1.name, 
+                                                  label_2.name, MAX_LABEL_LEN)) 
+        return true;
+
+    return false;
+}
+
+void LabelArrDtor(Label* label_arr, size_t size)
+{
+    assert(label_arr);
+
+    for (int i = 0; i < size; ++i)
+        free(label_arr[i].name);
+
+    free(label_arr);
+}
+
+void PrintLabelArrs(ElfBuffer* bin_buf)
+{
+    assert(bin_buf);
+
+    for (int i = 0; i < bin_buf->init_label_size; ++i)
+    {
+        Label init_label = bin_buf->init_label_arr[i];
+        printf("INIT_NAME: |%s|, POS: %zu\n", bin_buf->init_label_arr[i].name,
+                                              bin_buf->init_label_arr[i].pos);
+    }
+
+    printf("====================================\n\n");
+
+    for (int i = 0; i < bin_buf->call_label_size; ++i)
+    {
+        Label init_label = bin_buf->call_label_arr[i];
+        printf("CALL_NAME: |%s|, POS: %zu\n", bin_buf->call_label_arr[i].name,
+                                              bin_buf->call_label_arr[i].pos);
+    }
 }
 
 char* GetRegName(RegName reg)
