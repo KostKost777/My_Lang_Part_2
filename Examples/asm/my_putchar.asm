@@ -1,23 +1,20 @@
 global PutChar
 
-section .text  
-   
+section .text
+
 PutChar:
-                push rbp
-                mov rbp, rsp
-
-                mov [char_buffer], al 
+    push rbp
+    mov rbp, rsp
     
-                mov rsi, char_buffer  
-                mov rdx, 1
-                mov rdi, 1
-                mov rax, 1
-                syscall
-
-                mov rsp, rbp
-                pop rbp
-
-                ret
-
-section .data
-char_buffer     db 1
+    sub rsp, 8               
+    mov [rsp], al            
+    
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, rsp
+    mov rdx, 1
+    syscall
+    
+    mov rsp, rbp
+    pop rbp
+    ret

@@ -442,12 +442,14 @@ void Emit_CallMyPrintf(ElfBuffer* bin_buf)
 
     WRITE_ASM("call MyPrintf\n\n");
 
+    uint32_t offset = 5 - (POS + 5);
+
     BUF[POS++] = 0xE8;
 
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
+    memcpy(BUF + POS, &offset, 4);
+    POS += 4;
+
+    _EMIT_NOP();
 }
 
 void Emit_CallMyScanf(ElfBuffer* bin_buf)
@@ -456,12 +458,14 @@ void Emit_CallMyScanf(ElfBuffer* bin_buf)
 
     WRITE_ASM("call MyScanf\n\n");
 
+    uint32_t offset = 15 - (POS + 5);
+
     BUF[POS++] = 0xE8;
 
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
+    memcpy(BUF + POS, &offset, 4);
+    POS += 4;
+
+    _EMIT_NOP();
 }
 
 void Emit_CallPutChar(ElfBuffer* bin_buf)
@@ -470,12 +474,14 @@ void Emit_CallPutChar(ElfBuffer* bin_buf)
 
     WRITE_ASM("call PutChar\n\n");
 
+    uint32_t offset = 10 - (POS + 5);
+
     BUF[POS++] = 0xE8;
 
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
+    memcpy(BUF + POS, &offset, 4);
+    POS += 4;
+
+    _EMIT_NOP();
 }
 
 void Emit_LabelsAddr(ElfBuffer* bin_buf)

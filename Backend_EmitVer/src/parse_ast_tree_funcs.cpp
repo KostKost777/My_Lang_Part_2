@@ -13,6 +13,7 @@
 #include "hash_funcs.h"
 #include "emitter_funcs.h"
 #include "emitter_DSL.h"
+#include "create_elf_file_funcs.h"
 
 extern const char* asm_file_name;
 extern struct Reg  regs_arr;
@@ -20,12 +21,12 @@ extern struct Reg  regs_arr;
 FILE* asm_file = NULL;
 
 void Parse_AST_Tree(Tree* tree, Node* node, const char* asm_file_name,
-                                            const char* bin_file_name)
+                                            const char* elf_file_name)
 {
     assert(tree);
     assert(node);
     assert(asm_file_name);
-    assert(bin_file_name);
+    assert(elf_file_name);
 
     fprintf(log_file, "Enter Parse_AST_Tree\n");
 
@@ -36,6 +37,8 @@ void Parse_AST_Tree(Tree* tree, Node* node, const char* asm_file_name,
 
     ElfBuffer bin_buf = {};
     ElfBufferCtor(&bin_buf, MAX_SIZE_OF_ELF_FILE);
+
+    WriteLibIntFile(&bin_buf);
 
     Lexeme main = GetMainLexeme();
     ParseMain(tree, node, &main, &bin_buf);
@@ -49,9 +52,10 @@ void Parse_AST_Tree(Tree* tree, Node* node, const char* asm_file_name,
     free(main.str.name);
     fclose(asm_file);
 
-    PrintLabelArrs(&bin_buf);
+    PrintLabelArrs (&bin_buf);
     Emit_LabelsAddr(&bin_buf);
-    WriteBufInFile(&bin_buf, bin_file_name);
+
+    BuildElfFile (&bin_buf, elf_file_name);
     ElfBufferDtor(&bin_buf);
 
     printf("\nEND");
