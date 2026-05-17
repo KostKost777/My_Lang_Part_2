@@ -203,3 +203,43 @@ size_t CountVarInFunc(NameTable* name_table, const char* func_name)
     return num_of_vars;
 }
 
+size_t CountArgsOfFunc(NameTable* name_table, const char* func_name)
+{
+    assert(name_table);
+    assert(func_name);
+
+    size_t index = 0;
+    size_t num_of_args = 0;
+
+    while(index < name_table->size)
+    {
+        //printf("MY_FUNC: |%s|, NOW_FUNC: |%s|\n", func_name, name_table->arr[index].name);
+
+        if (name_table->arr[index].type == FUNC
+            && strcmp(name_table->arr[index].name, func_name) == 0)
+            break;
+        
+        index++;
+    }
+        
+
+    if (index >= name_table->size)
+    {
+        printf("\n\nDo not find func |%s|\n\n", func_name);
+        assert(false);
+    }
+
+    index++;
+
+    while(index < name_table->size && name_table->arr[index].type != FUNC )
+    {
+        if (name_table->arr[index].type == ARG)
+            num_of_args++;
+
+        //printf("NOW_VAR: |%s|, COUNTER: %d\n", name_table->arr[index].name, num_of_vars);
+        index++;
+    }
+
+    return num_of_args;
+}
+

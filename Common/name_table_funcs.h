@@ -48,6 +48,8 @@ void PrintTokenArray(TokenArray* tokens, size_t begin_pos);
 
 size_t CountVarInFunc(NameTable* name_table, const char* func_name);
 
+size_t CountArgsOfFunc(NameTable* name_table, const char* func_name);
+
 char* GetNewFuncPtr();
 
 #endif

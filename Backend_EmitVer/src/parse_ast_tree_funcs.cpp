@@ -64,11 +64,12 @@ void Parse_AST_Tree(Tree* tree, Node* node, const char* asm_file_name,
 void InputHeadOfAsmFile()
 {
     WRITE_ASM("extern MyPrintf \n\n"
-              "extern MyScanf \n\n"
-              "extern PutChar \n\n"
-              "global _start  \n\n"
-              "section .text  \n\n"
-              "_start:        \n\n");
+              "extern MyScanf  \n\n"
+              "extern PutChar  \n\n"
+              "extern MyExit   \n\n"
+              "global _start   \n\n"
+              "section .text   \n\n"
+              "_start:         \n\n");
 }
 
 void ParseMain(Tree* tree, Node* node, Lexeme* main, ElfBuffer* bin_buf)
@@ -221,7 +222,13 @@ void ParseAsmReturn(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_bu
     _MOV_REG_REG (rsp, rbp);
     _POP_REG     (rbp);
 
-    _RET();
+    size_t index       = GetIndexOfFuncInNameTable(tree->name_table, func_info);
+    size_t num_of_args = CountArgsOfFunc(tree->name_table, tree->name_table->arr[index].name);
+
+    // printf("FUNC_NAME: %s \n", tree->name_table->arr[index].name);
+    // printf("NUM_OF_ARGSSSS: %d \n\n", num_of_args);
+
+    _RET( num_of_args );
 
     WRITE_ASM("\n");
 }

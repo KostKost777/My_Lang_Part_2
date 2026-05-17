@@ -187,13 +187,15 @@ void Emit_Call(ElfBuffer* bin_buf, char* func_name)
     _EMIT_NOP();
 }
 
-void Emit_Ret(ElfBuffer* bin_buf)
+void Emit_Ret(ElfBuffer* bin_buf, int16_t offset)
 {
     assert(bin_buf);
+    offset *= 8;
 
-    WRITE_ASM("ret\n");
+    WRITE_ASM("ret %d\n", offset);
 
-    _EMIT_BYTE ( _OPCODE (0xC3) );
+    _EMIT_BYTE  ( _OPCODE (0xC2) );
+    _EMIT_INT16 ( offset );
 
     _EMIT_NOP();
 }
@@ -481,7 +483,7 @@ void Emit_CallExit(ElfBuffer* bin_buf)
 {
     assert(bin_buf);
 
-    WRITE_ASM("call Exit\n\n");
+    WRITE_ASM("call MyExit\n\n");
 
     uint32_t offset = _MY_EXIT_ADDR ( POS );
 
