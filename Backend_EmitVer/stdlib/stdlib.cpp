@@ -59,7 +59,10 @@ static void GenerateLibFile (Buffer* buf, const char* lib_file_name)
 
     WRITE_LIB ("#include <stdint.h>\n\n");
 
-    WRITE_LIB ("uint8_t jmp_main[]      = \"\\xE9\\x36\\x01\\x00\\x00\";\n");
+    //TODO: автоматизировать
+    // printf: scanf: 
+
+    WRITE_LIB ("uint8_t jmp_main[]      = \"\\xE9\\x35\\x01\\x00\\x00\";\n");
     WRITE_LIB ("uint8_t jmp_my_printf[] = \"\\xE9\\x0A\\x00\\x00\\x00\";\n"); 
     WRITE_LIB ("uint8_t jmp_putchar[]   = \"\\xE9\\x8B\\x00\\x00\\x00\";\n");
     WRITE_LIB ("uint8_t jmp_myscanf[]   = \"\\xE9\\xAA\\x00\\x00\\x00\";\n\n");

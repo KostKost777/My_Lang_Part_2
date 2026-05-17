@@ -44,11 +44,10 @@ void Emit_MovRegInt(ElfBuffer* bin_buf, RegName reg, int64_t value)
     assert(bin_buf);
 
     WRITE_ASM("mov %s, %d\n", GetRegName(reg), value);
-    
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0xB8 + reg;
-    memcpy(BUF + POS, &value, 8);
-    POS += 8;
+
+    _EMIT_BYTE  ( _INSTR_64BIT );
+    _EMIT_BYTE  ( _OPCODE (0xB8 + reg) );
+    _EMIT_INT64 ( value );
 
     _EMIT_NOP();
 }
@@ -59,22 +58,21 @@ void Emit_MovRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
 
     WRITE_ASM("mov %s, %s\n", GetRegName(reg_dest), GetRegName(reg_src));
     
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0x89;
-    BUF[POS++] = 0xC0 | (reg_src << 3) | reg_dest;
+    _EMIT_BYTE ( _INSTR_64BIT );
+    _EMIT_BYTE ( _OPCODE (0x89) );
+    _EMIT_BYTE ( _MOD_RM (0xC0 | (reg_src << 3) | reg_dest) );
 
     _EMIT_NOP();
 }
 
-void Emit_PushInt(ElfBuffer* bin_buf, int value)
+void Emit_PushInt(ElfBuffer* bin_buf, int32_t value)
 {
     assert(bin_buf);
 
     WRITE_ASM("push %d\n", value);
 
-    BUF[POS++] = 0x68;              
-    memcpy(BUF + POS, &value, 4);   
-    POS += 4;
+    _EMIT_BYTE  ( _OPCODE (0x68) );             // TODO: to _EMIT_BYTE (_OPCODE (0x68)) 
+    _EMIT_INT32 ( value );
 
     _EMIT_NOP();
 }
@@ -85,7 +83,7 @@ void Emit_PushReg(ElfBuffer* bin_buf, RegName reg)
 
     WRITE_ASM("push %s\n", GetRegName(reg));
     
-    BUF[POS++] = 0x50 + reg;
+    _EMIT_BYTE ( _OPCODE (0x50 + reg) );
 
     _EMIT_NOP();
 }
@@ -96,24 +94,23 @@ void Emit_SubRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
 
     WRITE_ASM("sub %s, %s\n", GetRegName(reg_dest), GetRegName(reg_src));
     
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x29;   
-    BUF[POS++] = 0xC0 | (reg_src << 3) | reg_dest;
+    _EMIT_BYTE ( _INSTR_64BIT ); 
+    _EMIT_BYTE ( _OPCODE (0x29) ); 
+    _EMIT_BYTE ( _MOD_RM (0xC0 | (reg_src << 3) | reg_dest) );
 
     _EMIT_NOP();
 }
 
-void Emit_SubRegInt(ElfBuffer* bin_buf, RegName reg, int value)
+void Emit_SubRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value)
 {
     assert(bin_buf);
 
     WRITE_ASM("sub %s, %d\n", GetRegName(reg), value);
-    
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0x81;
-    BUF[POS++] = 0xE8 + reg;
-    memcpy(BUF + POS, &value, 4);
-    POS += 4;
+ 
+    _EMIT_BYTE  ( _INSTR_64BIT );
+    _EMIT_BYTE  ( _OPCODE (0x81) );
+    _EMIT_BYTE  ( _MOD_RM (0xE8 + reg) );
+    _EMIT_INT32 ( value );
 
     _EMIT_NOP();
 }
@@ -123,25 +120,24 @@ void Emit_AddRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
     assert(bin_buf);
 
     WRITE_ASM("add %s, %s\n", GetRegName(reg_dest), GetRegName(reg_src));
-    
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x01;   
-    BUF[POS++] = 0xC0 | (reg_src << 3) | reg_dest;
+ 
+    _EMIT_BYTE ( _INSTR_64BIT ) 
+    _EMIT_BYTE ( _OPCODE (0x01) ) 
+    _EMIT_BYTE ( _MOD_RM (0xC0 | (reg_src << 3) | reg_dest) );
 
     _EMIT_NOP();
 }
 
-void Emit_AddRegInt(ElfBuffer* bin_buf, RegName reg, int value)
+void Emit_AddRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value)
 {
     assert(bin_buf);
 
     WRITE_ASM("add %s, %d\n", GetRegName(reg), value);
-    
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0x81;
-    BUF[POS++] = 0xC0 + reg;
-    memcpy(BUF + POS, &value, 4);
-    POS += 4;
+ 
+    _EMIT_BYTE  ( _INSTR_64BIT );
+    _EMIT_BYTE  ( _OPCODE (0x81) );
+    _EMIT_BYTE  ( _MOD_RM (0xC0 + reg) );
+    _EMIT_INT32 ( value );
 
     _EMIT_NOP();
 }
@@ -151,8 +147,8 @@ void Emit_PopReg(ElfBuffer* bin_buf, RegName reg)
     assert(bin_buf);
 
     WRITE_ASM("pop %s\n", GetRegName(reg));
-    
-    BUF[POS++] = 0x58 + reg;
+ 
+    _EMIT_BYTE ( _OPCODE (0x58 + reg) );
 
     _EMIT_NOP();
 }
@@ -162,9 +158,9 @@ void Emit_Syscall(ElfBuffer* bin_buf)
     assert(bin_buf);
 
     WRITE_ASM("syscall\n");
-    
-    BUF[POS++] = 0x0F;
-    BUF[POS++] = 0x05;
+ 
+    _EMIT_BYTE ( _OPCODE (0x0F) );
+    _EMIT_BYTE ( _OPCODE (0x05) );
 
     _EMIT_NOP();
 }
@@ -173,17 +169,17 @@ void Emit_Call(ElfBuffer* bin_buf, char* func_name)
 {
     assert(bin_buf);
 
-    WRITE_ASM("call .%s\n", func_name);
-    
-    BUF[POS++] = 0xE8;
+    WRITE_ASM("call %s\n", func_name);
+ 
+    _EMIT_BYTE ( _OPCODE (0xE8) );
 
     AddLableInArr(bin_buf->call_label_arr, &bin_buf->call_label_size,
                   POS, func_name);
 
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
 
     _EMIT_NOP();
 }
@@ -194,7 +190,7 @@ void Emit_Ret(ElfBuffer* bin_buf)
 
     WRITE_ASM("ret\n");
 
-    BUF[POS++] = 0xC3;
+    _EMIT_BYTE ( _OPCODE (0xC3) );
 
     _EMIT_NOP();
 }
@@ -204,25 +200,24 @@ void Emit_CmpRegReg(ElfBuffer* bin_buf, RegName reg_1, RegName reg_2)
     assert(bin_buf);
 
     WRITE_ASM("cmp %s, %s\n", GetRegName(reg_1), GetRegName(reg_2));
-    
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x39;   
-    BUF[POS++] = 0xC0 | (reg_1 << 3) | reg_2;
+
+    _EMIT_BYTE ( _INSTR_64BIT ); 
+    _EMIT_BYTE ( _OPCODE (0x39) ); 
+    _EMIT_BYTE ( _MOD_RM (0xC0 | (reg_2 << 3) | reg_1) );
 
     _EMIT_NOP();
 }
 
-void Emit_CmpRegInt(ElfBuffer* bin_buf, RegName reg, int value) 
+void Emit_CmpRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value) 
 {
     assert(bin_buf);
 
     WRITE_ASM("cmp %s, %d\n", GetRegName(reg), value);
-    
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x81;     
-    BUF[POS++] = 0xF8 + reg;  
-    memcpy(BUF + POS, &value, 4);     
-    POS += 4;
+
+    _EMIT_BYTE  ( _INSTR_64BIT );
+    _EMIT_BYTE  ( _OPCODE (0x81) );
+    _EMIT_BYTE  ( _MOD_RM (0xF8 + reg) );
+    _EMIT_INT32 ( value );
 
     _EMIT_NOP();
 }
@@ -230,17 +225,19 @@ void Emit_CmpRegInt(ElfBuffer* bin_buf, RegName reg, int value)
 void Emit_CondJmp(ElfBuffer* bin_buf, JmpName jmp, char* label_name) 
 {
     assert(bin_buf);
-    
-    BUF[POS++] = 0x0F;  
-    BUF[POS++] = 0x80 + jmp;
+
+    WRITE_ASM("%s %s\n", GetJmpName(jmp), label_name);
+ 
+    _EMIT_BYTE ( _OPCODE (0x0F) );
+    _EMIT_BYTE ( _OPCODE (0x80 + jmp) );
 
     AddLableInArr(bin_buf->call_label_arr, &bin_buf->call_label_size,
                   POS, label_name);
 
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
 
     _EMIT_NOP();
 }
@@ -250,16 +247,16 @@ void Emit_Jmp(ElfBuffer* bin_buf, char* label_name)
     assert(bin_buf);
 
     WRITE_ASM("jmp %s\n", label_name);
-    
-    BUF[POS++] = 0xE9;  
+ 
+    _EMIT_BYTE ( _OPCODE (0xE9) ); 
 
     AddLableInArr(bin_buf->call_label_arr, &bin_buf->call_label_size,
                   POS, label_name);
 
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
-    BUF[POS++] = 0x00;
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
+    _EMIT_BYTE ( 0x00 );
 
     _EMIT_NOP();
 }
@@ -269,40 +266,38 @@ void Emit_XorRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
     assert(bin_buf);
 
     WRITE_ASM("xor %s, %s\n", GetRegName(reg_dest), GetRegName(reg_src));
-    
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x31;
-    BUF[POS++] = 0xC0 | (reg_src << 3) | reg_dest;
+ 
+    _EMIT_BYTE ( _INSTR_64BIT ); 
+    _EMIT_BYTE ( _OPCODE (0x31) );
+    _EMIT_BYTE ( _MOD_RM (0xC0 | (reg_src << 3) | reg_dest) );
 
     _EMIT_NOP();
 }
 
-void Emit_XorRegInt(ElfBuffer* bin_buf, RegName reg, int value) 
+void Emit_XorRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value) 
 {
     assert(bin_buf);
 
     WRITE_ASM("xor %s, %d\n", GetRegName(reg), value);
     
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x81;     
-    BUF[POS++] = 0xF0 + reg;  
-    memcpy(BUF + POS, &value, 4); 
-    POS += 4;
-    
+    _EMIT_BYTE  ( _INSTR_64BIT );     
+    _EMIT_BYTE  ( _OPCODE (0x81) );     
+    _EMIT_BYTE  ( _MOD_RM (0xF0 + reg) ); 
+    _EMIT_INT32 ( value ); 
+
     _EMIT_NOP();
 }
 
-void Emit_TestRegInt(ElfBuffer* bin_buf, RegName reg, int value) 
+void Emit_TestRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value) 
 {
     assert(bin_buf);
 
     WRITE_ASM("test %s, %d\n", GetRegName(reg), value);
     
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0xF7;
-    BUF[POS++] = 0xC0 + reg;
-    memcpy(BUF + POS, &value, 4);
-    POS += 4;
+    _EMIT_BYTE  ( _INSTR_64BIT );
+    _EMIT_BYTE  ( _OPCODE (0xF7) );
+    _EMIT_BYTE  ( _MOD_RM (0xC0 + reg) );
+    _EMIT_INT32 ( value ); 
 
     _EMIT_NOP();
 }
@@ -313,9 +308,9 @@ void Emit_TestRegReg(ElfBuffer* bin_buf, RegName reg_1, RegName reg_2)
 
     WRITE_ASM("test %s, %s\n", GetRegName(reg_1),  GetRegName(reg_2));
     
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x85;     
-    BUF[POS++] = 0xC0 | (reg_2 << 3) | reg_1;
+    _EMIT_BYTE ( _INSTR_64BIT );     
+    _EMIT_BYTE ( _OPCODE (0x85) );     
+    _EMIT_BYTE ( _MOD_RM (0xC0 | (reg_2 << 3) | reg_1) );
 
     _EMIT_NOP();
 }
@@ -326,9 +321,9 @@ void Emit_ImulReg(ElfBuffer* bin_buf, RegName reg)
 
     WRITE_ASM("imul %s\n", GetRegName(reg));
     
-    BUF[POS++] = 0x48;                
-    BUF[POS++] = 0xF7;                
-    BUF[POS++] = 0xE8 + reg;  
+    _EMIT_BYTE ( _INSTR_64BIT );                
+    _EMIT_BYTE ( _OPCODE (0xF7) );                
+    _EMIT_BYTE ( _MOD_RM (0xE8 + reg) );  
 
     _EMIT_NOP();
 }
@@ -339,10 +334,10 @@ void Emit_ImulRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src)
 
     WRITE_ASM("imul %s, %s\n", GetRegName(reg_dest), GetRegName(reg_src));
     
-    BUF[POS++] = 0x48;     
-    BUF[POS++] = 0x0F;     
-    BUF[POS++] = 0xAF;     
-    BUF[POS++] = 0xC0 | (reg_src << 3) | reg_dest; 
+    _EMIT_BYTE ( _INSTR_64BIT );     
+    _EMIT_BYTE ( _OPCODE (0x0F) );     
+    _EMIT_BYTE ( _OPCODE (0xAF) );     
+    _EMIT_BYTE ( _MOD_RM (0xC0 | (reg_src << 3) | reg_dest) ); 
 
     _EMIT_NOP();
 }
@@ -353,8 +348,8 @@ void Emit_Cqo(ElfBuffer* bin_buf)
 
     WRITE_ASM("cqo\n");
     
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0x99;
+    _EMIT_BYTE ( _INSTR_64BIT );
+    _EMIT_BYTE ( _OPCODE (0x99) );
 
     _EMIT_NOP();
 }
@@ -365,9 +360,9 @@ void Emit_IdivReg(ElfBuffer* bin_buf, RegName reg)
     
     WRITE_ASM("idiv %s\n", GetRegName(reg));
     
-    BUF[POS++] = 0x48;                 
-    BUF[POS++] = 0xF7;                 
-    BUF[POS++] = 0xF8 + reg;
+    _EMIT_BYTE ( _INSTR_64BIT );                 
+    _EMIT_BYTE ( _OPCODE (0xF7) );                 
+    _EMIT_BYTE ( _MOD_RM (0xF8 + reg) );
 
     _EMIT_NOP();
 }
@@ -378,14 +373,14 @@ void Emit_IncReg(ElfBuffer* bin_buf, RegName reg)
     
     WRITE_ASM("inc %s\n", GetRegName(reg));
     
-    BUF[POS++] = 0x48;                 
-    BUF[POS++] = 0xFF;                 
-    BUF[POS++] = 0xC0 + reg;
+    _EMIT_BYTE ( _INSTR_64BIT );                 
+    _EMIT_BYTE ( _OPCODE (0xFF) );                 
+    _EMIT_BYTE ( _MOD_RM (0xC0 + reg) );
 
     _EMIT_NOP();
 }
 
-void Emit_MovRegMem(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src, int offset) 
+void Emit_MovRegMem(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src, int32_t offset) 
 {
     assert(bin_buf);
 
@@ -395,16 +390,15 @@ void Emit_MovRegMem(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src, int o
     else            WRITE_ASM("mov %s, [%s + %d]\n", GetRegName(reg_dest), 
                                                        GetRegName(reg_src), offset);
     
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0x8B;
-    BUF[POS++] = 0x80 | reg_src;
-    memcpy(BUF + POS, &offset, 4);
-    POS += 4;
+    _EMIT_BYTE  ( _INSTR_64BIT );
+    _EMIT_BYTE  ( _OPCODE (0x8B) );
+    _EMIT_BYTE  ( _MOD_RM (0x80 | reg_src));
+    _EMIT_INT32 ( offset );
 
     _EMIT_NOP();
 }
 
-void Emit_MovMemReg(ElfBuffer* bin_buf, RegName reg_dest, int offset, RegName reg_src) 
+void Emit_MovMemReg(ElfBuffer* bin_buf, RegName reg_dest, int32_t offset, RegName reg_src) 
 {
     assert(bin_buf);
     
@@ -414,13 +408,11 @@ void Emit_MovMemReg(ElfBuffer* bin_buf, RegName reg_dest, int offset, RegName re
     else
         WRITE_ASM("mov [%s + %d], %s\n", GetRegName(reg_dest), offset, 
                                            GetRegName(reg_src));
-    
-    BUF[POS++] = 0x48;
-    BUF[POS++] = 0x89;
-    BUF[POS++] = 0x80 | reg_dest | (reg_src  << 3);
-    
-    memcpy(BUF + POS, &offset, 4);
-    POS += 4;
+
+    _EMIT_BYTE  ( _INSTR_64BIT );
+    _EMIT_BYTE  ( _OPCODE (0x89) );
+    _EMIT_BYTE  ( _MOD_RM (0x80 | reg_dest | (reg_src  << 3)) );
+    _EMIT_INT32 ( offset );
 
     _EMIT_NOP();
 }
@@ -442,12 +434,10 @@ void Emit_CallMyPrintf(ElfBuffer* bin_buf)
 
     WRITE_ASM("call MyPrintf\n\n");
 
-    uint32_t offset = 5 - (POS + 5);
+    uint32_t offset = MY_PRINTF_ADDR;
 
-    BUF[POS++] = 0xE8;
-
-    memcpy(BUF + POS, &offset, 4);
-    POS += 4;
+    _EMIT_BYTE  ( _OPCODE (0xE8) );
+    _EMIT_INT32 ( offset );
 
     _EMIT_NOP();
 }
@@ -458,12 +448,10 @@ void Emit_CallMyScanf(ElfBuffer* bin_buf)
 
     WRITE_ASM("call MyScanf\n\n");
 
-    uint32_t offset = 15 - (POS + 5);
+    uint32_t offset = MY_SCANF_ADDR;
 
-    BUF[POS++] = 0xE8;
-
-    memcpy(BUF + POS, &offset, 4);
-    POS += 4;
+    _EMIT_BYTE  ( _OPCODE (0xE8) );
+    _EMIT_INT32 ( offset );
 
     _EMIT_NOP();
 }
@@ -474,12 +462,10 @@ void Emit_CallPutChar(ElfBuffer* bin_buf)
 
     WRITE_ASM("call PutChar\n\n");
 
-    uint32_t offset = 10 - (POS + 5);
+    uint32_t offset = MY_PUTCHAR_ADDR;
 
-    BUF[POS++] = 0xE8;
-
-    memcpy(BUF + POS, &offset, 4);
-    POS += 4;
+    _EMIT_BYTE  ( _OPCODE (0xE8) );
+    _EMIT_INT32 ( offset );
 
     _EMIT_NOP();
 }

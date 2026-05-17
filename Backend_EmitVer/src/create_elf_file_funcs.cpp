@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <errno.h>
 #include <ctype.h>
+#include <elf.h>
 
 #include "tree_funcs.h"
 #include "lexical_analysis.h"
@@ -29,6 +30,8 @@ void BuildElfFile(ElfBuffer* bin_buf, const char* elf_file_name)
 
     WriteBufInFile(bin_buf, elf_file_name);
 }
+
+//REMAKE: elf.h
 
 void InitProgHeader(ProgHeader* prog_header, ElfBuffer* bin_buf)
 {
