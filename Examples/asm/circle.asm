@@ -329,7 +329,6 @@ jmp .begin_while_0
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
