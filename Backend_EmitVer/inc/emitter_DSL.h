@@ -2,8 +2,16 @@
 #ifndef EMITTER_DSL
 #define EMITTER_DSL
 
+extern ElfBuffer* bin_buf;
+
 #define BUF bin_buf->data
 #define POS bin_buf->pos
+
+const uint8_t _INSTR_64BIT     = 0x48;
+
+const uint32_t MY_SCANF_ADDR   = sizeof(ElfHeader) + sizeof(ProgHeader) + 15 - (POS + 5);
+const uint32_t MY_PRINTF_ADDR  = sizeof(ElfHeader) + sizeof(ProgHeader) + 5  - (POS + 5);
+const uint32_t MY_PUTCHAR_ADDR = sizeof(ElfHeader) + sizeof(ProgHeader) + 10 - (POS + 5);
 
 #define _EMIT_NOP()        \
         BUF[POS++] = 0x90; \
@@ -102,6 +110,23 @@
         Emit_CallMyScanf(bin_buf); \
 
 #define _CALL_PUTCHAR()             \
-        Emit_CallPutChar(bin_buf); \
+        Emit_CallPutChar(bin_buf);  \
 
-#endif
+#define _EMIT_BYTE(byte)   \
+        BUF[POS++] = byte; \
+
+#define _EMIT_INT64(value)            \
+        memcpy(BUF + POS, &value, 8); \
+        POS += 8;                     \
+
+#define _EMIT_INT32(value)            \
+        memcpy(BUF + POS, &value, 4); \
+        POS += 4;                     \
+
+#define _OPCODE(code) \
+        code          \
+
+#define _MOD_RM(mod) \
+        mod          \
+
+#endif 

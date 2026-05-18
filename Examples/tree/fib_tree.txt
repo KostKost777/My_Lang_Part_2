@@ -1,0 +1,6 @@
+( } ( фибоначи_нах ( PARAM nil ( int ( Пидорассо nil nil ) nil ) ) ( ; ( = ( int ( Евген nil nil ) nil ) ( 0 nil nil ) ) ( ; ( if ( || ( == ( Пидорассо nil nil ) ( 1 nil nil ) ) ( < ( Пидорассо nil nil ) ( 1 nil nil ) ) ) ( ; ( return ( Пидорассо nil nil ) nil ) nil ) ) ( ; ( return ( + ( фибоначи_нах ( PARAM nil ( - ( Пидорассо nil nil ) ( 1 nil nil ) ) ) nil ) ( фибоначи_нах ( PARAM nil ( - ( Пидорассо nil nil ) ( 2 nil nil ) ) ) nil ) ) nil ) nil ) ) ) ) ( ; ( = ( int ( Ебанько nil nil ) nil ) ( 0 nil nil ) ) ( ; ( in ( Ебанько nil nil ) nil ) ( ; ( out ( фибоначи_нах ( PARAM nil ( Ебанько nil nil ) ) nil ) nil ) ( end nil nil ) ) ) ) ) 
+FUNC    фибоначи_нах
+ARG    Пидорассо
+VAR    Евген
+FUNC    main
+VAR    Ебанько

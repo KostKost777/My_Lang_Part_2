@@ -54,7 +54,7 @@ void Emit_MovRegInt(ElfBuffer* bin_buf, RegName reg, int64_t value);
 
 void Emit_MovRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src);
 
-void Emit_PushInt(ElfBuffer* bin_buf, int value);
+void Emit_PushInt(ElfBuffer* bin_buf, int32_t value);
 
 void Emit_PushReg(ElfBuffer* bin_buf, RegName reg);
 
@@ -62,11 +62,11 @@ void Emit_PopReg(ElfBuffer* bin_buf, RegName reg);
 
 void Emit_SubRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src);
 
-void Emit_SubRegInt(ElfBuffer* bin_buf, RegName reg, int value);
+void Emit_SubRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value);
 
 void Emit_AddRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src);
 
-void Emit_AddRegInt(ElfBuffer* bin_buf, RegName reg, int value);
+void Emit_AddRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value);
 
 void Emit_Syscall(ElfBuffer* bin_buf); 
 
@@ -76,7 +76,7 @@ void Emit_Ret(ElfBuffer* bin_buf);
 
 void Emit_CmpRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src);
 
-void Emit_CmpRegInt(ElfBuffer* bin_buf, RegName reg, int value);
+void Emit_CmpRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value);
 
 void Emit_CondJmp(ElfBuffer* bin_buf, JmpName jmp, char* label_name);
 
@@ -84,9 +84,9 @@ void Emit_Jmp(ElfBuffer* bin_buf, char* label_name);
 
 void Emit_XorRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src);
 
-void Emit_XorRegInt(ElfBuffer* bin_buf, RegName reg, int value);
+void Emit_XorRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value);
 
-void Emit_TestRegInt(ElfBuffer* bin_buf, RegName reg, int value);
+void Emit_TestRegInt(ElfBuffer* bin_buf, RegName reg, int32_t value);
 
 void Emit_TestRegReg(ElfBuffer* bin_buf, RegName reg_1, RegName reg_2); 
 
@@ -100,9 +100,9 @@ void Emit_IdivReg(ElfBuffer* bin_buf, RegName reg);
 
 void Emit_IncReg(ElfBuffer* bin_buf, RegName reg);
 
-void Emit_MovRegMem(ElfBuffer* bin_buf, RegName reg, RegName base, int offset);
+void Emit_MovRegMem(ElfBuffer* bin_buf, RegName reg, RegName base, int32_t offset);
 
-void Emit_MovMemReg(ElfBuffer* bin_buf, RegName reg_dest, int offset, RegName reg_src);
+void Emit_MovMemReg(ElfBuffer* bin_buf, RegName reg_dest, int32_t offset, RegName reg_src);
 
 void AddLableInArr(Label* label_arr, size_t* size, size_t pos, char* label_name);
 

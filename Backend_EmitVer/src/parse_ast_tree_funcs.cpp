@@ -547,7 +547,7 @@ Status ParseAsmEqual(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_b
     _POP_REG      (rax);
     _POP_REG      (rbx);
     _CMP_REG_REG  (rbx, rax);
-    _COND_JMP     (jne, not_equal)
+    _COND_JMP     (jne, not_equal);
     _MOV_REG_INT  (rcx, 1);
     _LABEL        (not_equal);
     _PUSH_REG     (rcx);
@@ -920,7 +920,7 @@ void ParseAsmFuncLabel(NameTable* name_table, Lexeme* func_info, ElfBuffer* bin_
 
     size_t index = GetIndexOfFuncInNameTable(name_table, func_info);
 
-    WRITE_ASM( ".%s: \n\n", name_table->arr[index].func_ptr);
+    _LABEL        (name_table->arr[index].func_ptr); 
 
     _PUSH_REG    (rbp);
     _MOV_REG_REG (rbp, rsp);

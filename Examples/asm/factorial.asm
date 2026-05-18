@@ -20,7 +20,8 @@ push 0
 pop rax
 mov [rbp - 8], rax
 
-call MyScanf  
+call MyScanf
+
 push rax
 
 ;˜˜˜˜˜˜ ˜ ˜˜˜˜˜˜˜˜˜˜ |Åôèìû÷| 
@@ -34,7 +35,7 @@ push rax
 call .func_0
 push rax
 
-call MyPrintf  
+call MyPrintf
 
 
 mov rsp, rbp
@@ -44,8 +45,7 @@ mov rax, 60
 mov rdi, 0
 syscall
 
-.func_0: 
-
+func_0:
 push rbp
 mov rbp, rsp
 sub rsp, 8
@@ -79,6 +79,7 @@ ret
 
 jmp .skip_else_0
 .skip_if_0:
+
 ;˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜ ˜˜ ˜˜˜˜˜˜˜˜˜˜ |Ñåðåãû÷|
 mov rax, [rbp + 16]
 push rax
@@ -118,3 +119,4 @@ pop rbp
 ret
 
 .skip_else_0:
+
