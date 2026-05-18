@@ -32,7 +32,7 @@ mov [rbp - 8], rax
 mov rax, [rbp - 8]
 push rax
 
-call .func_0
+call func_0
 push rax
 
 call MyPrintf
@@ -41,9 +41,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 func_0:
 push rbp
@@ -92,7 +91,7 @@ pop rbx
 sub rbx, rax
 push rbx
 
-call .func_0
+call func_0
 push rax
 
 ;   |Ξλεγϋχ| 

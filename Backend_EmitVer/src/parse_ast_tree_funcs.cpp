@@ -202,9 +202,7 @@ void ParseAsmEnd(Tree* tree, Node* node, Lexeme* func_info,  ElfBuffer* bin_buf)
 
     WRITE_ASM("\n");
 
-    _MOV_REG_INT (rax, 60);
-    _MOV_REG_INT (rdi, 0);
-    _SYSCALL     ();
+    _CALL_EXIT ();
 
     WRITE_ASM("\n");
 }

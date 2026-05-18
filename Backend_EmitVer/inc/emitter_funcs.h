@@ -116,6 +116,8 @@ void Emit_CallMyScanf(ElfBuffer* bin_buf);
 
 void Emit_CallPutChar(ElfBuffer* bin_buf);
 
+void Emit_CallExit(ElfBuffer* bin_buf);
+
 size_t FindLabelInitPos(ElfBuffer* bin_buf, Label call_label);
 
 void PrintLabelArrs(ElfBuffer* bin_buf);

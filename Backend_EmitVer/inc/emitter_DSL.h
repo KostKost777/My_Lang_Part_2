@@ -2,16 +2,24 @@
 #ifndef EMITTER_DSL
 #define EMITTER_DSL
 
-extern ElfBuffer* bin_buf;
+#include <elf.h>
 
 #define BUF bin_buf->data
 #define POS bin_buf->pos
 
-const uint8_t _INSTR_64BIT     = 0x48;
+const uint8_t _INSTR_64BIT = 0x48;
 
-const uint32_t MY_SCANF_ADDR   = sizeof(ElfHeader) + sizeof(ProgHeader) + 15 - (POS + 5);
-const uint32_t MY_PRINTF_ADDR  = sizeof(ElfHeader) + sizeof(ProgHeader) + 5  - (POS + 5);
-const uint32_t MY_PUTCHAR_ADDR = sizeof(ElfHeader) + sizeof(ProgHeader) + 10 - (POS + 5);
+#define _MY_PRINTF_ADDR(pos)                                    \
+        sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) + 5 - (pos + 5) \
+
+#define _MY_PUTCHAR_ADDR(pos)                                    \
+        sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) + 10 - (pos + 5) \
+
+#define _MY_SCANF_ADDR(pos)                                      \
+        sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) + 15 - (pos + 5) \
+
+#define _MY_EXIT_ADDR(pos)                                       \
+        sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) + 20 - (pos + 5) \
 
 #define _EMIT_NOP()        \
         BUF[POS++] = 0x90; \
@@ -88,7 +96,7 @@ const uint32_t MY_PUTCHAR_ADDR = sizeof(ElfHeader) + sizeof(ProgHeader) + 10 - (
 #define _IDIV_REG(reg)             \
         Emit_IdivReg(bin_buf, reg); \
     
-#define _IMUL_REG_REG(reg_dest, reg_src)           \
+#define _IMUL_REG_REG(reg_dest, reg_src)             \
         Emit_ImulRegReg(bin_buf, reg_dest, reg_src); \
 
 #define _INC_REG(reg)              \
@@ -111,6 +119,9 @@ const uint32_t MY_PUTCHAR_ADDR = sizeof(ElfHeader) + sizeof(ProgHeader) + 10 - (
 
 #define _CALL_PUTCHAR()             \
         Emit_CallPutChar(bin_buf);  \
+
+#define _CALL_EXIT()             \
+        Emit_CallExit(bin_buf);  \
 
 #define _EMIT_BYTE(byte)   \
         BUF[POS++] = byte; \

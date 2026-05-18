@@ -1,0 +1,25 @@
+digraph {
+graph [charset="utf-8"]rankdir = HR;
+splines = true
+node00000022c45ffc50 [shape = Mrecord, style = filled, fillcolor = "#DD7538", color = "#00000", label = " {PTR: 00000022c45ffc50 | SIZE: 10 | ROOT: 000001e16fd261e0} "]
+node00000022c45ffc50 -> { node000001e16fd261e0 } [dir = both]
+node000001e16fd261e0 [shape = Mrecord, style = filled, fillcolor = "#dd65c9ff", color = "#00000", label = " {TYPE: ; | {LEFT |  RIGHT }} " ]
+node000001e16fd261e0 -> node000001e16fd26220 [dir = both tailport=sw]
+node000001e16fd261e0 -> node000001e16fd27f20 [dir = both tailport=se]
+node000001e16fd26220 [shape = Mrecord, style = filled, fillcolor = "#ffa551ff", color = "#00000", label = " {TYPE: = | {LEFT |  RIGHT }} " ]
+node000001e16fd26220 -> node000001e16fd27c60 [dir = both tailport=sw]
+node000001e16fd26220 -> node000001e16fd27ce0 [dir = both tailport=se]
+node000001e16fd27c60 [shape = Mrecord, style = filled, fillcolor = "#7dc368ff", color = "#00000", label = " {TYPE: int} " ]
+node000001e16fd27c60 -> node000001e16fd27ca0 [dir = both tailport=sw]
+node000001e16fd27ca0 [shape = Mrecord, style = filled, fillcolor = "#8791ffff", color = "#00000", label = " {TYPE: IDENT| VALUE: Пидорассо} " ]
+node000001e16fd27ce0 [shape = Mrecord, style = filled, fillcolor = "#51ff51ff", color = "#00000", label = " {TYPE: NUM| VALUE: 12} " ]
+node000001e16fd27f20 [shape = Mrecord, style = filled, fillcolor = "#dd65c9ff", color = "#00000", label = " {TYPE: ;} " ]
+node000001e16fd27f20 -> node000001e17136adb0 [dir = both tailport=sw]
+node000001e17136adb0 [shape = Mrecord, style = filled, fillcolor = "#ffa551ff", color = "#00000", label = " {TYPE: = | {LEFT |  RIGHT }} " ]
+node000001e17136adb0 -> node000001e17136aa30 [dir = both tailport=sw]
+node000001e17136adb0 -> node000001e17136a7b0 [dir = both tailport=se]
+node000001e17136aa30 [shape = Mrecord, style = filled, fillcolor = "#7dc368ff", color = "#00000", label = " {TYPE: int} " ]
+node000001e17136aa30 -> node000001e17136ac70 [dir = both tailport=sw]
+node000001e17136ac70 [shape = Mrecord, style = filled, fillcolor = "#8791ffff", color = "#00000", label = " {TYPE: IDENT| VALUE: Еблан} " ]
+node000001e17136a7b0 [shape = Mrecord, style = filled, fillcolor = "#51ff51ff", color = "#00000", label = " {TYPE: NUM| VALUE: 13} " ]
+}

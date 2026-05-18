@@ -1,4 +1,3 @@
-BITS 64
 
 global MyPrintf
 
@@ -17,7 +16,8 @@ MyPrintf:
     xor r8, r8               
     test rax, rax
     jns .convert
-    mov r8, 1                
+    mov r8, 1
+    neg rax              
     
 .convert:
     dec rcx

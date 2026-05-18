@@ -140,9 +140,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_0:
 
@@ -230,9 +229,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_1:
 
@@ -325,9 +323,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_2:
 
@@ -420,9 +417,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_3:
 
@@ -541,9 +537,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_4:
 
@@ -747,9 +742,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_5:
 
@@ -863,9 +857,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_6:
 
@@ -978,9 +971,8 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
 .end_if_7:
 
@@ -1138,7 +1130,6 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-mov rax, 60
-mov rdi, 0
-syscall
+call Exit
+
 
