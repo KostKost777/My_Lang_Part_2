@@ -72,7 +72,7 @@ void Emit_Syscall(ElfBuffer* bin_buf);
 
 void Emit_Call(ElfBuffer* bin_buf, char* func_name);
 
-void Emit_Ret(ElfBuffer* bin_buf);
+void Emit_Ret(ElfBuffer* bin_buf, int16_t offset);
 
 void Emit_CmpRegReg(ElfBuffer* bin_buf, RegName reg_dest, RegName reg_src);
 

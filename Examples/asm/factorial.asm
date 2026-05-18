@@ -1,14 +1,16 @@
 extern MyPrintf 
 
-extern MyScanf 
+extern MyScanf  
 
-extern PutChar 
+extern PutChar  
 
-global _start  
+extern MyExit   
 
-section .text  
+global _start   
 
-_start:        
+section .text   
+
+_start:         
 
 push rbp
 mov rbp, rsp
@@ -41,7 +43,7 @@ call MyPrintf
 mov rsp, rbp
 pop rbp
 
-call Exit
+call MyExit
 
 
 func_0:
@@ -74,7 +76,7 @@ push 1
 pop rax
 mov rsp, rbp
 pop rbp
-ret
+ret 8
 
 jmp .skip_else_0
 .skip_if_0:
@@ -115,7 +117,7 @@ push rax
 pop rax
 mov rsp, rbp
 pop rbp
-ret
+ret 8
 
 .skip_else_0:
 

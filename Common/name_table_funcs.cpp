@@ -63,21 +63,21 @@ void FillNameTableFromBuffer(NameTable* name_table, char* cur_pos)
 
         if (strcmp(type_name, "VAR") == 0)
         {
-            name_table->arr[name_table->size].type = VAR;
+            name_table->arr[name_table->size].type    = VAR;
             name_table->arr[name_table->size].address = var_addr;
             var_addr++;
         }
 
         else if (strcmp(type_name, "ARG") == 0)
         {
-            name_table->arr[name_table->size].type = ARG;
+            name_table->arr[name_table->size].type    = ARG;
             name_table->arr[name_table->size].address = arg_addr;
             arg_addr++;
         }
 
         else
         {
-            name_table->arr[name_table->size].type = FUNC;
+            name_table->arr[name_table->size].type    = FUNC;
             name_table->arr[name_table->size].func_ptr = GetNewFuncPtr();
             var_addr = 1;
             arg_addr = 2;
@@ -201,5 +201,45 @@ size_t CountVarInFunc(NameTable* name_table, const char* func_name)
     }
 
     return num_of_vars;
+}
+
+size_t CountArgsOfFunc(NameTable* name_table, const char* func_name)
+{
+    assert(name_table);
+    assert(func_name);
+
+    size_t index = 0;
+    size_t num_of_args = 0;
+
+    while(index < name_table->size)
+    {
+        //printf("MY_FUNC: |%s|, NOW_FUNC: |%s|\n", func_name, name_table->arr[index].name);
+
+        if (name_table->arr[index].type == FUNC
+            && strcmp(name_table->arr[index].name, func_name) == 0)
+            break;
+        
+        index++;
+    }
+        
+
+    if (index >= name_table->size)
+    {
+        printf("\n\nDo not find func |%s|\n\n", func_name);
+        assert(false);
+    }
+
+    index++;
+
+    while(index < name_table->size && name_table->arr[index].type != FUNC )
+    {
+        if (name_table->arr[index].type == ARG)
+            num_of_args++;
+
+        //printf("NOW_VAR: |%s|, COUNTER: %d\n", name_table->arr[index].name, num_of_vars);
+        index++;
+    }
+
+    return num_of_args;
 }
 

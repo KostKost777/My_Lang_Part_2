@@ -210,8 +210,8 @@ const char* GetNodeTypeName(Node* node)
         case OP_EQUAL:              return "==";
         case OP_BIGGER:             return "\\>";
         case OP_LESS:               return "\\<";
-        case OP_LESS_OR_EQUAL:      return "<=";
-        case OP_BIGGER_OR_EQUAL:    return ">=";
+        case OP_LESS_OR_EQUAL:      return "\\<=";
+        case OP_BIGGER_OR_EQUAL:    return "\\>=";
         case OP_NOT_EQUAL:          return "!=";
         case OP_MUL:                return "*";
         case OP_ADD:                return "+";

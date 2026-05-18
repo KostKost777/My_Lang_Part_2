@@ -98,6 +98,7 @@ static const char* GenerateBinLibFile (SrcFileArr* src_file_arr)
         while (!IsSrcFileEnd(src_file_arr->data[i].ptr))
         {
             uint8_t byte = fgetc(src_file_arr->data[i].ptr);
+            
             fputc(byte, bin_file);
             src_file_arr->data[i].size++;
         }

@@ -14,7 +14,7 @@ void WriteTreeInFile(Tree* tree, const char* out_file_name)
     assert(tree);
     assert(out_file_name);
 
-    FILE* out_file = fopen(out_file_name, "a+");
+    FILE* out_file = fopen(out_file_name, "w+");
 
     WriteNode(tree->root, out_file);
 
@@ -69,6 +69,12 @@ void WriteNodeData(Node* node, FILE* out_file)
     else if (node->type == OP_LESS)
         fprintf(out_file,"< ");
 
+    else if (node->type == OP_BIGGER_OR_EQUAL)
+        fprintf(out_file,">= ");
+
+    else if (node->type == OP_LESS_OR_EQUAL)
+        fprintf(out_file,"<= ");
+
     else
         fprintf(out_file, "%s ", GetNodeTypeName(node));
 }
@@ -106,8 +112,7 @@ bool IsPlaceForMain(NameTable* name_table, size_t index)
     assert(name_table);
 
     return index >= 1
-           && name_table->arr[index].type
-              == name_table->arr[index - 1].type
+           && name_table->arr[index - 1].type != FUNC
            && name_table->arr[index].visible_space
               != name_table->arr[index - 1].visible_space;
 }

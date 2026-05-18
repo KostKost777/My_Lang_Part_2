@@ -57,8 +57,8 @@ const uint8_t _INSTR_64BIT = 0x48;
 #define _CALL(func_name)               \
         Emit_Call(bin_buf, func_name); \
 
-#define _RET()             \
-        Emit_Ret(bin_buf); \
+#define _RET( offset )             \
+        Emit_Ret(bin_buf, offset); \
 
 #define _CMP_REG_REG(reg_1, reg_2)              \
         Emit_CmpRegReg(bin_buf, reg_1, reg_2);  \
@@ -133,6 +133,10 @@ const uint8_t _INSTR_64BIT = 0x48;
 #define _EMIT_INT32(value)            \
         memcpy(BUF + POS, &value, 4); \
         POS += 4;                     \
+
+#define _EMIT_INT16(value)            \
+        memcpy(BUF + POS, &value, 2); \
+        POS += 2;                     \
 
 #define _OPCODE(code) \
         code          \

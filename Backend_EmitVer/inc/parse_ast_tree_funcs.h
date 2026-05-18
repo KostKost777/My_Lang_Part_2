@@ -90,6 +90,10 @@ Status ParseAsmCallFunc(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bi
 
 void ParseAsmFuncLabel(NameTable* name_table, Lexeme* func_info, ElfBuffer* bin_buf);
 
+Status ParseAsmLessOrEqual(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_buf);
+
+Status ParseAsmBiggerOrEqual(Tree* tree, Node* node, Lexeme* func_info, ElfBuffer* bin_buf);
+
 void ParseMain(Tree* tree, Node* node, Lexeme* main, ElfBuffer* bin_buf);
 
 Lexeme GetMainLexeme();
